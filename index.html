@@ -21,6 +21,7 @@ header{position:sticky;top:0;z-index:20;background:rgba(18,19,26,.94);backdrop-f
 nav{display:flex;gap:4px;flex:1;flex-wrap:wrap}
 nav button{background:none;border:0;padding:8px 14px;border-radius:999px;color:var(--sub);cursor:pointer;font-weight:600}
 nav button.on{background:var(--panel2);color:var(--text)}
+nav{display:flex;flex-wrap:wrap;gap:2px}
 .chip{font-size:12px;padding:4px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);color:var(--sub);cursor:pointer}
 .chip.ok{color:var(--teal);border-color:#2a5b55}
 .chip.bad{color:var(--gold);border-color:#6b5a1c}
@@ -175,7 +176,7 @@ let db=Object.assign(emptyDb(),lsGet(LS_DB,{}));
 if(!db.records||typeof db.records!=='object')db.records={};
 let settings=Object.assign({google_client_id:'',drive_linked:false,nazolog_user_id:'bf53c570'},lsGet(LS_SET,{}));
 if(!settings.google_client_id)settings.google_client_id=DEFAULT_CLIENT_ID;
-const ui={tab:'list',kind:'show',q:'',group:'',result:'',format:[],year:'',status:'',sort:'new',shown:[],lq:'',lres:''};
+const ui={tab:'show',kind:'show',q:'',group:'',result:'',format:[],year:'',status:'',sort:'new',shown:[],lq:'',lres:''};
 
 function saveLocal(){db.updated_at=nowIso();lsSet(LS_DB,db)}
 function save(){saveLocal();scheduleSync()}
@@ -397,12 +398,13 @@ function setSync(s){
 }
 
 /* =============== rendering =============== */
-const TABS=[['list','一覧'],['reco','オススメ'],['stats','成績'],['lessons','教訓'],['settings','設定']];
-function renderNav(){$('#nav').innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" class="${ui.tab===k?'on':''}">${l}</button>`).join('')}
+const TABS=[['show','公演'],['tour','周遊'],['buy','購入系'],['reco','オススメ'],['stats','成績'],['lessons','教訓'],['settings','設定']];
+const isKindTab=k=>KINDS.some(x=>x[0]===k);
+function renderNav(){const all=live();$('#nav').innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" class="${ui.tab===k?'on':''}">${l}${isKindTab(k)?`<small style="opacity:.7;margin-left:4px">${all.filter(r=>kindOf(r)===k).length}</small>`:''}</button>`).join('')}
 function render(){
   renderNav();setSync(syncState);
   const m=$('#main');
-  if(ui.tab==='list')renderList(m);
+  if(isKindTab(ui.tab)){ui.kind=ui.tab;renderList(m)}
   else if(ui.tab==='stats')renderStats(m);
   else if(ui.tab==='lessons')renderLessons(m);
   else if(ui.tab==='reco')renderReco(m);
@@ -415,9 +417,6 @@ function fmtBtns(all){
   const ex=all.filter(r=>!r.format).length;
   const b=(v,l,n)=>`<button type="button" class="fb ${(v===''?!ui.format.length:ui.format.includes(v))?'on':''}" data-f="${esc(v)}">${esc(l)}${n!=null?`<small>${n}</small>`:''}</button>`;
   return`<div class="fbtns" id="fmtBtns"><span class="lb2">形式（複数選べます）</span>${b('','すべて',all.length)}${fm.map(([f,n])=>b(f,f,n)).join('')}${(ex||ui.format.includes('none'))?b('none','未設定',ex):''}</div>`;
-}
-function kindBtns(all){
-  return`<div class="fbtns" id="kindBtns"><span class="lb2">区分</span>${KINDS.map(([k,l])=>`<button type="button" class="fb ${ui.kind===k?'on':''}" data-k="${k}">${l}<small>${all.filter(r=>kindOf(r)===k).length}</small></button>`).join('')}</div>`;
 }
 function stBtns(all){
   const b=(v,l,n)=>`<button type="button" class="fb ${ui.status===v?'on':''}" data-s="${v}">${l}<small>${n}</small></button>`;
@@ -547,14 +546,13 @@ function renderList(m){
       <select id="fSort">${opt('new','並び: 日付が新しい順',ui.sort)}${opt('old','並び: 日付が古い順',ui.sort)}${opt('score','並び: 面白さ順',ui.sort)}</select>
       <button class="btn" id="fClear">条件クリア</button>
     </div>
-    ${kindBtns(all)}${stBtns(allK)}${fmtBtns(allK)}
+    ${stBtns(allK)}${fmtBtns(allK)}
     <div class="hint" id="sum"></div>
   </div>
   <div id="list"></div>`;
   $('#q').oninput=e=>{ui.q=e.target.value;drawList()};
   [['fGroup','group'],['fRes','result'],['fYear','year'],['fSort','sort']].forEach(([id,k])=>{$('#'+id).onchange=e=>{ui[k]=e.target.value;drawList()}});
   $('#fClear').onclick=()=>{Object.assign(ui,{q:'',group:'',result:'',format:[],year:'',status:'',sort:'new'});renderList(m)};
-  $('#kindBtns').onclick=e=>{const b=e.target.closest('.fb');if(!b)return;ui.kind=b.dataset.k;ui.status='';ui.format=[];ui.group='';renderList(m)};
   bindFmtBtns(()=>renderList(m));
   $('#list').onclick=listClick;
   drawList();
@@ -971,7 +969,7 @@ function openNzModal(){
 }
 
 /* =============== init =============== */
-$('#nav').onclick=e=>{const b=e.target.closest('button');if(!b)return;ui.tab=b.dataset.tab;render()};
+$('#nav').onclick=e=>{const b=e.target.closest('button');if(!b)return;const t=b.dataset.tab;if(isKindTab(t)&&ui.tab!==t){ui.status='';ui.format=[];ui.group=''}ui.tab=t;render()};
 $('#addBtn').onclick=()=>openEdit(null);
 $('#nzBtn').onclick=openNzModal;
 $('#syncChip').onclick=()=>{if(!settings.google_client_id){ui.tab='settings';render();return}driveSync(true)};
