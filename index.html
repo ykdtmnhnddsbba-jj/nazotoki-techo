@@ -125,6 +125,7 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 40px;color:var(--sub);font-
 .subtabs button{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:9px 6px;cursor:pointer;font-weight:700;color:var(--sub)}
 .subtabs button.on{background:var(--panel2);border-color:var(--accent);color:var(--text)}
 .subtabs small{opacity:.7;margin-left:5px;font-weight:500}
+.gcal.gdone{color:var(--teal);border-color:#2a5b55}
 .hlinks{display:flex;gap:6px;flex-wrap:wrap}
 .hlinks a{font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel2);color:var(--teal);text-decoration:none;font-weight:600;white-space:nowrap}
 .hlinks a:hover{border-color:var(--teal)}
@@ -219,7 +220,7 @@ const buyStage=r=>!isPlan(r)?'done':(r.nazolog_plan_status==='defined'?'owned':'
 function emptyDb(){return{schema_version:1,updated_at:null,records:{}}}
 let db=Object.assign(emptyDb(),lsGet(LS_DB,{}));
 if(!db.records||typeof db.records!=='object')db.records={};
-let settings=Object.assign({google_client_id:'',drive_linked:false,nazolog_user_id:'bf53c570'},lsGet(LS_SET,{}));
+let settings=Object.assign({google_client_id:'',drive_linked:false,nazolog_user_id:'bf53c570',gcal_id:''},lsGet(LS_SET,{}));
 if(!settings.google_client_id)settings.google_client_id=DEFAULT_CLIENT_ID;
 const ui={tab:'list',kind:'show',q:'',group:'',result:'',format:[],year:'',status:'',sort:'new',shown:[],lq:'',lres:''};
 
@@ -451,6 +452,90 @@ const TABS=[['list','一覧'],['week','直近の予定'],['reco','オススメ']
 function weekRange(){const t0=todayStr(),d=new Date(t0+'T00:00:00');d.setMonth(d.getMonth()+1);const t1=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');return[t0,t1]}
 function weekWarn(){const[t0,t1]=weekRange();return live().filter(r=>noTicket(r)&&r.date&&r.date<=t1).length}
 function renderNav(){const ww=weekWarn();$('#nav').innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" class="${ui.tab===k?'on':''}">${l}${k==='week'&&ww?`<small class="wn">⚠${ww}</small>`:''}</button>`).join('');const c=$('#curTab');if(c)c.textContent=(TABS.find(x=>x[0]===ui.tab)||[])[1]||''}
+/* =============== Google カレンダー（ファミリー カレンダーへ登録） =============== */
+/* Drive同期とは別のトークン（カレンダー用の権限は、ボタンを押したときだけ求める）。予定ごとに固定のイベントIDで登録するので、何度押しても重複せず更新される */
+const GC_SCOPE='https://www.googleapis.com/auth/calendar.events';
+const GC_DEFAULT_ID='family16137444769724886642@group.calendar.google.com';
+const GC_MIN=90;                 // 終了時刻が分からないので、開始から90分の予定にする
+const GC_TOKKEY='gcal_tok:'+G_REDIR,GC_PEND='gcal_pending',GC_ST='gcal_state';
+let gcToken=null,gcExp=0,gcBusy=false;
+(function(){
+  try{
+    if(/access_token=|error=/.test(location.hash)){
+      const p=new URLSearchParams(location.hash.slice(1));
+      const saved=(()=>{try{return sessionStorage.getItem(GC_ST)||localStorage.getItem(GC_ST)}catch(e){return null}})();
+      if(p.get('state')&&p.get('state')===saved){
+        if(p.get('access_token'))sessionStorage.setItem(GC_TOKKEY,JSON.stringify({t:p.get('access_token'),e:Date.now()+(+p.get('expires_in')||3600)*1000}));
+        else try{localStorage.removeItem(GC_PEND)}catch(e){}
+        try{sessionStorage.removeItem(GC_ST);localStorage.removeItem(GC_ST)}catch(e){}
+        history.replaceState(null,'',location.pathname+location.search);
+      }
+    }
+    const t=JSON.parse(sessionStorage.getItem(GC_TOKKEY)||'null');
+    if(t&&t.e>Date.now()){gcToken=t.t;gcExp=t.e}
+  }catch(e){}
+})();
+const gcEligible=r=>!!r&&!r.deleted&&isPlan(r)&&kindOf(r)!=='buy'&&/^\d{4}-\d{2}-\d{2}$/.test(r.date||'');
+const gcSig=r=>[r.title,r.date,r.time||'',r.venue||'',r.ticket_url||'',r.group||''].join('|');
+const gcDone=r=>r.gcal_sig===gcSig(r);
+const gcEventId=id=>'techo'+Array.from(new TextEncoder().encode(String(id))).map(b=>b.toString(16).padStart(2,'0')).join('');
+function gcBtn(r,cls){
+  const lbl=gcDone(r)?'📅 登録済み':r.gcal_sig?'📅 カレンダーを更新':'📅 カレンダーに追加';
+  return`<button type="button" class="${cls} gcal ${gcDone(r)?'gdone':''}" data-id="${esc(r.id)}" title="ファミリー カレンダーに登録します">${lbl}</button>`;
+}
+function gcBody(r){
+  const desc=[r.group&&'団体: '+r.group,r.format&&'形式: '+r.format,/^https?:\/\//i.test(r.ticket_url||'')&&'チケット: '+r.ticket_url,'謎解き手帖: '+location.origin+location.pathname].filter(Boolean).join('\n');
+  const b={summary:r.title,status:'confirmed',description:desc,location:r.venue||''};
+  if(/^\d{2}:\d{2}$/.test(r.time||'')){
+    const[y,mo,d]=r.date.split('-').map(Number),[h,mi]=r.time.split(':').map(Number);
+    b.start={dateTime:r.date+'T'+r.time+':00',timeZone:'Asia/Tokyo'};
+    b.end={dateTime:new Date(Date.UTC(y,mo-1,d,h,mi+GC_MIN)).toISOString().slice(0,19),timeZone:'Asia/Tokyo'};
+  }else{
+    const[y,mo,d]=r.date.split('-').map(Number);
+    b.start={date:r.date};b.end={date:new Date(Date.UTC(y,mo-1,d+1)).toISOString().slice(0,10)};
+  }
+  return b;
+}
+async function gcPut(r){
+  const base='https://www.googleapis.com/calendar/v3/calendars/'+encodeURIComponent(settings.gcal_id||GC_DEFAULT_ID)+'/events',id=gcEventId(r.id),body=gcBody(r);
+  const H={'Content-Type':'application/json',Authorization:'Bearer '+gcToken};
+  let res=await fetch(base,{method:'POST',headers:H,body:JSON.stringify({...body,id})});
+  if(res.status===409)res=await fetch(base+'/'+id,{method:'PATCH',headers:H,body:JSON.stringify(body)});
+  if(res.status===401){gcToken=null;throw new Error('auth')}
+  if(!res.ok){let m='';try{m=(await res.json()).error.message}catch(e){}throw new Error(res.status+' '+m)}
+}
+function gcRedirect(ids){
+  if(!settings.google_client_id.trim()){toast('Google クライアントIDが未設定です（設定タブ）');return}
+  const st=Math.random().toString(36).slice(2)+Date.now().toString(36);
+  try{localStorage.setItem(GC_PEND,JSON.stringify(ids));sessionStorage.setItem(GC_ST,st);localStorage.setItem(GC_ST,st)}catch(e){}
+  const q=new URLSearchParams({client_id:settings.google_client_id.trim(),redirect_uri:G_REDIR,response_type:'token',scope:GC_SCOPE,state:st,include_granted_scopes:'true'});
+  location.href='https://accounts.google.com/o/oauth2/v2/auth?'+q.toString();
+}
+async function gcAdd(ids){
+  if(gcBusy)return;
+  ids=ids.filter(id=>gcEligible(db.records[id]));
+  if(!ids.length){toast('カレンダーに入れられる予定（公演系で日付ありの予定）がありません');return}
+  if(!gcToken||gcExp<=Date.now()){gcRedirect(ids);return}
+  gcBusy=true;let ok=0,fail=0,msg='';
+  for(const id of ids){
+    const r=db.records[id];
+    try{await gcPut({id,...r});db.records[id]=Object.assign({},r,{gcal_sig:gcSig(r),gcal_synced_at:nowIso(),updated_at:stampAfter(r)});ok++}
+    catch(e){fail++;msg=e.message;if(e.message==='auth')break}
+    await new Promise(f=>setTimeout(f,150));
+  }
+  gcBusy=false;if(ok)save();render();
+  if(msg==='auth'){toast('カレンダーの認証が切れました。もう一度押してください',4000);try{sessionStorage.removeItem(GC_TOKKEY)}catch(e){}}
+  else if(fail)toast(`カレンダーに${ok}件登録、${fail}件失敗：${msg}`,7000);
+  else toast(`ファミリー カレンダーに${ok}件登録しました`);
+}
+function gcStartup(){
+  let ids=null;try{ids=JSON.parse(localStorage.getItem(GC_PEND)||'null');localStorage.removeItem(GC_PEND)}catch(e){}
+  if(ids&&ids.length&&gcToken)setTimeout(()=>gcAdd(ids),400);
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.gcal');if(b){gcAdd([b.dataset.id]);return}
+  if(e.target.closest('#gcalAll'))gcAdd(live().filter(r=>gcEligible(r)&&!gcDone(r)).map(r=>r.id));
+});
 function render(){
   renderNav();setSync(syncState);
   const m=$('#main');
@@ -603,9 +688,11 @@ function renderWeek(m){
     const nz=r.nazolog_content_id?`<a class="btn" href="https://www.nazo.site/content/contents/${esc(r.nazolog_content_id)}" target="_blank" rel="noopener">謎ログ ↗</a>`:'';
     return`<div class="wk ${noTicket(r)?'nt':''}"><div class="wkt">${r.time?esc(r.time):'時刻未定'}</div><div class="wkm"><div class="ttl">${esc(r.title)}</div>${noTicket(r)?'<div class="warn" style="display:inline-block;margin-top:4px">⚠ チケットのURLが未登録です</div>':''}
       <div class="meta">${esc([r.group,r.format,r.venue].filter(Boolean).join(' ／ '))}</div>
-      <div class="row" style="margin-top:8px">${tk}${r.venue?`<a class="btn" href="${maps}" target="_blank" rel="noopener">📍 地図</a>`:''}${nz}<button type="button" class="btn wkEdit" data-id="${esc(r.id)}">編集</button></div></div></div>`;
+      <div class="row" style="margin-top:8px">${tk}${r.venue?`<a class="btn" href="${maps}" target="_blank" rel="noopener">📍 地図</a>`:''}${nz}${gcEligible(r)?gcBtn(r,'btn'):''}<button type="button" class="btn wkEdit" data-id="${esc(r.id)}">編集</button></div></div></div>`;
   };
   let h=`<div class="hint" style="margin-bottom:10px">今日から1か月先まで（${fmtDate(t0)} 〜 ${fmtDate(t1)}）の予定を、日付の早い順に表示しています。${nodate?`日付が未定の予定が${nodate}件あります（一覧で日付を入れると、ここに出ます）。`:''}</div>`;
+  const gp=live().filter(r=>gcEligible(r)&&!gcDone(r)).length;
+  if(gp)h+=`<div class="row" style="margin-bottom:10px"><button type="button" class="btn" id="gcalAll">📅 未登録の予定${gp}件をファミリー カレンダーに追加</button></div>`;
   const nw=rs.filter(noTicket).length;if(nw)h=`<div class="warnbar">⚠ チケットのURLが未登録の予定が${nw}件あります。当日に困らないよう、先に登録しておきましょう。</div>`+h;
   if(!rs.length)h+='<div class="empty">この1か月の予定はありません。<br>オススメの「予定に入れる」や、＋公演を追加（種別：予定）から入れられます。</div>';
   else{let cur='';rs.forEach(r=>{if(r.date!==cur){cur=r.date;h+=`<div class="gh">${esc(lbl(cur))}</div>`}h+=card(r)})}
@@ -652,7 +739,7 @@ function recHtml(r){
     <div class="rr">
       ${isBuy(r)?'':`<div class="res">${RESULTS.map(([l,c])=>`<button class="rb ${c} ${r.result===l?'on':''}" data-r="${l}">${l}</button>`).join('')}</div>`}
       <div class="sbs">${Array.from({length:10},(_,i)=>`<button class="sb ${sc===i+1?'on':''}" data-s="${i+1}" title="面白さ ${i+1}点（もう一度押すと解除）">${i+1}</button>`).join('')}</div>
-      <div class="row" style="justify-content:flex-end">${isPlan(r)?`<button class="qb dn" title="${isBuy(r)?'プレイ済みにします':'参加済みにして、結果を入れられるようにします'}">✔ ${isBuy(r)?'プレイ済みにする':'参加済みにする'}</button>`:''}<button class="qb ed">✎ 編集</button></div>
+      <div class="row" style="justify-content:flex-end">${gcEligible(r)?gcBtn(r,'qb'):''}${isPlan(r)?`<button class="qb dn" title="${isBuy(r)?'プレイ済みにします':'参加済みにして、結果を入れられるようにします'}">✔ ${isBuy(r)?'プレイ済みにする':'参加済みにする'}</button>`:''}<button class="qb ed">✎ 編集</button></div>
     </div></article>`;
 }
 function drawList(){
@@ -870,11 +957,17 @@ function renderSettings(m){
     </div>
     <p class="hint">「JSONを読み込む」は統合です（同じ公演は新しい更新が優先され、既存の記録の空欄だけ補完します）。「JSONで完全上書き」は初回の移行用で、ファイル内の公演を、面白さの点数以外は手元の内容ごと置き換えます。書き出したJSONは先頭の <code>_readme</code> に項目の説明が入っているので、そのままAIに渡して分析できます。</p>
   </div>
+  <div class="panel"><h2>Google カレンダー連携</h2>
+    <p class="hint">予定（公演系で日付ありのもの。購入系は対象外）を、ファミリー カレンダーに登録します。一覧と「直近の予定」の「📅 カレンダーに追加」ボタン、または下のボタンで一括登録できます。時刻が入っていれば開始から${GC_MIN}分、なければ終日の予定になります。何度押しても重複せず、変更があれば「カレンダーを更新」で上書きされます。初回は Google の確認画面でカレンダーの権限を許可してください。</p>
+    <div class="field"><label>登録先カレンダーID（空欄＝ファミリー カレンダー）</label><input type="text" id="gcId" value="${esc(settings.gcal_id||'')}" placeholder="${esc(GC_DEFAULT_ID)}"></div>
+    <div class="row"><button class="btn" id="gcalAll">📅 未登録の予定をまとめてカレンダーに追加</button></div>
+  </div>
   <div class="panel"><h2>謎ログ連携</h2>${nzPanelHtml()}<div class="row"><button class="btn" id="nzOpen2">謎ログを開く</button></div></div>
   <div class="panel"><h2>保存場所について</h2>
     <p class="hint">このサイトのコードは公開されていますが、記録そのものはこのブラウザ（localStorage）とあなたのDriveにしかありません。端末を変えるときはDrive連携か、JSONの書き出し→読み込みで移行できます。評価は公開サイトのURLだけで付けてください（ローカルでファイルを直接開くと、保存先が別になります）。</p>
   </div>`;
   $('#syncTxt').textContent=({off:'未連携',need:'要再接続',ok:'同期済み',dirty:'未同期',busy:'同期中',bad:'エラー'})[syncState]||'';
+  $('#gcId').onchange=e=>{settings.gcal_id=e.target.value.trim();saveSettings()};
   $('#cid').onchange=e=>{settings.google_client_id=e.target.value.trim();saveSettings()};
   $('#syncNow').onclick=async()=>{settings.google_client_id=$('#cid').value.trim();saveSettings();const ok=await driveSync(true);if(ok){toast('同期しました');if(ui.tab==='settings')renderSettings(m)}};
   $('#exp').onclick=downloadJson;
@@ -1065,6 +1158,7 @@ $('#hdrToggle').onclick=()=>setHdr(!hdrCollapsed);
 applyHdr();
 render();
 gStartup();
+gcStartup();
 </script>
 </body>
 </html>
