@@ -493,6 +493,7 @@ function listClick(e){
 /* ---- modal (add / edit) ---- */
 function closeModal(){$('#modalRoot').innerHTML='';document.removeEventListener('keydown',escClose)}
 function escClose(e){if(e.key==='Escape')closeModal()}
+const AI_PROJECT_URL='https://claude.ai/project/01a1b699-6689-7243-b8b7-f910c6f8a6ed';
 function openEdit(id){
   const r=id?db.records[id]:null;
   const all=live();
@@ -503,6 +504,7 @@ function openEdit(id){
   const fmts=[...new Set([...FORMATS,...all.map(x=>x.format).filter(Boolean),d.format].filter(Boolean))];
   $('#modalRoot').innerHTML=`<div class="ov" id="ov"><div class="modal">
     <h2>${id?'公演を編集':'公演を追加'}</h2>
+    ${id?'':'<div class="field"><button type="button" class="btn" id="mAI">💬 AIに頼んで追加（依頼文をコピーしてチャットを開く）</button><div class="hint">入力済みの内容が依頼文になります。開いたチャットに貼り付けて送信してください。</div></div>'}
     <div class="field"><label>公演名 *</label><input type="text" id="m_title" value="${esc(d.title)}"></div>
     <div class="grid2">
       <div class="field"><label>団体</label><input type="text" id="m_group" list="dl_group" value="${esc(d.group)}"></div>
@@ -526,6 +528,19 @@ function openEdit(id){
   $('#m_sc').onclick=e=>{const b=e.target.closest('.sb');if(!b)return;const s=+b.dataset.s;sc=sc===s?0:s;$('#m_sc').querySelectorAll('.sb').forEach(x=>x.classList.toggle('on',+x.dataset.s===sc))};
   $('#m_st').onclick=e=>{const b=e.target.closest('.fb');if(!b)return;stt=b.dataset.v;$('#m_st').querySelectorAll('.fb').forEach(x=>x.classList.toggle('on',x.dataset.v===stt));$('#m_pwrap').style.display=stt?'':'none'};
   $('#m_ps').onclick=e=>{const b=e.target.closest('.fb');if(!b)return;pst=b.dataset.v;$('#m_ps').querySelectorAll('.fb').forEach(x=>x.classList.toggle('on',x.dataset.v===pst))};
+  const ai=$('#mAI');
+  if(ai)ai.onclick=()=>{
+    const v=x=>($(x).value||'').trim();
+    const lines=['謎解き手帖に次の公演を追加して、謎ログにも反映してください。'];
+    const add=(k,x)=>{if(x)lines.push('・'+k+'：'+x)};
+    add('公演名',v('#m_title'));add('団体',v('#m_group'));add('日付',v('#m_date'));add('開始時刻',v('#m_time'));
+    add('種別',stt==='plan'?'予定':'参加済み');add('形式',v('#m_format'));add('会場',v('#m_venue'));
+    add('結果',res);add('面白さ',sc?sc+'/10':'');add('感想',v('#m_imp'));add('教訓',v('#m_les'));
+    const text=lines.join('\n');
+    const go=()=>{window.open(AI_PROJECT_URL,'_blank');toast('依頼文をコピーしました。チャットに貼り付けてください')};
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(go,()=>{prompt('この文章をコピーしてチャットに貼ってください',text);go()});
+    else{prompt('この文章をコピーしてチャットに貼ってください',text);go()}
+  };
   $('#mCancel').onclick=closeModal;
   $('#mSave').onclick=()=>{
     const title=$('#m_title').value.trim();
