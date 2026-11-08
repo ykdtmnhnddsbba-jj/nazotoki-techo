@@ -112,6 +112,11 @@ main{max-width:1400px;margin:0 auto;padding:18px 16px 80px}
 footer{max-width:1400px;margin:0 auto;padding:0 16px 40px;color:var(--sub);font-size:12px}
 .rc{display:grid;grid-template-columns:150px minmax(0,1fr) 130px;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;margin-bottom:10px}
 .rc.done{opacity:.6}
+.rcgrid.c2{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start}
+.rcgrid.c2 .rc{grid-template-columns:1fr;gap:8px;margin-bottom:0}
+.rcgrid.c2 .rc .rl2{flex-direction:row;flex-wrap:wrap;align-items:center}
+.rcgrid.c2 .rc .lk{flex-direction:row;align-items:center;justify-content:space-between}
+@media(max-width:720px){.rcgrid.c2{grid-template-columns:1fr}.rcColBtn{display:none}}
 .rc .rl2{display:flex;flex-direction:column;gap:5px;align-items:flex-start;font-size:13px;color:var(--sub)}
 .rc .why{font-size:13px;color:var(--accent);margin-top:6px}
 .rc .meta{font-size:13px;color:var(--sub);margin-top:3px}
@@ -616,7 +621,10 @@ const opt=(v,l,cur)=>`<option value="${esc(v)}" ${v===cur?'selected':''}>${esc(l
 /* ---- オススメ（recommend.json：GitHub Actionsが週1で更新） ---- */
 const RC_FMT={hall:'ホール型',room:'ルーム型',field:'周遊型',stadium:'周遊型',cube:'ルーム型',cafe:'その他',web:'Web謎',kit:'持ち帰り型'};
 const RC_CAT={hall:'ホール型',room:'ルーム型',field:'周遊型',stadium:'スタジアム型',cube:'キューブ型',cafe:'カフェ型',web:'ネット型',kit:'持ち帰り型'};
-ui.reco={m:0,cat:[],perm:false,hideDone:false};
+/* オススメの区分：周遊型・スタジアム型は周遊、持ち帰り・ネット型は購入系、それ以外（ホール・ルーム・キューブ・カフェ）は公演 */
+const rcKind=it=>({field:'tour',stadium:'tour',kit:'buy',web:'buy'})[it.category]||'show';
+let rcCols=1;try{rcCols=+localStorage.getItem('techo_rc_cols')===2?2:1}catch(e){}
+ui.reco={m:0,kind:'show',cat:[],perm:false,hideDone:false,cols:rcCols};
 let recoData=null,recoErr='';
 function loadReco(){
   fetch('recommend.json?'+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()})
@@ -646,25 +654,30 @@ function recoWhy(it,all){
 }
 function recoView(){
   const d=recoData,st=ui.reco,all=live();
-  const mk=d.months[st.m],[y,mo]=mk.split('-').map(Number);
-  const first=mk+'-01',last=mk+'-'+String(new Date(y,mo,0).getDate()).padStart(2,'0');
+  /* st.m=-1 は「今月＋来月」（全期間のあいだに重なる公演を1回ずつ） */
+  const ms=st.m<0?d.months:[d.months[st.m]],mk=ms[0],[y,mo]=ms[ms.length-1].split('-').map(Number);
+  const first=mk+'-01',last=ms[ms.length-1]+'-'+String(new Date(y,mo,0).getDate()).padStart(2,'0');
   const today=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);
   let rows=d.items.filter(it=>it.start<=last&&(it.end==null||it.end>=first));
+  const kinds=countBy(rows,rcKind);
+  rows=rows.filter(it=>rcKind(it)===st.kind);
   const nPerm=rows.filter(it=>it.permanent).length;
   const cats=countBy(rows,it=>RC_CAT[it.category]||it.category);
   if(!st.perm)rows=rows.filter(it=>!it.permanent);
   if(st.cat.length)rows=rows.filter(it=>st.cat.includes(RC_CAT[it.category]||it.category));
   rows=rows.map(it=>({it,done:recoDone(it,all),plan:recoPlan(it,all)}));
   if(st.hideDone)rows=rows.filter(x=>!x.done);
-  return{rows,cats,nPerm,mk,today};
+  return{rows,cats,nPerm,mk,today,kinds};
 }
 function renderReco(m){
   if(!recoData){m.innerHTML=recoErr?`<div class="empty">オススメを読み込めませんでした（${esc(recoErr)}）。<br>recommend.json は公開サイト上で見られます（ファイルを直接開くと読めません）。</div>`:'<div class="empty">読み込み中…</div>';if(!recoErr&&!recoData)loadReco();return}
   const st=ui.reco,d=recoData,v=recoView(),all=live();
   const b=(on,attr,l,n)=>`<button type="button" class="fb ${on?'on':''}" ${attr}>${l}${n!=null?`<small>${n}</small>`:''}</button>`;
-  const head=`<div class="stick"><div class="fbtns" id="rcM"><span class="lb2">期間</span>${d.months.map((x,i)=>b(st.m===i,`data-m="${i}"`,(i?'来月':'今月')+'（'+x.replace('-','年')+'月）')).join('')}</div>
+  const kc=Object.fromEntries(v.kinds);
+  const kt=`<div class="subtabs" id="rcK">${KINDS.filter(([k])=>k===st.kind||kc[k]).map(([k,l])=>`<button type="button" class="${st.kind===k?'on':''}" data-k="${k}">${l}<small>${kc[k]||0}</small></button>`).join('')}</div>`;
+  const head=`<div class="stick">${kt}<div class="fbtns" id="rcM"><span class="lb2">期間</span>${d.months.map((x,i)=>b(st.m===i,`data-m="${i}"`,(i?'来月':'今月')+'（'+x.replace('-','年')+'月）')).join('')}${d.months.length>1?b(st.m===-1,'data-m="-1"','今月＋来月'):''}</div>
     <div class="fbtns" id="rcC"><span class="lb2">形式（複数選べます）</span>${b(!st.cat.length,'data-c=""','すべて')}${v.cats.map(([c,n])=>b(st.cat.includes(c),`data-c="${esc(c)}"`,esc(c),n)).join('')}</div>
-    <div class="fbtns" id="rcO"><span class="lb2">表示</span>${b(st.perm,'data-o="perm"','常設も表示',v.nPerm)}${b(st.hideDone,'data-o="done"','参加済みを隠す')}</div>
+    <div class="fbtns" id="rcO"><span class="lb2">表示</span>${b(st.perm,'data-o="perm"','常設も表示',v.nPerm)}${b(st.hideDone,'data-o="done"','参加済みを隠す')}<span class="rcColBtn">${b(st.cols===2,'data-o="cols"','2列で表示')}</span></div>
     <div class="hint" style="margin-bottom:8px">愛知・岐阜・三重／出典：謎ログ／更新：${esc((d.generated_at||'').replace('T',' ').slice(0,16))}（週1で自動更新）／${v.rows.length}件</div></div>`;
   const card=({it,done,plan})=>{
     const per=it.permanent?'常設':(it.start>v.today?`${it.start.slice(5).replace('-','/')} 〜 ${it.end.slice(5).replace('-','/')}`:`〜 ${it.end.slice(5).replace('-','/')}`);
@@ -675,11 +688,12 @@ function renderReco(m){
     <div><div class="ttl">${esc(it.title)}</div><div class="meta">${esc([it.group,RC_CAT[it.category]||it.category,it.venue,it.pref].filter(Boolean).join(' ／ '))}${it.price?' ／ ¥'+it.price.toLocaleString():''}</div>${why&&!done?`<div class="why">💡 ${esc(why)}</div>`:''}</div>
     <div class="lk">${!done&&!plan?`<button type="button" class="btn rcAdd" data-cid="${esc(it.contentId)}" data-v="${esc(it.venue)}">予定に入れる</button>`:''}<a href="${esc(it.url)}" target="_blank" rel="noopener">謎ログ ↗</a></div></div>`;
   };
-  m.innerHTML=head+(v.rows.length?v.rows.map(card).join(''):'<div class="empty">条件に合う公演がありません。</div>');
+  m.innerHTML=head+(v.rows.length?`<div class="rcgrid ${st.cols===2?'c2':''}">${v.rows.map(card).join('')}</div>`:'<div class="empty">条件に合う公演がありません。</div>');
+  $('#rcK').onclick=e=>{const x=e.target.closest('button[data-k]');if(!x)return;st.kind=x.dataset.k;st.cat=[];render()};
   $('#rcM').onclick=e=>{const x=e.target.closest('.fb');if(!x)return;st.m=+x.dataset.m;render()};
   $('#rcC').onclick=e=>{const x=e.target.closest('.fb');if(!x)return;const c=x.dataset.c;st.cat=c===''?[]:st.cat.includes(c)?st.cat.filter(y=>y!==c):[...st.cat,c];render()};
   m.onclick=e=>{const b=e.target.closest('.rcAdd');if(!b)return;const it=recoData.items.find(x=>x.contentId===b.dataset.cid&&x.venue===b.dataset.v);if(it)recoAddModal(it)};
-  $('#rcO').onclick=e=>{const x=e.target.closest('.fb');if(!x)return;if(x.dataset.o==='perm')st.perm=!st.perm;else st.hideDone=!st.hideDone;render()};
+  $('#rcO').onclick=e=>{const x=e.target.closest('.fb');if(!x)return;if(x.dataset.o==='perm')st.perm=!st.perm;else if(x.dataset.o==='cols'){st.cols=st.cols===2?1:2;try{localStorage.setItem('techo_rc_cols',String(st.cols))}catch(e){}}else st.hideDone=!st.hideDone;render()};
 }
 
 
