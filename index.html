@@ -531,7 +531,7 @@ function openEdit(id){
   const ai=$('#mAI');
   if(ai)ai.onclick=()=>{
     const v=x=>($(x).value||'').trim();
-    const lines=['謎解き手帖に次の公演を追加して、謎ログにも反映してください。'];
+    const lines=['謎解き手帖に次の公演を追加して、謎ログにも反映してください。','追加する前に、公演名からWebや謎ログで実際の公演を調べて、追加する内容をまとめて私に確認してください。'];
     const add=(k,x)=>{if(x)lines.push('・'+k+'：'+x)};
     add('公演名',v('#m_title'));add('団体',v('#m_group'));add('日付',v('#m_date'));add('開始時刻',v('#m_time'));
     add('種別',stt==='plan'?'予定':'参加済み');add('形式',v('#m_format'));add('会場',v('#m_venue'));
