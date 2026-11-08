@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-08T16:27+09:00",
+ "generated_at": "2026-11-09T06:48+09:00",
  "months": [
   "2026-11",
   "2026-12"
@@ -88,7 +88,7 @@
    "end": "2026-11-29",
    "permanent": false,
    "price": null,
-   "playable": true,
+   "playable": false,
    "url": "https://www.nazo.site/content/contents/fab0a714",
    "group": "SCRAP",
    "groups": [
@@ -105,7 +105,7 @@
    "end": "2026-11-29",
    "permanent": false,
    "price": null,
-   "playable": true,
+   "playable": false,
    "url": "https://www.nazo.site/content/contents/a954a536",
    "group": "SCRAP",
    "groups": [
