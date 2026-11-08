@@ -180,9 +180,9 @@ function importJson(text,overwrite){
   const before=live().length;
   const local=db.records||{};
   if(overwrite){
-    /* 完全上書き: ファイルに入っている記録は、手元の値(点数・結果・感想・削除を含む)を捨ててファイルの内容に置き換える。ファイルにない記録は残す。 */
+    /* 完全上書き: ファイルに入っている記録は、手元の値(結果・感想・削除を含む。点数だけは手元を残す)を捨ててファイルの内容に置き換える。ファイルにない記録は残す。 */
     const t=nowIso();
-    Object.keys(j.records).forEach(id=>{const q=j.records[id];if(q&&!q.deleted)db.records[id]=Object.assign({},q,{deleted:undefined,updated_at:t});});
+    Object.keys(j.records).forEach(id=>{const q=j.records[id];if(q&&!q.deleted)const keep=local[id]&&!local[id].deleted?{score:local[id].score|0}:{};db.records[id]=Object.assign({},q,keep,{deleted:undefined,updated_at:t});});
     db.updated_at=t;save();
     return live().length-before;
   }
@@ -534,7 +534,7 @@ function renderSettings(m){
       <input type="file" id="impFile" accept="application/json,.json" style="display:none">
       <button class="btn" id="aiBtn">AI用プロンプトをコピー</button>
     </div>
-    <p class="hint">「JSONを読み込む」は統合です（同じ公演は新しい更新が優先され、既存の記録の空欄だけ補完します）。「JSONで完全上書き」は初回の移行用で、ファイル内の公演を手元の内容ごと置き換えます。書き出したJSONは先頭の <code>_readme</code> に項目の説明が入っているので、そのままAIに渡して分析できます。</p>
+    <p class="hint">「JSONを読み込む」は統合です（同じ公演は新しい更新が優先され、既存の記録の空欄だけ補完します）。「JSONで完全上書き」は初回の移行用で、ファイル内の公演を、面白さの点数以外は手元の内容ごと置き換えます。書き出したJSONは先頭の <code>_readme</code> に項目の説明が入っているので、そのままAIに渡して分析できます。</p>
   </div>
   <div class="panel"><h2>保存場所について</h2>
     <p class="hint">このサイトのコードは公開されていますが、記録そのものはこのブラウザ（localStorage）とあなたのDriveにしかありません。端末を変えるときはDrive連携か、JSONの書き出し→読み込みで移行できます。評価は公開サイトのURLだけで付けてください（ローカルでファイルを直接開くと、保存先が別になります）。</p>
@@ -546,7 +546,7 @@ function renderSettings(m){
   let ovMode=false;
   $('#impBtn').onclick=()=>{ovMode=false;$('#impFile').click()};
   $('#impOvBtn').onclick=()=>{
-    if(!confirm('ファイルに入っている公演は、手元の内容（点数・結果・感想・形式・会場・削除）をすべてファイルの内容で置き換えます。\nファイルにない公演は残ります。\n続けますか？'))return;
+    if(!confirm('ファイルに入っている公演は、手元の内容（結果・感想・形式・会場・削除）をファイルの内容で置き換えます。面白さの点数だけは手元のまま残ります。\nファイルにない公演は残ります。\n続けますか？'))return;
     ovMode=true;$('#impFile').click();
   };
   $('#impFile').onchange=async e=>{
