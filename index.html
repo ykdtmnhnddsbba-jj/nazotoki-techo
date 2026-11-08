@@ -224,9 +224,9 @@ function saveSettings(){lsSet(LS_SET,settings)}
 
 /* =============== data ops =============== */
 const isPlan=r=>r.status==='plan';
-/* 参加予定（購入系を除く）でチケットのURLが無い → 警告。日付が過ぎた予定は対象外 */
+/* 参加予定（購入系を除く）でチケットのURLが無い → 警告。日付なし・日付が過ぎた予定は対象外 */
 const hasTk=r=>/^https?:\/\//i.test(r.ticket_url||'');
-const noTicket=r=>isPlan(r)&&kindOf(r)!=='buy'&&!hasTk(r)&&(!r.date||r.date>=todayStr());
+const noTicket=r=>isPlan(r)&&kindOf(r)!=='buy'&&!hasTk(r)&&!!r.date&&r.date>=todayStr();
 /* 謎ログに送る内容（作品・日付・時刻・ステータス）が変わったかを判定するための署名 */
 const nzSig=r=>[isPlan(r)?'plan':'done',r.result||'',r.date||'',r.time||'',isPlan(r)?nzPlanId(r.nazolog_plan_status):''].join('|');
 const nzPending=r=>!r.deleted&&r.nazolog_sig!==nzSig(r);
