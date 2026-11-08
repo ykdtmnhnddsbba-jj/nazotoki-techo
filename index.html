@@ -500,12 +500,35 @@ function renderReco(m){
     const why=recoWhy(it,all);
     return`<div class="rc ${done?'done':''}"><div class="rl2">${status}${left!=null&&left<=14?`<span class="soon">あと${left}日</span>`:''}${done?'<span class="rdn">参加済み</span>':plan?'<span class="un">予定に入れ済み</span>':''}<span>${esc(per)}</span></div>
     <div><div class="ttl">${esc(it.title)}</div><div class="meta">${esc([it.group,RC_CAT[it.category]||it.category,it.venue,it.pref].filter(Boolean).join(' ／ '))}${it.price?' ／ ¥'+it.price.toLocaleString():''}</div>${why&&!done?`<div class="why">💡 ${esc(why)}</div>`:''}</div>
-    <div class="lk"><a href="${esc(it.url)}" target="_blank" rel="noopener">謎ログ ↗</a></div></div>`;
+    <div class="lk">${!done&&!plan?`<button type="button" class="btn rcAdd" data-cid="${esc(it.contentId)}" data-v="${esc(it.venue)}">予定に入れる</button>`:''}<a href="${esc(it.url)}" target="_blank" rel="noopener">謎ログ ↗</a></div></div>`;
   };
   m.innerHTML=head+(v.rows.length?v.rows.map(card).join(''):'<div class="empty">条件に合う公演がありません。</div>');
   $('#rcM').onclick=e=>{const x=e.target.closest('.fb');if(!x)return;st.m=+x.dataset.m;render()};
   $('#rcC').onclick=e=>{const x=e.target.closest('.fb');if(!x)return;const c=x.dataset.c;st.cat=c===''?[]:st.cat.includes(c)?st.cat.filter(y=>y!==c):[...st.cat,c];render()};
+  m.onclick=e=>{const b=e.target.closest('.rcAdd');if(!b)return;const it=recoData.items.find(x=>x.contentId===b.dataset.cid&&x.venue===b.dataset.v);if(it)recoAddModal(it)};
   $('#rcO').onclick=e=>{const x=e.target.closest('.fb');if(!x)return;if(x.dataset.o==='perm')st.perm=!st.perm;else st.hideDone=!st.hideDone;render()};
+}
+
+
+/* オススメ → 手帖の「予定」に追加（日付は任意）。謎ログへは「謎ログに反映」で送る */
+function recoAddModal(it){
+  const today=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);
+  const mn=it.start>today?it.start:today,mx=it.end||'';
+  $('#modalRoot').innerHTML=`<div class="ov" id="ov"><div class="modal" style="max-width:480px"><h2>予定に入れる</h2>
+    <div class="ttl" style="margin-bottom:4px">${esc(it.title)}</div>
+    <div class="hint" style="margin-bottom:12px">${esc([it.group,RC_CAT[it.category]||it.category,it.venue].filter(Boolean).join(' ／ '))}${it.permanent?'':'　開催 '+esc(it.start.slice(5).replace('-','/'))+' 〜 '+esc(it.end.slice(5).replace('-','/'))}</div>
+    <div class="grid2"><div class="field"><label>日付（なくても追加できます）</label><input type="date" id="ra_date" ${mn?`min="${mn}"`:''} ${mx?`max="${mx}"`:''}></div>
+    <div class="field"><label>開始時刻（任意）</label><input type="time" id="ra_time" step="900"></div></div>
+    <div class="hint" style="margin-bottom:12px">手帖には「仮予定」で追加します（あとで編集できます）。謎ログへは「謎ログに反映」から送ります。</div>
+    <div class="row"><button class="btn pri" id="ra_ok">追加する</button><button class="btn" id="ra_cancel">キャンセル</button></div></div></div>`;
+  $('#ra_cancel').onclick=closeModal;$('#ov').onclick=e=>{if(e.target.id==='ov')closeModal()};
+  $('#ra_ok').onclick=()=>{
+    const dt=$('#ra_date').value,tm=$('#ra_time').value;
+    const fmt={cafe:'ルーム型',cube:'ルーム型',stadium:'周遊型',field:'周遊型'}[it.category]||RC_FMT[it.category]||'';
+    upsert(newId(),{title:it.title,group:it.group||'',date:dt,time:tm,status:'plan',format:fmt,venue:it.venue||'',
+      nazolog_content_id:it.contentId,nazolog_plan_status:'tentative',price:it.price||undefined});
+    closeModal();toast('予定に追加しました（「謎ログに反映」で送れます）');render();
+  };
 }
 
 /* ---- list ---- */
