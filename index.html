@@ -78,6 +78,12 @@ main{max-width:1400px;margin:0 auto;padding:18px 16px 80px}
 .track i{display:block;height:100%}
 .track .s-big{background:var(--gold)}.track .s-ok{background:var(--teal)}.track .s-ng{background:var(--pink)}.track .s-none{background:#4a4f6e}
 .brow .st{color:var(--sub);text-align:right;white-space:nowrap}
+.fbtns{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:0 0 10px}
+.fbtns .lb2{font-size:12px;color:var(--sub);margin-right:2px}
+.fb{background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:5px 13px;cursor:pointer;font-size:13px;font-weight:600;color:var(--sub)}
+.fb:hover{border-color:var(--sub);color:var(--text)}
+.fb.on{background:var(--accent);border-color:var(--accent);color:#2a1a00}
+.fb small{opacity:.75;font-weight:500;margin-left:3px}
 .legend{display:flex;gap:14px;font-size:12px;color:var(--sub);margin-bottom:6px}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
 @media(max-width:720px){.brow{grid-template-columns:96px 1fr 96px}}
@@ -240,7 +246,7 @@ function filtered(){
   if(q)a=a.filter(r=>[r.title,r.group,r.impression,r.lesson,r.venue,r.format].join('\n').toLowerCase().includes(q));
   if(ui.group)a=a.filter(r=>r.group===ui.group);
   if(ui.result)a=a.filter(r=>ui.result==='none'?!r.result:r.result===ui.result);
-  if(ui.format)a=a.filter(r=>r.format===ui.format);
+  a=a.filter(matchFmt);
   if(ui.year)a=a.filter(r=>(r.date||'').slice(0,4)===ui.year);
   if(ui.sort==='old')a.sort(byDate);
   else if(ui.sort==='score')a.sort((x,y)=>(y.score||0)-(x.score||0)||byDate(y,x));
@@ -259,9 +265,10 @@ const G_TOKKEY='gauth_tok:'+G_REDIR;
   try{
     if(/access_token=|error=/.test(location.hash)){
       const p=new URLSearchParams(location.hash.slice(1));
-      if(p.get('state')&&p.get('state')===sessionStorage.getItem('gauth_state')){
+      const stSaved=(()=>{try{return sessionStorage.getItem('gauth_state')||localStorage.getItem('gauth_state')}catch(e){return null}})();
+      if(p.get('state')&&p.get('state')===stSaved){
         if(p.get('access_token'))sessionStorage.setItem(G_TOKKEY,JSON.stringify({t:p.get('access_token'),e:Date.now()+(+p.get('expires_in')||3600)*1000}));
-        sessionStorage.removeItem('gauth_state');
+        try{sessionStorage.removeItem('gauth_state');localStorage.removeItem('gauth_state')}catch(e){}
         history.replaceState(null,'',location.pathname+location.search);
       }
     }
@@ -272,6 +279,7 @@ const G_TOKKEY='gauth_tok:'+G_REDIR;
 function gRedirect(prompt){
   const st=Math.random().toString(36).slice(2)+Date.now().toString(36);
   try{sessionStorage.setItem('gauth_state',st)}catch(e){}
+  try{localStorage.setItem('gauth_state',st)}catch(e){}
   const q=new URLSearchParams({client_id:settings.google_client_id.trim(),redirect_uri:G_REDIR,response_type:'token',scope:G_SCOPE,state:st,include_granted_scopes:'true'});
   if(prompt)q.set('prompt',prompt);
   location.href='https://accounts.google.com/o/oauth2/v2/auth?'+q.toString();
@@ -356,12 +364,23 @@ function render(){
   fixHeader();
 }
 function fixHeader(){const h=$('header');if(h)document.documentElement.style.setProperty('--hh',h.offsetHeight+'px')}
+function fmtBtns(all){
+  const fm=countBy(all,r=>r.format);
+  const ex=all.filter(r=>!r.format).length;
+  const b=(v,l,n)=>`<button type="button" class="fb ${ui.format===v?'on':''}" data-f="${esc(v)}">${esc(l)}${n!=null?`<small>${n}</small>`:''}</button>`;
+  return`<div class="fbtns" id="fmtBtns"><span class="lb2">形式</span>${b('','すべて',all.length)}${fm.map(([f,n])=>b(f,f,n)).join('')}${ex?b('none','未設定',ex):''}</div>`;
+}
+function bindFmtBtns(after){
+  const el=$('#fmtBtns');if(!el)return;
+  el.onclick=e=>{const b=e.target.closest('.fb');if(!b)return;ui.format=b.dataset.f;after()};
+}
+const matchFmt=r=>!ui.format||(ui.format==='none'?!r.format:r.format===ui.format);
 const opt=(v,l,cur)=>`<option value="${esc(v)}" ${v===cur?'selected':''}>${esc(l)}</option>`;
 
 /* ---- list ---- */
 function renderList(m){
   const all=live();
-  const groups=countBy(all,r=>r.group),formats=countBy(all,r=>r.format);
+  const groups=countBy(all,r=>r.group);
   const years=[...new Set(all.map(r=>(r.date||'').slice(0,4)).filter(Boolean))].sort().reverse();
   m.innerHTML=`
   <div class="stick">
@@ -369,17 +388,18 @@ function renderList(m){
       <input type="text" id="q" placeholder="公演名・団体・感想・教訓から検索" value="${esc(ui.q)}">
       <select id="fGroup">${opt('','団体: すべて',ui.group)}${groups.map(([g,n])=>opt(g,`${g}（${n}）`,ui.group)).join('')}</select>
       <select id="fRes">${opt('','結果: すべて',ui.result)}${RESULTS.map(([r])=>opt(r,r,ui.result)).join('')}${opt('none','結果なし',ui.result)}</select>
-      <select id="fFmt">${opt('','形式: すべて',ui.format)}${formats.map(([f,n])=>opt(f,`${f}（${n}）`,ui.format)).join('')}</select>
       <select id="fYear">${opt('','年: すべて',ui.year)}${years.map(y=>opt(y,y+'年',ui.year)).join('')}</select>
       <select id="fSort">${opt('new','並び: 日付が新しい順',ui.sort)}${opt('old','並び: 日付が古い順',ui.sort)}${opt('score','並び: 面白さ順',ui.sort)}</select>
       <button class="btn" id="fClear">条件クリア</button>
     </div>
+    ${fmtBtns(all)}
     <div class="hint" id="sum"></div>
   </div>
   <div id="list"></div>`;
   $('#q').oninput=e=>{ui.q=e.target.value;drawList()};
-  [['fGroup','group'],['fRes','result'],['fFmt','format'],['fYear','year'],['fSort','sort']].forEach(([id,k])=>{$('#'+id).onchange=e=>{ui[k]=e.target.value;drawList()}});
+  [['fGroup','group'],['fRes','result'],['fYear','year'],['fSort','sort']].forEach(([id,k])=>{$('#'+id).onchange=e=>{ui[k]=e.target.value;drawList()}});
   $('#fClear').onclick=()=>{Object.assign(ui,{q:'',group:'',result:'',format:'',year:'',sort:'new'});renderList(m)};
+  bindFmtBtns(()=>renderList(m));
   $('#list').onclick=listClick;
   drawList();
 }
@@ -493,8 +513,9 @@ function barBlock(title,list,note){
   return`<div class="panel"><h2>${title}</h2>${note?`<div class="hint" style="margin-bottom:6px">${note}</div>`:''}${list.length?list.map(a=>barRow(a,maxN)).join(''):'<div class="hint">データなし</div>'}</div>`;
 }
 function renderStats(m){
-  const rs=live();
-  if(!rs.length){m.innerHTML='<div class="empty">記録が増えると、ここに成功率や連勝記録が表示されます。</div>';return}
+  const allRs=live();
+  const rs=allRs.filter(matchFmt);
+  if(!allRs.length){m.innerHTML='<div class="empty">記録が増えると、ここに成功率や連勝記録が表示されます。</div>';return}
   const s=summary(rs),st=streaks(rs);
   const curTxt=st.cur.n?(st.cur.type==='win'?st.cur.n+'連勝中':st.cur.n+'連敗中'):'—';
   const groups=agg(rs,r=>r.group).sort((a,b)=>b.n-a.n);
@@ -503,6 +524,7 @@ function renderStats(m){
   const recent=rs.filter(r=>r.result).sort(byDate).slice(-10);
   const rs10=summary(recent);
   m.innerHTML=`
+  ${fmtBtns(allRs)}
   <div class="tiles">
     <div class="tile"><div class="k">公演数</div><div class="v">${s.n}<small>公演</small></div></div>
     <div class="tile"><div class="k">成功率（大成功＋成功）</div><div class="v">${pct(s.rate)}</div></div>
@@ -518,6 +540,7 @@ function renderStats(m){
     ${barBlock('形式別',fmts,'形式が未入力の公演は「（未設定）」')}
   </div>
   ${barBlock('月別',months)}`;
+  bindFmtBtns(()=>renderStats(m));
 }
 
 /* ---- lessons ---- */
