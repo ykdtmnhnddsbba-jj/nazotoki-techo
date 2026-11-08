@@ -174,11 +174,18 @@ function downloadJson(){
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);
   a.download=DRIVE_FILE;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
 }
-function importJson(text){
+function importJson(text,overwrite){
   const j=JSON.parse(text);
   if(!j||typeof j.records!=='object'||j.records===null)throw new Error('謎解き手帖のJSON（records入り）ではありません');
   const before=live().length;
   const local=db.records||{};
+  if(overwrite){
+    /* 完全上書き: ファイルに入っている記録は、手元の値(点数・結果・感想・削除を含む)を捨ててファイルの内容に置き換える。ファイルにない記録は残す。 */
+    const t=nowIso();
+    Object.keys(j.records).forEach(id=>{const q=j.records[id];if(q&&!q.deleted)db.records[id]=Object.assign({},q,{deleted:undefined,updated_at:t});});
+    db.updated_at=t;save();
+    return live().length-before;
+  }
   db=mergeDb(db,{records:j.records});
   /* 読み込みでは、既存記録の「空欄」だけをファイル側の値で補完する（入力済みの値は上書きしない）。
      手元で先に編集した記録が新しい扱いになり、会場などの追記が反映されない問題を防ぐ。 */
@@ -523,10 +530,11 @@ function renderSettings(m){
     <div class="row">
       <button class="btn" id="exp">JSONを書き出す</button>
       <button class="btn" id="impBtn">JSONを読み込む</button>
+      <button class="btn" id="impOvBtn" title="初回の移行用">JSONで完全上書き</button>
       <input type="file" id="impFile" accept="application/json,.json" style="display:none">
       <button class="btn" id="aiBtn">AI用プロンプトをコピー</button>
     </div>
-    <p class="hint">読み込みは「統合」です（同じ公演は新しい更新が優先され、既存の記録は消えません）。書き出したJSONは先頭の <code>_readme</code> に項目の説明が入っているので、そのままAIに渡して分析できます。</p>
+    <p class="hint">「JSONを読み込む」は統合です（同じ公演は新しい更新が優先され、既存の記録の空欄だけ補完します）。「JSONで完全上書き」は初回の移行用で、ファイル内の公演を手元の内容ごと置き換えます。書き出したJSONは先頭の <code>_readme</code> に項目の説明が入っているので、そのままAIに渡して分析できます。</p>
   </div>
   <div class="panel"><h2>保存場所について</h2>
     <p class="hint">このサイトのコードは公開されていますが、記録そのものはこのブラウザ（localStorage）とあなたのDriveにしかありません。端末を変えるときはDrive連携か、JSONの書き出し→読み込みで移行できます。評価は公開サイトのURLだけで付けてください（ローカルでファイルを直接開くと、保存先が別になります）。</p>
@@ -535,10 +543,15 @@ function renderSettings(m){
   $('#cid').onchange=e=>{settings.google_client_id=e.target.value.trim();saveSettings()};
   $('#syncNow').onclick=async()=>{settings.google_client_id=$('#cid').value.trim();saveSettings();const ok=await driveSync(true);if(ok){toast('同期しました');if(ui.tab==='settings')renderSettings(m)}};
   $('#exp').onclick=downloadJson;
-  $('#impBtn').onclick=()=>$('#impFile').click();
+  let ovMode=false;
+  $('#impBtn').onclick=()=>{ovMode=false;$('#impFile').click()};
+  $('#impOvBtn').onclick=()=>{
+    if(!confirm('ファイルに入っている公演は、手元の内容（点数・結果・感想・形式・会場・削除）をすべてファイルの内容で置き換えます。\nファイルにない公演は残ります。\n続けますか？'))return;
+    ovMode=true;$('#impFile').click();
+  };
   $('#impFile').onchange=async e=>{
     const f=e.target.files[0];if(!f)return;
-    try{const added=importJson(await f.text());toast(`読み込みました（新規 ${added}件）`);renderSettings(m)}
+    try{const added=importJson(await f.text(),ovMode);toast(ovMode?`上書きしました（新規 ${added}件）`:`読み込みました（新規 ${added}件）`);renderSettings(m)}
     catch(err){toast('読み込めません: '+err.message,5000)}
     e.target.value='';
   };
