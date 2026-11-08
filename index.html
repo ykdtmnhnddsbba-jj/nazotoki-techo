@@ -480,7 +480,8 @@ let gcToken=null,gcExp=0,gcBusy=false;
     if(t&&t.e>Date.now()){gcToken=t.t;gcExp=t.e}
   }catch(e){}
 })();
-const gcEligible=r=>!!r&&!r.deleted&&isPlan(r)&&kindOf(r)!=='buy'&&/^\d{4}-\d{2}-\d{2}$/.test(r.date||'');
+/* カレンダーに入れられる予定：日付つきの予定。購入系（持ち帰り・Web謎・その他）は「購入予定」（未購入）のものだけ */
+const gcEligible=r=>!!r&&!r.deleted&&isPlan(r)&&(kindOf(r)!=='buy'||buyStage(r)==='wish')&&/^\d{4}-\d{2}-\d{2}$/.test(r.date||'');
 const gcSig=r=>[r.title,r.date,r.time||'',r.gcal_min||GC_MIN,r.venue||'',r.ticket_url||'',r.group||''].join('|');
 const gcDone=r=>r.gcal_sig===gcSig(r);
 const gcEventId=id=>'techo'+Array.from(new TextEncoder().encode(String(id))).map(b=>b.toString(16).padStart(2,'0')).join('');
@@ -489,8 +490,8 @@ function gcBtn(r,cls){
   return`<button type="button" class="${cls} gcal ${gcDone(r)?'gdone':''}" data-id="${esc(r.id)}" title="ファミリー カレンダーに登録します">${lbl}</button>`;
 }
 function gcBody(r){
-  const desc=[r.group&&'団体: '+r.group,r.format&&'形式: '+r.format,/^https?:\/\//i.test(r.ticket_url||'')&&'チケット: '+r.ticket_url,'謎解き手帖: '+location.origin+location.pathname].filter(Boolean).join('\n');
-  const b={summary:r.title,status:'confirmed',description:desc,location:r.venue||''};
+  const desc=[r.group&&'団体: '+r.group,r.format&&'形式: '+r.format,r.price&&'価格: ¥'+Number(r.price).toLocaleString(),/^https?:\/\//i.test(r.ticket_url||'')&&'チケット: '+r.ticket_url,'謎解き手帖: '+location.origin+location.pathname].filter(Boolean).join('\n');
+  const b={summary:(isBuy(r)?'【購入】':'')+r.title,status:'confirmed',description:desc,location:r.venue||''};
   if(/^\d{2}:\d{2}$/.test(r.time||'')){
     const[y,mo,d]=r.date.split('-').map(Number),[h,mi]=r.time.split(':').map(Number);
     b.start={dateTime:r.date+'T'+r.time+':00',timeZone:'Asia/Tokyo'};
@@ -519,7 +520,7 @@ function gcRedirect(ids){
 /* 登録前の確認画面：題名・日付・開始時刻・所要時間・会場を直せる（直した内容は手帖の記録にも反映） */
 function gcOpen(ids){
   ids=ids.filter(id=>gcEligible(db.records[id]));
-  if(!ids.length){toast('カレンダーに入れられる予定（公演系で日付ありの予定）がありません');return}
+  if(!ids.length){toast('カレンダーに入れられる予定（日付ありの予定、購入系は購入予定のもの）がありません');return}
   const cal=settings.gcal_id?settings.gcal_id:'ファミリー カレンダー';
   const items=ids.map(id=>{const r=db.records[id];return`<div class="gcI" data-id="${esc(id)}" style="border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px">
     <div class="field"><label>題名</label><input type="text" data-f="title" value="${esc(r.title)}"></div>
