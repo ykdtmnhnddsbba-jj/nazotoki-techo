@@ -125,6 +125,9 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 40px;color:var(--sub);font-
 .subtabs button{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:9px 6px;cursor:pointer;font-weight:700;color:var(--sub)}
 .subtabs button.on{background:var(--panel2);border-color:var(--accent);color:var(--text)}
 .subtabs small{opacity:.7;margin-left:5px;font-weight:500}
+.hlinks{display:flex;gap:6px;flex-wrap:wrap}
+.hlinks a{font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel2);color:var(--teal);text-decoration:none;font-weight:600;white-space:nowrap}
+.hlinks a:hover{border-color:var(--teal)}
 .curtab{display:none;font-size:13px;color:var(--sub)}
 #hdrToggle{display:none;padding:6px 12px}
 @media(max-width:720px){
@@ -134,8 +137,8 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 40px;color:var(--sub);font-
   #hdrToggle{display:block;order:3}
   nav{order:4;flex:1 1 100%;flex-wrap:nowrap;overflow-x:auto;gap:2px;-webkit-overflow-scrolling:touch}
   nav button{white-space:nowrap;padding:7px 12px;flex:none}
-  #nzBtn,#addBtn,#syncChip{order:5}
-  header.collapsed nav,header.collapsed #nzBtn,header.collapsed #addBtn,header.collapsed #syncChip{display:none}
+  #nzBtn,#addBtn,#syncChip,.hlinks{order:5}
+  header.collapsed nav,header.collapsed #nzBtn,header.collapsed #addBtn,header.collapsed #syncChip,header.collapsed .hlinks{display:none}
   main{padding:12px 10px 80px}
   .stick{position:static;margin:0 0 8px;padding:0 0 6px}
   .toolbar{gap:8px}
@@ -169,6 +172,7 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 40px;color:var(--sub);font-
   <nav id="nav"></nav>
   <button class="btn" id="nzBtn">謎ログに反映</button>
   <button class="btn pri" id="addBtn">＋ 公演を追加</button>
+  <span class="hlinks"><a href="https://realdgame.jp/shop/nagoya/" target="_blank" rel="noopener noreferrer">リアル脱出ゲーム名古屋店 ↗</a><a href="https://escape.id/" target="_blank" rel="noopener noreferrer">ESCAPE.ID ↗</a></span>
   <span id="syncChip" class="chip"></span>
 </div></header>
 <main id="main"></main>
