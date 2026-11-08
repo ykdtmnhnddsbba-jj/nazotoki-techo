@@ -120,11 +120,39 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 40px;color:var(--sub);font-
 .rdn{font-size:11px;font-weight:700;padding:1px 9px;border-radius:99px;background:#16312f;color:var(--teal);border:1px solid #2a5b55}
 .soon{font-size:11px;font-weight:700;padding:1px 9px;border-radius:99px;background:#35171e;color:var(--pink);border:1px solid #7a2f3d}
 @media(max-width:720px){.rc{grid-template-columns:1fr}.rc .lk{align-items:flex-start;flex-direction:row}}
+.subtabs{display:flex;gap:6px;margin:0 0 10px}
+.subtabs button{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:9px 6px;cursor:pointer;font-weight:700;color:var(--sub)}
+.subtabs button.on{background:var(--panel2);border-color:var(--accent);color:var(--text)}
+.subtabs small{opacity:.7;margin-left:5px;font-weight:500}
+.curtab{display:none;font-size:13px;color:var(--sub)}
+#hdrToggle{display:none;padding:6px 12px}
+@media(max-width:720px){
+  .bar{padding:8px 12px;gap:8px}
+  .logo{order:1;font-size:16px}
+  .curtab{display:block;order:2;flex:1}
+  #hdrToggle{display:block;order:3}
+  nav{order:4;flex:1 1 100%;flex-wrap:nowrap;overflow-x:auto;gap:2px;-webkit-overflow-scrolling:touch}
+  nav button{white-space:nowrap;padding:7px 12px;flex:none}
+  #nzBtn,#addBtn,#syncChip{order:5}
+  header.collapsed nav,header.collapsed #nzBtn,header.collapsed #addBtn,header.collapsed #syncChip{display:none}
+  main{padding:12px 10px 80px}
+  .stick{position:static;margin:0 0 8px;padding:0 0 6px}
+  .toolbar{gap:8px}
+  .toolbar input[type=text]{min-width:0;flex:1 1 100%}
+  .toolbar select{flex:1 1 calc(50% - 8px);min-width:0}
+  .rec{padding:10px 12px;gap:10px}
+  .ttl{font-size:15px;overflow-wrap:anywhere}
+  .res .rb{padding:9px 0}
+  .modal{border-radius:14px;padding:14px}
+  .ov{padding:10px 6px}
+}
 </style>
 </head>
 <body>
 <header><div class="bar">
   <div class="logo">謎解き<b>手帖</b></div>
+  <span id="curTab" class="curtab"></span>
+  <button class="btn" id="hdrToggle" type="button" aria-label="メニューを開閉">☰</button>
   <nav id="nav"></nav>
   <button class="btn" id="nzBtn">謎ログに反映</button>
   <button class="btn pri" id="addBtn">＋ 公演を追加</button>
@@ -176,7 +204,7 @@ let db=Object.assign(emptyDb(),lsGet(LS_DB,{}));
 if(!db.records||typeof db.records!=='object')db.records={};
 let settings=Object.assign({google_client_id:'',drive_linked:false,nazolog_user_id:'bf53c570'},lsGet(LS_SET,{}));
 if(!settings.google_client_id)settings.google_client_id=DEFAULT_CLIENT_ID;
-const ui={tab:'show',kind:'show',q:'',group:'',result:'',format:[],year:'',status:'',sort:'new',shown:[],lq:'',lres:''};
+const ui={tab:'list',kind:'show',q:'',group:'',result:'',format:[],year:'',status:'',sort:'new',shown:[],lq:'',lres:''};
 
 function saveLocal(){db.updated_at=nowIso();lsSet(LS_DB,db)}
 function save(){saveLocal();scheduleSync()}
@@ -398,19 +426,22 @@ function setSync(s){
 }
 
 /* =============== rendering =============== */
-const TABS=[['show','公演'],['tour','周遊'],['buy','購入系'],['reco','オススメ'],['stats','成績'],['lessons','教訓'],['settings','設定']];
-const isKindTab=k=>KINDS.some(x=>x[0]===k);
-function renderNav(){const all=live();$('#nav').innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" class="${ui.tab===k?'on':''}">${l}${isKindTab(k)?`<small style="opacity:.7;margin-left:4px">${all.filter(r=>kindOf(r)===k).length}</small>`:''}</button>`).join('')}
+const TABS=[['list','一覧'],['reco','オススメ'],['stats','成績'],['lessons','教訓'],['settings','設定']];
+function renderNav(){$('#nav').innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" class="${ui.tab===k?'on':''}">${l}</button>`).join('');const c=$('#curTab');if(c)c.textContent=(TABS.find(x=>x[0]===ui.tab)||[])[1]||''}
 function render(){
   renderNav();setSync(syncState);
   const m=$('#main');
-  if(isKindTab(ui.tab)){ui.kind=ui.tab;renderList(m)}
+  if(ui.tab==='list')renderList(m);
   else if(ui.tab==='stats')renderStats(m);
   else if(ui.tab==='lessons')renderLessons(m);
   else if(ui.tab==='reco')renderReco(m);
   else renderSettings(m);
   updateNzBtn();fixHeader();
 }
+const isMobile=()=>window.matchMedia('(max-width:720px)').matches;
+let hdrCollapsed=lsGet('techo_hdr_collapsed')!=='0';
+function setHdr(c){hdrCollapsed=c;lsSet('techo_hdr_collapsed',c?'1':'0');applyHdr()}
+function applyHdr(){const h=$('header');if(!h)return;h.classList.toggle('collapsed',isMobile()&&hdrCollapsed);const t=$('#hdrToggle');if(t)t.textContent=(isMobile()&&hdrCollapsed)?'☰':'✕';fixHeader()}
 function fixHeader(){const h=$('header');if(h)document.documentElement.style.setProperty('--hh',h.offsetHeight+'px')}
 function fmtBtns(all){
   const fm=countBy(all,r=>r.format);
@@ -426,6 +457,9 @@ function stBtns(all){
   }
   const np=all.filter(isPlan).length;
   return`<div class="fbtns" id="stBtns"><span class="lb2">種別</span>${b('','すべて',all.length)}${b('plan','予定',np)}${b('done','参加済み',all.length-np)}</div>`;
+}
+function kindTabs(all){
+  return`<div class="subtabs" id="kindTabs">${KINDS.map(([k,l])=>`<button type="button" class="${ui.kind===k?'on':''}" data-k="${k}">${l}<small>${all.filter(r=>kindOf(r)===k).length}</small></button>`).join('')}</div>`;
 }
 function bindFmtBtns(after){
   const sb=$('#stBtns');if(sb)sb.onclick=e=>{const b=e.target.closest('.fb');if(!b)return;ui.status=b.dataset.s;after()};
@@ -538,6 +572,7 @@ function renderList(m){
   const years=[...new Set(all.map(r=>(r.date||'').slice(0,4)).filter(Boolean))].sort().reverse();
   m.innerHTML=`
   <div class="stick">
+    ${kindTabs(all)}
     <div class="toolbar">
       <input type="text" id="q" placeholder="公演名・団体・感想・教訓から検索" value="${esc(ui.q)}">
       <select id="fGroup">${opt('','団体: すべて',ui.group)}${groups.map(([g,n])=>opt(g,`${g}（${n}）`,ui.group)).join('')}</select>
@@ -553,6 +588,7 @@ function renderList(m){
   $('#q').oninput=e=>{ui.q=e.target.value;drawList()};
   [['fGroup','group'],['fRes','result'],['fYear','year'],['fSort','sort']].forEach(([id,k])=>{$('#'+id).onchange=e=>{ui[k]=e.target.value;drawList()}});
   $('#fClear').onclick=()=>{Object.assign(ui,{q:'',group:'',result:'',format:[],year:'',status:'',sort:'new'});renderList(m)};
+  $('#kindTabs').onclick=e=>{const b=e.target.closest('button');if(!b||b.dataset.k===ui.kind)return;ui.kind=b.dataset.k;ui.status='';ui.format=[];ui.group='';renderList(m)};
   bindFmtBtns(()=>renderList(m));
   $('#list').onclick=listClick;
   drawList();
@@ -969,11 +1005,13 @@ function openNzModal(){
 }
 
 /* =============== init =============== */
-$('#nav').onclick=e=>{const b=e.target.closest('button');if(!b)return;const t=b.dataset.tab;if(isKindTab(t)&&ui.tab!==t){ui.status='';ui.format=[];ui.group=''}ui.tab=t;render()};
+$('#nav').onclick=e=>{const b=e.target.closest('button');if(!b)return;ui.tab=b.dataset.tab;if(isMobile())setHdr(true);render()};
 $('#addBtn').onclick=()=>openEdit(null);
 $('#nzBtn').onclick=openNzModal;
 $('#syncChip').onclick=()=>{if(!settings.google_client_id){ui.tab='settings';render();return}driveSync(true)};
-window.addEventListener('resize',fixHeader);
+window.addEventListener('resize',applyHdr);
+$('#hdrToggle').onclick=()=>setHdr(!hdrCollapsed);
+applyHdr();
 render();
 gStartup();
 </script>
