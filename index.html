@@ -157,7 +157,9 @@ const DRIVE_FILE='nazotoki-db.json';
 const DEFAULT_CLIENT_ID='568813131190-9pb3hf0f3g3rbiglkq4nbk88g4eltk9p.apps.googleusercontent.com';
 const RESULTS=[['大成功','big'],['成功','ok'],['失敗','ng']];
 const RES_CLS={'大成功':'big','成功':'ok','失敗':'ng'};
-const PLAN_ST=[['defined','購入済み'],['tentative','仮予定'],['unreleased','発売待ち']];
+const PLAN_ST=[['wishlist','購入予定'],['defined','購入済み'],['tentative','仮予定'],['unreleased','発売待ち']];
+/* 手帖だけの扱い「購入予定」は、謎ログには仮予定(tentative)として送る */
+const nzPlanId=p=>p==='wishlist'?'tentative':(p||'tentative');
 const PLAN_LBL=Object.fromEntries(PLAN_ST);
 const NZ_ORIGIN='https://www.nazo.site';
 const TECHO_ORIGIN='https://ykdtmnhnddsbba-jj.github.io';
@@ -177,10 +179,10 @@ function saveSettings(){lsSet(LS_SET,settings)}
 /* =============== data ops =============== */
 const isPlan=r=>r.status==='plan';
 /* 謎ログに送る内容（作品・日付・時刻・ステータス）が変わったかを判定するための署名 */
-const nzSig=r=>[isPlan(r)?'plan':'done',r.result||'',r.date||'',r.time||'',isPlan(r)?(r.nazolog_plan_status||'tentative'):''].join('|');
+const nzSig=r=>[isPlan(r)?'plan':'done',r.result||'',r.date||'',r.time||'',isPlan(r)?nzPlanId(r.nazolog_plan_status):''].join('|');
 const nzPending=r=>!r.deleted&&r.nazolog_sig!==nzSig(r);
 function nzStatusId(r){
-  if(isPlan(r))return r.nazolog_plan_status||'tentative';
+  if(isPlan(r))return nzPlanId(r.nazolog_plan_status);
   return r.result==='失敗'?'failed':(r.result==='成功'||r.result==='大成功')?'succeeded':'experienced';
 }
 const isWin=r=>r.result==='大成功'||r.result==='成功';
@@ -226,7 +228,7 @@ function importJson(text,overwrite){
   db=mergeDb(db,{records:j.records});
   /* 読み込みでは、既存記録の「空欄」だけをファイル側の値で補完する（入力済みの値は上書きしない）。
      手元で先に編集した記録が新しい扱いになり、会場などの追記が反映されない問題を防ぐ。 */
-  const FILL=['group','date','time','format','venue','impression','lesson','status','nazolog_content_id','nazolog_record_id','nazolog_plan_status','nazolog_synced_at'];
+  const FILL=['group','date','time','format','venue','impression','lesson','status','nazolog_content_id','nazolog_record_id','nazolog_plan_status','price','nazolog_synced_at'];
   Object.keys(j.records).forEach(id=>{
     const q=j.records[id],r=db.records[id];
     if(!q||q.deleted||!r||r.deleted||!local[id])return;
@@ -521,7 +523,7 @@ function recHtml(r){
   const sc=r.score|0;
   const place=[r.format,r.venue].filter(Boolean).map(esc).join(' ・ ');
   return`<article class="rec" data-id="${esc(r.id)}">
-    <div class="rl"><div class="dt">${fmtDate(r.date)}${r.time?' '+esc(r.time):''}</div>${isPlan(r)?`<span class="pl ${r.nazolog_plan_status==='tentative'?'t':''}">予定・${esc(PLAN_LBL[r.nazolog_plan_status||'tentative']||'仮予定')}</span>`:''}${nzPending(r)?'<span class="un" title="謎ログに未反映">未反映</span>':''}<span class="grp">${esc(r.group||'団体なし')}</span>${place?`<div class="fm">${place}</div>`:''}</div>
+    <div class="rl"><div class="dt">${fmtDate(r.date)}${r.time?' '+esc(r.time):''}</div>${isPlan(r)?`<span class="pl ${r.nazolog_plan_status==='tentative'?'t':''}">予定・${esc(PLAN_LBL[r.nazolog_plan_status||'tentative']||'仮予定')}${r.price?' ¥'+Number(r.price).toLocaleString():''}</span>`:''}${nzPending(r)?'<span class="un" title="謎ログに未反映">未反映</span>':''}<span class="grp">${esc(r.group||'団体なし')}</span>${place?`<div class="fm">${place}</div>`:''}</div>
     <div class="rm" title="クリックで感想を全文表示/折りたたみ"><div class="ttl">${esc(r.title)}</div>${r.impression?`<div class="imp">${esc(r.impression)}</div>`:''}${r.lesson?`<div class="les">教訓: ${esc(r.lesson)}</div>`:''}</div>
     <div class="rr">
       <div class="res">${RESULTS.map(([l,c])=>`<button class="rb ${c} ${r.result===l?'on':''}" data-r="${l}">${l}</button>`).join('')}</div>
@@ -840,7 +842,15 @@ function nzBookmarklet(){
     if(plays.length)cr.content_plays_attributes=plays;
     if(rec){await api('/content_records/'+rec.id,{method:'PATCH',body:{content_record:cr}});return{rid:rec.id,mode:'更新'}}
     cr.content_id=g.cid;cr.user_id=uid;cr.disclosure='close';cr.test_play=false;cr.repeat=false;
-    var r=await api('/content_records',{method:'POST',body:{content_record:cr}});
+    /* 新規登録はフォーム形式(multipart)で送る必要がある（JSONだと500になる） */
+    var fd=new FormData();
+    Object.keys(cr).forEach(function(k){
+      if(k==='content_plays_attributes'){cr[k].forEach(function(p,i){Object.keys(p).forEach(function(pk){fd.append('content_record[content_plays_attributes]['+i+']['+pk+']',p[pk])})})}
+      else fd.append('content_record['+k+']',cr[k]);
+    });
+    if(!cr.content_plays_attributes)fd.append('content_record[content_plays_attributes][]','');
+    ['status','content_scene','play_datetime','team','time'].forEach(function(k){fd.append('content_record['+k+'_disclosure]','open')});
+    var r=await api('/content_records',{method:'POST',body:fd});
     return{rid:r.id,mode:'新規'};
   }
   async function run(rows){
