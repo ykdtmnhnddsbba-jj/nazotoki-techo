@@ -46,11 +46,10 @@ def main():
     for code, name in PREFS.items():
         for v in paged("/venues", {"q[prefecture_code_eq]": code}, "venues"):
             venues[v["id"]] = {"name": v["name"], "pref": name, "address": v.get("address")}
-    ids = list(venues)
     scenes = []
-    for i in range(0, len(ids), 50):
+    for vid in venues:  # 複数ID指定は先頭しか効かないので、会場ごとに問い合わせる
         scenes += paged("/content_scenes", {
-            "q[venue_id_in]": ids[i:i + 50],
+            "q[venue_id_eq]": vid,
             "q[end_date_gteq]": first.isoformat(),
             "q[start_date_lteq]": last.isoformat(),
             "include": json.dumps(["content"]),
