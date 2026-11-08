@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-08T14:25+09:00",
+ "generated_at": "2026-11-08T14:31+09:00",
  "months": [
   "2026-11",
   "2026-12"
@@ -10,6 +10,74 @@
  ],
  "source": "nazo.site",
  "items": [
+  {
+   "contentId": "8e2efea5",
+   "title": "閉ざされたテンペストダンジョン(異世界迷宮)からの脱出",
+   "category": "hall",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2026-09-10",
+   "end": "2026-11-23",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/8e2efea5",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "2aae6483",
+   "title": "黒き暗殺者(アサシン)からの脱出",
+   "category": "hall",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2026-10-16",
+   "end": "2026-11-23",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/2aae6483",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "3efa4d00",
+   "title": "パズルルームからの脱出",
+   "category": "room",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2026-04-16",
+   "end": "2026-11-29",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/3efa4d00",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "32b450db",
+   "title": "オンダーン星人から地球を守れ!",
+   "category": "field",
+   "venue": "JERA park HEKINAN",
+   "pref": "愛知県",
+   "start": "2026-10-01",
+   "end": "2026-11-29",
+   "permanent": false,
+   "price": 0,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/32b450db",
+   "group": "EFEX(エフェックス)",
+   "groups": [
+    "EFEX(エフェックス)"
+   ]
+  },
   {
    "contentId": "fab0a714",
    "title": "夜の魔法学校からの脱出",
@@ -43,6 +111,1827 @@
    "groups": [
     "SCRAP"
    ]
+  },
+  {
+   "contentId": "bda80605",
+   "title": "葵武将隊と5つの試練",
+   "category": "field",
+   "venue": "岡崎城公園",
+   "pref": "愛知県",
+   "start": "2026-08-07",
+   "end": "2026-12-06",
+   "permanent": false,
+   "price": 700,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/bda80605",
+   "group": "EFEX(エフェックス)",
+   "groups": [
+    "EFEX(エフェックス)"
+   ]
+  },
+  {
+   "contentId": "8cae6665",
+   "title": "抜け穴ひそむ ミラクルスタジアム",
+   "category": "stadium",
+   "venue": "ふれあい会議室 名古屋 No.143",
+   "pref": "愛知県",
+   "start": "2026-12-13",
+   "end": "2026-12-13",
+   "permanent": false,
+   "price": 3000,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/8cae6665",
+   "group": "アットビ",
+   "groups": [
+    "アットビ"
+   ]
+  },
+  {
+   "contentId": "01ef8331",
+   "title": "クローバーの国とトランプの魔法",
+   "category": "field",
+   "venue": "鶴舞公園",
+   "pref": "愛知県",
+   "start": "2026-09-01",
+   "end": "2026-12-25",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/01ef8331",
+   "group": "EFEX(エフェックス)",
+   "groups": [
+    "EFEX(エフェックス)"
+   ]
+  },
+  {
+   "contentId": "d14fe11a",
+   "title": "アレハンドロと終わらないフィエスタからの脱出",
+   "category": "field",
+   "venue": "志摩スペイン村",
+   "pref": "三重県",
+   "start": "2026-02-14",
+   "end": "2027-01-11",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/d14fe11a",
+   "group": "NAZO×NAZO劇団",
+   "groups": [
+    "NAZO×NAZO劇団"
+   ]
+  },
+  {
+   "contentId": "116a3be5",
+   "title": "リトルパラレルワールド第2弾 異次元ウヲークツアー",
+   "category": "field",
+   "venue": "野外民族博物館 リトルワールド",
+   "pref": "愛知県",
+   "start": "2026-09-05",
+   "end": "2027-01-11",
+   "permanent": false,
+   "price": 1800,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/116a3be5",
+   "group": "NoEscape",
+   "groups": [
+    "NoEscape"
+   ]
+  },
+  {
+   "contentId": "e0bf36a9",
+   "title": "謎解きゲーム ヒラメキで目的地に到着せよ!の巻",
+   "category": "field",
+   "venue": "野外民族博物館 リトルワールド",
+   "pref": "愛知県",
+   "start": "2026-10-03",
+   "end": "2027-01-11",
+   "permanent": false,
+   "price": 1000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e0bf36a9",
+   "group": "",
+   "groups": []
+  },
+  {
+   "contentId": "02c78a2c",
+   "title": "魔族潜む村からの脱出",
+   "category": "stadium",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2026-10-29",
+   "end": "2027-01-31",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/02c78a2c",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "684d8588",
+   "title": "江戸川乱歩と不可解な残像 ~暁と影~ Scoop01 絶望王",
+   "category": "field",
+   "venue": "博物館明治村",
+   "pref": "愛知県",
+   "start": "2026-09-12",
+   "end": "2027-02-23",
+   "permanent": false,
+   "price": 800,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/684d8588",
+   "group": "タカラッシュ",
+   "groups": [
+    "タカラッシュ"
+   ]
+  },
+  {
+   "contentId": "777bcb84",
+   "title": "江戸川乱歩と不可解な残像 ~暁と影~ Scoop02 奇術師と透明男",
+   "category": "field",
+   "venue": "博物館明治村",
+   "pref": "愛知県",
+   "start": "2026-09-12",
+   "end": "2027-02-23",
+   "permanent": false,
+   "price": 900,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/777bcb84",
+   "group": "タカラッシュ",
+   "groups": [
+    "タカラッシュ"
+   ]
+  },
+  {
+   "contentId": "c9c8332c",
+   "title": "江戸川乱歩と不可解な残像 ~暁と影~ Scoop03 蟻地獄男",
+   "category": "field",
+   "venue": "博物館明治村",
+   "pref": "愛知県",
+   "start": "2026-09-12",
+   "end": "2027-02-23",
+   "permanent": false,
+   "price": 1100,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/c9c8332c",
+   "group": "タカラッシュ",
+   "groups": [
+    "タカラッシュ"
+   ]
+  },
+  {
+   "contentId": "5d846530",
+   "title": "魔法文字と初めての大冒険",
+   "category": "field",
+   "venue": "名古屋PARCO",
+   "pref": "愛知県",
+   "start": "2026-06-16",
+   "end": "2027-02-28",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/5d846530",
+   "group": "NANICA",
+   "groups": [
+    "NANICA"
+   ]
+  },
+  {
+   "contentId": "0f6f10b3",
+   "title": "なぜ蝋燭の灯は消えたのか",
+   "category": "field",
+   "venue": "名古屋観光ホテル",
+   "pref": "愛知県",
+   "start": "2026-11-16",
+   "end": "2027-07-16",
+   "permanent": false,
+   "price": null,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/0f6f10b3",
+   "group": "謎組",
+   "groups": [
+    "謎組"
+   ]
+  },
+  {
+   "contentId": "3f178ba0",
+   "title": "Escape from The RED ROOM",
+   "category": "room",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2015-11-19",
+   "end": null,
+   "permanent": true,
+   "price": 3000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/3f178ba0",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "60b3aa76",
+   "title": "MYSTERY MAIL BOX 〜Mystery Manからの招待状〜 優雅なる深紅",
+   "category": "field",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2018-06-21",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/60b3aa76",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "18c60da2",
+   "title": "MYSTERY MAIL BOX 〜Mystery Manからの招待状〜 繋がりし紺碧",
+   "category": "field",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2018-06-21",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/18c60da2",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "8690a0bc",
+   "title": "MYSTERY MAIL BOX 〜Mystery Manからの招待状〜 遙かなる黄金",
+   "category": "field",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2018-06-21",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/8690a0bc",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "73c29ad1",
+   "title": "ナゾコンからの挑戦状",
+   "category": "field",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2018-06-21",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/73c29ad1",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "72de4655",
+   "title": "カトリーエイルと死者からの手紙",
+   "category": "field",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2018-10-10",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/72de4655",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "79355b8a",
+   "title": "なごや大須 謎解き食べ歩き",
+   "category": "field",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2019-05-10",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/79355b8a",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "213e3b87",
+   "title": "旅人と3人の王様",
+   "category": "field",
+   "venue": "ひるがの高原 牧歌の里",
+   "pref": "岐阜県",
+   "start": "2020-05-16",
+   "end": null,
+   "permanent": true,
+   "price": 1000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/213e3b87",
+   "group": "takarush BLACK LABEL",
+   "groups": [
+    "takarush BLACK LABEL"
+   ]
+  },
+  {
+   "contentId": "9d0f19ad",
+   "title": "演じすぎた男",
+   "category": "room",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2020-05-16",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/9d0f19ad",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "3438b5ad",
+   "title": "Christmas",
+   "category": "room",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2020-11-21",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/3438b5ad",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "1aa94641",
+   "title": "ミステリータワーからの脱出",
+   "category": "cube",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2020-12-18",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/1aa94641",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "3467a8d5",
+   "title": "SIGNAL LOST",
+   "category": "room",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2021-05-19",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/3467a8d5",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "e1296581",
+   "title": "The Prison",
+   "category": "room",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2021-05-19",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e1296581",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "87b19d01",
+   "title": "あるスパイの脱出劇",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-07-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/87b19d01",
+   "group": "ラジエル -Rasiel Library-",
+   "groups": [
+    "ラジエル -Rasiel Library-"
+   ]
+  },
+  {
+   "contentId": "fc1f9028",
+   "title": "ことばキューブ",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-07-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/fc1f9028",
+   "group": "リドレイク",
+   "groups": [
+    "リドレイク"
+   ]
+  },
+  {
+   "contentId": "d7f90e22",
+   "title": "ひよっこ勇者と旅立ちの装備",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-07-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/d7f90e22",
+   "group": "リドレイク",
+   "groups": [
+    "リドレイク"
+   ]
+  },
+  {
+   "contentId": "a000737a",
+   "title": "ハッピーケーキ箱",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-07-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/a000737a",
+   "group": "hazの箱なぞ",
+   "groups": [
+    "hazの箱なぞ"
+   ]
+  },
+  {
+   "contentId": "4f1aaedd",
+   "title": "ロボバコライト01~クロイヤツ~",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-07-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/4f1aaedd",
+   "group": "ロボバコ(いっぺぃ)",
+   "groups": [
+    "ロボバコ(いっぺぃ)"
+   ]
+  },
+  {
+   "contentId": "b815f893",
+   "title": "ロボバコライト02~シロイヤツ~",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-07-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/b815f893",
+   "group": "ロボバコ(いっぺぃ)",
+   "groups": [
+    "ロボバコ(いっぺぃ)"
+   ]
+  },
+  {
+   "contentId": "005109c7",
+   "title": "ロボバコライト03~アオジニアカラインノヤツ~",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-07-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/005109c7",
+   "group": "ロボバコ(いっぺぃ)",
+   "groups": [
+    "ロボバコ(いっぺぃ)"
+   ]
+  },
+  {
+   "contentId": "bbfa3d5d",
+   "title": "ロボバコライト04 〜ウルサイヤツ〜",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-07-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/bbfa3d5d",
+   "group": "ロボバコ(いっぺぃ)",
+   "groups": [
+    "ロボバコ(いっぺぃ)"
+   ]
+  },
+  {
+   "contentId": "059aad9d",
+   "title": "ロボバコライト06~オシャベリナヤツ~",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-07-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/059aad9d",
+   "group": "ロボバコ(いっぺぃ)",
+   "groups": [
+    "ロボバコ(いっぺぃ)"
+   ]
+  },
+  {
+   "contentId": "0abb0a5b",
+   "title": "ロボバコライト10〜ロボジャナイヤツ〜",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-07-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/0abb0a5b",
+   "group": "ロボバコ(いっぺぃ)",
+   "groups": [
+    "ロボバコ(いっぺぃ)"
+   ]
+  },
+  {
+   "contentId": "b5a5cd72",
+   "title": "最初で最後の謎本",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-07-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/b5a5cd72",
+   "group": "ラジエル -Rasiel Library-",
+   "groups": [
+    "ラジエル -Rasiel Library-"
+   ]
+  },
+  {
+   "contentId": "3dcecb06",
+   "title": "祝花箱",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-07-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/3dcecb06",
+   "group": "hazの箱なぞ",
+   "groups": [
+    "hazの箱なぞ"
+   ]
+  },
+  {
+   "contentId": "c744e28f",
+   "title": "竜王の棺",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-07-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/c744e28f",
+   "group": "ラジエル -Rasiel Library-",
+   "groups": [
+    "ラジエル -Rasiel Library-"
+   ]
+  },
+  {
+   "contentId": "37777dd7",
+   "title": "ワンルーム遭難中",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-07-12",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/37777dd7",
+   "group": "繭玉工房",
+   "groups": [
+    "繭玉工房"
+   ]
+  },
+  {
+   "contentId": "a6a2e024",
+   "title": "ロッキュー",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-07-23",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/a6a2e024",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "e3ddac40",
+   "title": "暗号解読専門事務所AQUARIUST vol.1〜cube〜",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-07-27",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e3ddac40",
+   "group": "ゆうげん",
+   "groups": [
+    "ゆうげん"
+   ]
+  },
+  {
+   "contentId": "d18c483a",
+   "title": "デンキュー",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-07-30",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/d18c483a",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "88eb1d53",
+   "title": "最高の呪文が封印されし魔導の書 (カフェ型)",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-10-01",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/88eb1d53",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "92d57184",
+   "title": "四代目haz箱 賽銭箱",
+   "category": "room",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-10-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/92d57184",
+   "group": "hazの箱なぞ",
+   "groups": [
+    "hazの箱なぞ"
+   ]
+  },
+  {
+   "contentId": "e12d830a",
+   "title": "海の中のおしゃれなレストラン",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-10-26",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e12d830a",
+   "group": "きまぐれボックス",
+   "groups": [
+    "きまぐれボックス"
+   ]
+  },
+  {
+   "contentId": "4b7cc0d7",
+   "title": "入門箱(nyumonhako)",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-12-16",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/4b7cc0d7",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "e7a3099b",
+   "title": "十八番(OHAKO)",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2021-12-16",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e7a3099b",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "e9ba66a0",
+   "title": "ガリレオ・ガリレイ 最期の考察",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2022-01-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e9ba66a0",
+   "group": "きまぐれボックス",
+   "groups": [
+    "きまぐれボックス"
+   ]
+  },
+  {
+   "contentId": "d937c7ce",
+   "title": "謎の壁からの脱出",
+   "category": "room",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2022-02-22",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/d937c7ce",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "a1002771",
+   "title": "本が奏でる不思議な珈琲店",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2022-04-09",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/a1002771",
+   "group": "きまぐれボックス",
+   "groups": [
+    "きまぐれボックス"
+   ]
+  },
+  {
+   "contentId": "3b020c00",
+   "title": "XXナゾ(傷だらけのナゾ)",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2022-05-12",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/3b020c00",
+   "group": "ロボバコ(いっぺぃ)",
+   "groups": [
+    "ロボバコ(いっぺぃ)"
+   ]
+  },
+  {
+   "contentId": "a0b41098",
+   "title": "ガネーシャ箱",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2022-07-05",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/a0b41098",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "4f6950ac",
+   "title": "思い出せない青年",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2022-10-06",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/4f6950ac",
+   "group": "テクノNÂZO",
+   "groups": [
+    "テクノNÂZO"
+   ]
+  },
+  {
+   "contentId": "31a8c3ae",
+   "title": "犬奪われた博士",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2022-10-06",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/31a8c3ae",
+   "group": "テクノNÂZO",
+   "groups": [
+    "テクノNÂZO"
+   ]
+  },
+  {
+   "contentId": "c5e4eefd",
+   "title": "離れに佇む暗号和室",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2022-10-06",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/c5e4eefd",
+   "group": "テクノNÂZO",
+   "groups": [
+    "テクノNÂZO"
+   ]
+  },
+  {
+   "contentId": "b75544fe",
+   "title": "玉手箱",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2022-10-14",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/b75544fe",
+   "group": "御伽 otogi",
+   "groups": [
+    "御伽 otogi"
+   ]
+  },
+  {
+   "contentId": "284d92a9",
+   "title": "一夜箱(ichiyabako)",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2022-10-22",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/284d92a9",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "332af48a",
+   "title": "謎のタワーマンションからの脱出",
+   "category": "room",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2022-12-15",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/332af48a",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "a4cd4c54",
+   "title": "ある沈没船からの脱出",
+   "category": "cube",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2022-12-19",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/a4cd4c54",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "6a981128",
+   "title": "スヌーピーと不思議な絵",
+   "category": "field",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2023-05-13",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/6a981128",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "1bf35554",
+   "title": "スヌーピーと秘密のレシピ",
+   "category": "field",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2023-05-13",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/1bf35554",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "c707dfea",
+   "title": "スヌーピーと謎解きサーカス団",
+   "category": "field",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2023-05-13",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/c707dfea",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "eef9382b",
+   "title": "いつもの箱(itsumonohako)",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2023-05-19",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/eef9382b",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "18117f9a",
+   "title": "といぼっくす",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2023-07-01",
+   "end": null,
+   "permanent": true,
+   "price": 2000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/18117f9a",
+   "group": "なぞにゃ~ぞ",
+   "groups": [
+    "なぞにゃ~ぞ"
+   ]
+  },
+  {
+   "contentId": "bfd79a35",
+   "title": "にめんせいパズル",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2023-07-01",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/bfd79a35",
+   "group": "KURAHA",
+   "groups": [
+    "KURAHA"
+   ]
+  },
+  {
+   "contentId": "355d1ad6",
+   "title": "ゴーストハンターズ",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2023-07-01",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/355d1ad6",
+   "group": "きまぐれボックス",
+   "groups": [
+    "きまぐれボックス"
+   ]
+  },
+  {
+   "contentId": "80801771",
+   "title": "人狼村からの脱出 (ルーム型)",
+   "category": "room",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2023-08-04",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/80801771",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "c38c437f",
+   "title": "惑枠",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2023-11-01",
+   "end": null,
+   "permanent": true,
+   "price": 2000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/c38c437f",
+   "group": "CubeFactory",
+   "groups": [
+    "CubeFactory",
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "f6217f5e",
+   "title": "はてなとしょかん",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2023-12-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/f6217f5e",
+   "group": "hazの箱なぞ",
+   "groups": [
+    "hazの箱なぞ"
+   ]
+  },
+  {
+   "contentId": "79bdc110",
+   "title": "ジーニアスボックス 〜ある博士が遺した秘密〜 (カフェ謎ver.)",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2023-12-20",
+   "end": null,
+   "permanent": true,
+   "price": 1800,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/79bdc110",
+   "group": "ナゾトキアドベンチャー",
+   "groups": [
+    "ナゾトキアドベンチャー"
+   ]
+  },
+  {
+   "contentId": "dd9d2c8e",
+   "title": "4つのキューブとまわる床",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2024-03-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/dd9d2c8e",
+   "group": "リドレイク",
+   "groups": [
+    "リドレイク"
+   ]
+  },
+  {
+   "contentId": "2eab6188",
+   "title": "謀略のテンペストサーカスからの脱出",
+   "category": "field",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2024-03-19",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/2eab6188",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP",
+    "よだかのレコード"
+   ]
+  },
+  {
+   "contentId": "c8639f9d",
+   "title": "森のフクロウと美し村のヒミツ",
+   "category": "field",
+   "venue": "マルシェ ヴィソン",
+   "pref": "三重県",
+   "start": "2024-07-01",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/c8639f9d",
+   "group": "フラップゼロα(team ZEPET)",
+   "groups": [
+    "フラップゼロα(team ZEPET)"
+   ]
+  },
+  {
+   "contentId": "5dac5406",
+   "title": "はぁ?な札",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2024-07-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/5dac5406",
+   "group": "いっぺい",
+   "groups": [
+    "いっぺい"
+   ]
+  },
+  {
+   "contentId": "ce9effcd",
+   "title": "母からのプレゼントボックス",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2024-07-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/ce9effcd",
+   "group": "ミステリージャック",
+   "groups": [
+    "ミステリージャック"
+   ]
+  },
+  {
+   "contentId": "0419dbb2",
+   "title": "BEAT TOWER",
+   "category": "cube",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2024-09-21",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/0419dbb2",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "8c75b130",
+   "title": "謎の部屋からの脱出",
+   "category": "room",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2024-10-10",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/8c75b130",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "4cc9796b",
+   "title": "サク箱",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2024-10-18",
+   "end": null,
+   "permanent": true,
+   "price": 1000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/4cc9796b",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "36fdfa11",
+   "title": "リニア・鉄道館とまぼろしの車両",
+   "category": "field",
+   "venue": "リニア・鉄道館",
+   "pref": "愛知県",
+   "start": "2025-01-29",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/36fdfa11",
+   "group": "タカラッシュ",
+   "groups": [
+    "タカラッシュ"
+   ]
+  },
+  {
+   "contentId": "bfa4f9e8",
+   "title": "魔法ナゾ使い適正試験",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2025-03-19",
+   "end": null,
+   "permanent": true,
+   "price": 1200,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/bfa4f9e8",
+   "group": "ナゾトキアドベンチャー",
+   "groups": [
+    "ナゾトキアドベンチャー"
+   ]
+  },
+  {
+   "contentId": "2e4a21d4",
+   "title": "マグノリア銀行からの脱出 (ルーム型)",
+   "category": "room",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2025-05-23",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/2e4a21d4",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "08be862d",
+   "title": "アイテムだらけの部屋からの脱出",
+   "category": "room",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2025-07-11",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/08be862d",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "cddec693",
+   "title": "パズルルームからの脱出2",
+   "category": "room",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2025-10-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/cddec693",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "713ebd09",
+   "title": "キンダンの青-",
+   "category": "cafe",
+   "venue": "謎解き生活 WAKASA&CO.BOOKS(わかさ&コミュニティ ブックス) 名古屋大須店",
+   "pref": "愛知県",
+   "start": "2025-10-23",
+   "end": null,
+   "permanent": true,
+   "price": 1000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/713ebd09",
+   "group": "WAKASA & CO.",
+   "groups": [
+    "WAKASA & CO.",
+    "KAGENAZO"
+   ]
+  },
+  {
+   "contentId": "a5569f82",
+   "title": "ユウワクの赤",
+   "category": "cafe",
+   "venue": "謎解き生活 WAKASA&CO.BOOKS(わかさ&コミュニティ ブックス) 名古屋大須店",
+   "pref": "愛知県",
+   "start": "2025-10-23",
+   "end": null,
+   "permanent": true,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/a5569f82",
+   "group": "WAKASA & CO.",
+   "groups": [
+    "WAKASA & CO.",
+    "KAGENAZO"
+   ]
+  },
+  {
+   "contentId": "f933c18b",
+   "title": "ドラキュラ城からの脱出",
+   "category": "hall",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2025-11-20",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/f933c18b",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "04063e8c",
+   "title": "DOUBT",
+   "category": "field",
+   "venue": "NANICA-NAGOYA-",
+   "pref": "愛知県",
+   "start": "2025-12-23",
+   "end": null,
+   "permanent": true,
+   "price": 3200,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/04063e8c",
+   "group": "NANICA",
+   "groups": [
+    "NANICA"
+   ]
+  },
+  {
+   "contentId": "eae2e8d1",
+   "title": "MIRROR-ABNORMAL",
+   "category": "field",
+   "venue": "NANICA-NAGOYA-",
+   "pref": "愛知県",
+   "start": "2025-12-23",
+   "end": null,
+   "permanent": true,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/eae2e8d1",
+   "group": "NANICA",
+   "groups": [
+    "NANICA"
+   ]
+  },
+  {
+   "contentId": "4220374d",
+   "title": "MIRROR-FORTUNE",
+   "category": "field",
+   "venue": "NANICA-NAGOYA-",
+   "pref": "愛知県",
+   "start": "2025-12-23",
+   "end": null,
+   "permanent": true,
+   "price": 1200,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/4220374d",
+   "group": "NANICA",
+   "groups": [
+    "NANICA"
+   ]
+  },
+  {
+   "contentId": "2a957e48",
+   "title": "PORTAL",
+   "category": "field",
+   "venue": "NANICA-NAGOYA-",
+   "pref": "愛知県",
+   "start": "2025-12-23",
+   "end": null,
+   "permanent": true,
+   "price": 2800,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/2a957e48",
+   "group": "NANICA",
+   "groups": [
+    "NANICA"
+   ]
+  },
+  {
+   "contentId": "aaac0fe8",
+   "title": "STASIS-DISCOVERY",
+   "category": "field",
+   "venue": "NANICA-NAGOYA-",
+   "pref": "愛知県",
+   "start": "2025-12-23",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/aaac0fe8",
+   "group": "NANICA",
+   "groups": [
+    "NANICA"
+   ]
+  },
+  {
+   "contentId": "e7f619db",
+   "title": "STASIS-RESOLUTION",
+   "category": "field",
+   "venue": "NANICA-NAGOYA-",
+   "pref": "愛知県",
+   "start": "2025-12-23",
+   "end": null,
+   "permanent": true,
+   "price": 2500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e7f619db",
+   "group": "NANICA",
+   "groups": [
+    "NANICA"
+   ]
+  },
+  {
+   "contentId": "849f4691",
+   "title": "DRAW",
+   "category": "room",
+   "venue": "NANICA-NAGOYA-",
+   "pref": "愛知県",
+   "start": "2026-01-30",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/849f4691",
+   "group": "NANICA",
+   "groups": [
+    "NANICA"
+   ]
+  },
+  {
+   "contentId": "515e3189",
+   "title": "リトルミステリータワーからの脱出",
+   "category": "cube",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2026-02-16",
+   "end": null,
+   "permanent": true,
+   "price": 0,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/515e3189",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "15875cc9",
+   "title": "REVEAL",
+   "category": "field",
+   "venue": "NANICA-NAGOYA-",
+   "pref": "愛知県",
+   "start": "2026-02-19",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/15875cc9",
+   "group": "NANICA",
+   "groups": [
+    "NANICA"
+   ]
+  },
+  {
+   "contentId": "f0cddd5f",
+   "title": "呪イノ箱",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2026-02-26",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/f0cddd5f",
+   "group": "ナゾトキアドベンチャー",
+   "groups": [
+    "ナゾトキアドベンチャー"
+   ]
+  },
+  {
+   "contentId": "39f67bc0",
+   "title": "うさぎのラポに隠された秘密",
+   "category": "field",
+   "venue": "ひるがの高原 牧歌の里",
+   "pref": "岐阜県",
+   "start": "2026-04-18",
+   "end": null,
+   "permanent": true,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/39f67bc0",
+   "group": "takarush BLACK LABEL",
+   "groups": [
+    "takarush BLACK LABEL"
+   ]
+  },
+  {
+   "contentId": "8a5578e1",
+   "title": "JUDGE",
+   "category": "field",
+   "venue": "NANICA-NAGOYA-",
+   "pref": "愛知県",
+   "start": "2026-04-29",
+   "end": null,
+   "permanent": true,
+   "price": 3000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/8a5578e1",
+   "group": "NANICA",
+   "groups": [
+    "NANICA"
+   ]
+  },
+  {
+   "contentId": "aff7ede1",
+   "title": "TRACE",
+   "category": "field",
+   "venue": "NANICA-NAGOYA-",
+   "pref": "愛知県",
+   "start": "2026-04-29",
+   "end": null,
+   "permanent": true,
+   "price": 2800,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/aff7ede1",
+   "group": "NANICA",
+   "groups": [
+    "NANICA",
+    "Hydra"
+   ]
+  },
+  {
+   "contentId": "031a7512",
+   "title": "コロコロジック",
+   "category": "stadium",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2026-05-30",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/031a7512",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "27878986",
+   "title": "ある実験室からの脱出(ルーム型)",
+   "category": "room",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2026-06-11",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/27878986",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "cf645c5a",
+   "title": "語りかける古書と呪われた部屋からの脱出",
+   "category": "room",
+   "venue": "謎解き生活 WAKASA&CO.BOOKS(わかさ&コミュニティ ブックス) 名古屋大須店",
+   "pref": "愛知県",
+   "start": "2026-06-25",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/cf645c5a",
+   "group": "WAKASA & CO.",
+   "groups": [
+    "WAKASA & CO.",
+    "KAGENAZO"
+   ]
+  },
+  {
+   "contentId": "39a1909c",
+   "title": "スパイミッションからの脱出-パンドラの箱と裏切りの銃弾-",
+   "category": "field",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2026-07-16",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/39a1909c",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "91a1c489",
+   "title": "ORACLE",
+   "category": "field",
+   "venue": "NANICA-NAGOYA-",
+   "pref": "愛知県",
+   "start": "2026-07-17",
+   "end": null,
+   "permanent": true,
+   "price": 2800,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/91a1c489",
+   "group": "NANICA",
+   "groups": [
+    "NANICA"
+   ]
+  },
+  {
+   "contentId": "1d3c5680",
+   "title": "迷い子アリスと帽子屋の森",
+   "category": "cafe",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2026-08-14",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/1d3c5680",
+   "group": "ナゾトキ番長",
+   "groups": [
+    "ナゾトキ番長"
+   ]
+  },
+  {
+   "contentId": "08361d00",
+   "title": "からくりの罠潜む忍者屋敷からの脱出",
+   "category": "room",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2026-10-09",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/08361d00",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "828b1d66",
+   "title": "幸せを届けるチャペル ~大ピンチ!?未完成のウェディング~",
+   "category": "field",
+   "venue": "ザ・オランジェガーデン五十鈴川",
+   "pref": "三重県",
+   "start": "2026-10-10",
+   "end": null,
+   "permanent": true,
+   "price": 1100,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/828b1d66",
+   "group": "",
+   "groups": []
   }
  ]
 }
