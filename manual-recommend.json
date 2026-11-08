@@ -1,0 +1,16 @@
+{
+ "_readme": "謎ログに載っていない／期間が古い公演を手動で足す。contentId を書くと、同じ作品の謎ログ側の行を置き換える（参加済み判定もそのまま効く）。end が空なら常設扱い。",
+ "items": [
+  {
+   "contentId": "ac07ea3e",
+   "title": "ROOM5から脱出せよ!",
+   "group": "なぞねこ",
+   "category": "room",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2026-11-04",
+   "end": "2027-01-31",
+   "url": "https://escape.id/nazoneko-org/e-room5"
+  }
+ ]
+}

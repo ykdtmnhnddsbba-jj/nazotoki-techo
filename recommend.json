@@ -230,6 +230,24 @@
    ]
   },
   {
+   "contentId": "ac07ea3e",
+   "title": "ROOM5から脱出せよ!",
+   "category": "room",
+   "venue": "謎解きカフェ&ボードゲーム なぞねこ",
+   "pref": "愛知県",
+   "start": "2026-11-04",
+   "end": "2027-01-31",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://escape.id/nazoneko-org/e-room5",
+   "group": "なぞねこ",
+   "groups": [
+    "なぞねこ"
+   ],
+   "manual": true
+  },
+  {
    "contentId": "684d8588",
    "title": "江戸川乱歩と不可解な残像 ~暁と影~ Scoop01 絶望王",
    "category": "field",

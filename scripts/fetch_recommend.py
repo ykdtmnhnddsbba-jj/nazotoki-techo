@@ -88,6 +88,24 @@ def main():
         g = groups.get(it["contentId"], [])
         it["group"] = "SCRAP" if "SCRAP" in g else (g[0] if g else "")
         it["groups"] = g
+    # 手動で足す・上書きする公演（謎ログの期間が古い／載っていないもの）
+    try:
+        manual = json.load(open("manual-recommend.json", encoding="utf-8")).get("items", [])
+    except FileNotFoundError:
+        manual = []
+    for m in manual:
+        if m.get("end") and m["end"] < today.isoformat():
+            continue
+        items = [i for i in items if not (
+            (m.get("contentId") and i["contentId"] == m["contentId"]) or
+            (i["title"] == m["title"] and i["venue"] == m.get("venue")))]
+        items.append({
+            "contentId": m.get("contentId") or "manual-" + m["title"], "title": m["title"],
+            "category": m.get("category", "field"), "venue": m.get("venue", ""), "pref": m.get("pref", "愛知県"),
+            "start": m.get("start", today.isoformat()), "end": m.get("end"), "permanent": not m.get("end"),
+            "price": m.get("price"), "playable": True, "url": m.get("url", ""),
+            "group": m.get("group", ""), "groups": [m["group"]] if m.get("group") else [], "manual": True,
+        })
     items.sort(key=lambda x: (x["permanent"], x["end"] or "", x["start"], x["title"]))
     out = {
         "generated_at": datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).isoformat(timespec="minutes"),
