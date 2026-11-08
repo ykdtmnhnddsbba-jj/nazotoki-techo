@@ -84,6 +84,10 @@ main{max-width:1400px;margin:0 auto;padding:18px 16px 80px}
 .fb:hover{border-color:var(--sub);color:var(--text)}
 .fb.on{background:var(--accent);border-color:var(--accent);color:#2a1a00}
 .fb small{opacity:.75;font-weight:500;margin-left:3px}
+.pl{font-size:11px;font-weight:700;padding:1px 9px;border-radius:99px;background:#1d2b4a;color:#8ab4ff;border:1px solid #34508f}
+.pl.t{background:#2a2540;color:#c3b1ff;border-color:#4f4390}
+.un{font-size:11px;font-weight:700;padding:1px 9px;border-radius:99px;background:#3a2f0b;color:var(--gold);border:1px solid #6b5a1c}
+.seg{display:flex;gap:4px}.seg .fb{flex:1;border-radius:10px}
 .legend{display:flex;gap:14px;font-size:12px;color:var(--sub);margin-bottom:6px}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
 @media(max-width:720px){.brow{grid-template-columns:96px 1fr 96px}}
@@ -110,6 +114,7 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 40px;color:var(--sub);font-
 <header><div class="bar">
   <div class="logo">謎解き<b>手帖</b></div>
   <nav id="nav"></nav>
+  <button class="btn" id="nzBtn">謎ログに反映</button>
   <button class="btn pri" id="addBtn">＋ 公演を追加</button>
   <span id="syncChip" class="chip"></span>
 </div></header>
@@ -139,25 +144,38 @@ const DRIVE_FILE='nazotoki-db.json';
 const DEFAULT_CLIENT_ID='568813131190-9pb3hf0f3g3rbiglkq4nbk88g4eltk9p.apps.googleusercontent.com';
 const RESULTS=[['大成功','big'],['成功','ok'],['失敗','ng']];
 const RES_CLS={'大成功':'big','成功':'ok','失敗':'ng'};
+const PLAN_ST=[['defined','購入済み'],['tentative','仮予定'],['unreleased','発売待ち']];
+const PLAN_LBL=Object.fromEntries(PLAN_ST);
+const NZ_ORIGIN='https://www.nazo.site';
+const TECHO_ORIGIN='https://ykdtmnhnddsbba-jj.github.io';
+const DEFAULT_VENUE='リアル脱出ゲーム名古屋店';
 const FORMATS=['ホール型','ルーム型','周遊型','ライブ型','持ち帰り型','その他'];
 function emptyDb(){return{schema_version:1,updated_at:null,records:{}}}
 let db=Object.assign(emptyDb(),lsGet(LS_DB,{}));
 if(!db.records||typeof db.records!=='object')db.records={};
-let settings=Object.assign({google_client_id:'',drive_linked:false},lsGet(LS_SET,{}));
+let settings=Object.assign({google_client_id:'',drive_linked:false,nazolog_user_id:'bf53c570'},lsGet(LS_SET,{}));
 if(!settings.google_client_id)settings.google_client_id=DEFAULT_CLIENT_ID;
-const ui={tab:'list',q:'',group:'',result:'',format:'',year:'',sort:'new',shown:[],lq:'',lres:''};
+const ui={tab:'list',q:'',group:'',result:'',format:'',year:'',status:'',sort:'new',shown:[],lq:'',lres:''};
 
 function saveLocal(){db.updated_at=nowIso();lsSet(LS_DB,db)}
 function save(){saveLocal();scheduleSync()}
 function saveSettings(){lsSet(LS_SET,settings)}
 
 /* =============== data ops =============== */
+const isPlan=r=>r.status==='plan';
+/* 謎ログに送る内容（作品・日付・時刻・ステータス）が変わったかを判定するための署名 */
+const nzSig=r=>[isPlan(r)?'plan':'done',r.result||'',r.date||'',r.time||'',isPlan(r)?(r.nazolog_plan_status||'tentative'):''].join('|');
+const nzPending=r=>!r.deleted&&r.nazolog_sig!==nzSig(r);
+function nzStatusId(r){
+  if(isPlan(r))return r.nazolog_plan_status||'tentative';
+  return r.result==='失敗'?'failed':(r.result==='成功'||r.result==='大成功')?'succeeded':'experienced';
+}
 const isWin=r=>r.result==='大成功'||r.result==='成功';
 function live(){return Object.entries(db.records).filter(([,r])=>r&&!r.deleted).map(([id,r])=>({id,...r}))}
 // 書き込みはここ1か所に集約
 function upsert(id,patch){
   const old=db.records[id];const alive=(old&&!old.deleted)?old:null;
-  const cur=Object.assign({title:'',group:'',date:'',result:'',score:0,format:'',venue:'',impression:'',lesson:''},alive||{},patch);
+  const cur=Object.assign({title:'',group:'',date:'',time:'',status:'',result:'',score:0,format:'',venue:'',impression:'',lesson:''},alive||{},patch);
   cur.created_at=cur.created_at||nowIso();cur.updated_at=nowIso();delete cur.deleted;
   db.records[id]=cur;save();return cur;
 }
@@ -195,14 +213,17 @@ function importJson(text,overwrite){
   db=mergeDb(db,{records:j.records});
   /* 読み込みでは、既存記録の「空欄」だけをファイル側の値で補完する（入力済みの値は上書きしない）。
      手元で先に編集した記録が新しい扱いになり、会場などの追記が反映されない問題を防ぐ。 */
-  const FILL=['group','date','format','venue','impression','lesson'];
+  const FILL=['group','date','time','format','venue','impression','lesson','status','nazolog_content_id','nazolog_record_id','nazolog_plan_status','nazolog_synced_at'];
   Object.keys(j.records).forEach(id=>{
     const q=j.records[id],r=db.records[id];
     if(!q||q.deleted||!r||r.deleted||!local[id])return;
     let ch=false;
     FILL.forEach(k=>{if(!r[k]&&q[k]){r[k]=q[k];ch=true}});
     if(ch)r.updated_at=nowIso();
+    /* 謎ログ由来の記録は「取り込んだ時点で謎ログと同じ」とみなす（署名を保存） */
+    if(r.nazolog_record_id&&r.nazolog_synced_at&&!r.nazolog_sig)r.nazolog_sig=nzSig(r);
   });
+  Object.keys(j.records).forEach(id=>{const q=j.records[id],r=db.records[id];if(q&&!q.deleted&&r&&!r.deleted&&r.nazolog_record_id&&r.nazolog_synced_at&&!r.nazolog_sig)r.nazolog_sig=nzSig(r)});
   save();
   return live().length-before;
 }
@@ -248,6 +269,7 @@ function filtered(){
   if(ui.result)a=a.filter(r=>ui.result==='none'?!r.result:r.result===ui.result);
   a=a.filter(matchFmt);
   if(ui.year)a=a.filter(r=>(r.date||'').slice(0,4)===ui.year);
+  if(ui.status)a=a.filter(r=>ui.status==='plan'?isPlan(r):!isPlan(r));
   if(ui.sort==='old')a.sort(byDate);
   else if(ui.sort==='score')a.sort((x,y)=>(y.score||0)-(x.score||0)||byDate(y,x));
   else a.sort((x,y)=>byDate(y,x));
@@ -361,7 +383,7 @@ function render(){
   else if(ui.tab==='stats')renderStats(m);
   else if(ui.tab==='lessons')renderLessons(m);
   else renderSettings(m);
-  fixHeader();
+  updateNzBtn();fixHeader();
 }
 function fixHeader(){const h=$('header');if(h)document.documentElement.style.setProperty('--hh',h.offsetHeight+'px')}
 function fmtBtns(all){
@@ -370,7 +392,13 @@ function fmtBtns(all){
   const b=(v,l,n)=>`<button type="button" class="fb ${ui.format===v?'on':''}" data-f="${esc(v)}">${esc(l)}${n!=null?`<small>${n}</small>`:''}</button>`;
   return`<div class="fbtns" id="fmtBtns"><span class="lb2">形式</span>${b('','すべて',all.length)}${fm.map(([f,n])=>b(f,f,n)).join('')}${ex?b('none','未設定',ex):''}</div>`;
 }
+function stBtns(all){
+  const np=all.filter(isPlan).length;
+  const b=(v,l,n)=>`<button type="button" class="fb ${ui.status===v?'on':''}" data-s="${v}">${l}<small>${n}</small></button>`;
+  return`<div class="fbtns" id="stBtns"><span class="lb2">種別</span>${b('','すべて',all.length)}${b('plan','予定',np)}${b('done','参加済み',all.length-np)}</div>`;
+}
 function bindFmtBtns(after){
+  const sb=$('#stBtns');if(sb)sb.onclick=e=>{const b=e.target.closest('.fb');if(!b)return;ui.status=b.dataset.s;after()};
   const el=$('#fmtBtns');if(!el)return;
   el.onclick=e=>{const b=e.target.closest('.fb');if(!b)return;ui.format=b.dataset.f;after()};
 }
@@ -392,13 +420,13 @@ function renderList(m){
       <select id="fSort">${opt('new','並び: 日付が新しい順',ui.sort)}${opt('old','並び: 日付が古い順',ui.sort)}${opt('score','並び: 面白さ順',ui.sort)}</select>
       <button class="btn" id="fClear">条件クリア</button>
     </div>
-    ${fmtBtns(all)}
+    ${stBtns(all)}${fmtBtns(all)}
     <div class="hint" id="sum"></div>
   </div>
   <div id="list"></div>`;
   $('#q').oninput=e=>{ui.q=e.target.value;drawList()};
   [['fGroup','group'],['fRes','result'],['fYear','year'],['fSort','sort']].forEach(([id,k])=>{$('#'+id).onchange=e=>{ui[k]=e.target.value;drawList()}});
-  $('#fClear').onclick=()=>{Object.assign(ui,{q:'',group:'',result:'',format:'',year:'',sort:'new'});renderList(m)};
+  $('#fClear').onclick=()=>{Object.assign(ui,{q:'',group:'',result:'',format:'',year:'',status:'',sort:'new'});renderList(m)};
   bindFmtBtns(()=>renderList(m));
   $('#list').onclick=listClick;
   drawList();
@@ -407,12 +435,12 @@ function recHtml(r){
   const sc=r.score|0;
   const place=[r.format,r.venue].filter(Boolean).map(esc).join(' ・ ');
   return`<article class="rec" data-id="${esc(r.id)}">
-    <div class="rl"><div class="dt">${fmtDate(r.date)}</div><span class="grp">${esc(r.group||'団体なし')}</span>${place?`<div class="fm">${place}</div>`:''}</div>
+    <div class="rl"><div class="dt">${fmtDate(r.date)}${r.time?' '+esc(r.time):''}</div>${isPlan(r)?`<span class="pl ${r.nazolog_plan_status==='tentative'?'t':''}">予定・${esc(PLAN_LBL[r.nazolog_plan_status||'tentative']||'仮予定')}</span>`:''}${nzPending(r)?'<span class="un" title="謎ログに未反映">未反映</span>':''}<span class="grp">${esc(r.group||'団体なし')}</span>${place?`<div class="fm">${place}</div>`:''}</div>
     <div class="rm" title="クリックで感想を全文表示/折りたたみ"><div class="ttl">${esc(r.title)}</div>${r.impression?`<div class="imp">${esc(r.impression)}</div>`:''}${r.lesson?`<div class="les">教訓: ${esc(r.lesson)}</div>`:''}</div>
     <div class="rr">
       <div class="res">${RESULTS.map(([l,c])=>`<button class="rb ${c} ${r.result===l?'on':''}" data-r="${l}">${l}</button>`).join('')}</div>
       <div class="sbs">${Array.from({length:10},(_,i)=>`<button class="sb ${sc===i+1?'on':''}" data-s="${i+1}" title="面白さ ${i+1}点（もう一度押すと解除）">${i+1}</button>`).join('')}</div>
-      <button class="qb ed">✎ 編集</button>
+      <div class="row" style="justify-content:flex-end">${isPlan(r)?'<button class="qb dn" title="参加済みにして、結果を入れられるようにします">✔ 参加済みにする</button>':''}<button class="qb ed">✎ 編集</button></div>
     </div></article>`;
 }
 function drawList(){
@@ -452,6 +480,7 @@ function listClick(e){
   const rb=e.target.closest('.rb'),sb=e.target.closest('.sb');
   if(rb){upsert(id,{result:r.result===rb.dataset.r?'':rb.dataset.r});refreshRow(row,id);updateSummary();return}
   if(sb){const s=+sb.dataset.s;upsert(id,{score:(r.score|0)===s?0:s});refreshRow(row,id);updateSummary();return}
+  if(e.target.closest('.dn')){upsert(id,{status:''});drawList();render();toast('参加済みにしました。結果を選んでください');return}
   if(e.target.closest('.ed')){openEdit(id);return}
   if(e.target.closest('.rm')){if(!(window.getSelection&&String(window.getSelection()).length))row.classList.toggle('open')}
 }
@@ -463,8 +492,8 @@ function openEdit(id){
   const r=id?db.records[id]:null;
   const all=live();
   const topGroup=(countBy(all,x=>x.group)[0]||[''])[0];
-  const d=Object.assign({title:'',group:topGroup,date:todayStr(),result:'',score:0,format:'',venue:'',impression:'',lesson:''},r||{});
-  let res=d.result,sc=d.score|0;
+  const d=Object.assign({title:'',group:topGroup,date:todayStr(),time:'',status:'',nazolog_plan_status:'tentative',result:'',score:0,format:'',venue:id?'':DEFAULT_VENUE,impression:'',lesson:''},r||{});
+  let res=d.result,sc=d.score|0,stt=d.status==='plan'?'plan':'',pst=d.nazolog_plan_status||'tentative';
   const dl=(name,items)=>`<datalist id="${name}">${items.map(v=>`<option value="${esc(v)}">`).join('')}</datalist>`;
   const fmts=[...new Set([...FORMATS,...all.map(x=>x.format).filter(Boolean)])];
   $('#modalRoot').innerHTML=`<div class="ov" id="ov"><div class="modal">
@@ -473,6 +502,9 @@ function openEdit(id){
     <div class="grid2">
       <div class="field"><label>団体</label><input type="text" id="m_group" list="dl_group" value="${esc(d.group)}"></div>
       <div class="field"><label>日付</label><input type="date" id="m_date" value="${esc(d.date)}"></div>
+      <div class="field"><label>開始時刻（任意）</label><input type="time" id="m_time" value="${esc(d.time)}"></div>
+      <div class="field"><label>種別</label><div class="seg" id="m_st"><button type="button" class="fb ${stt?'':'on'}" data-v="">参加済み</button><button type="button" class="fb ${stt?'on':''}" data-v="plan">予定</button></div></div>
+      <div class="field" id="m_pwrap" style="${stt?'':'display:none'}"><label>謎ログでの予定の扱い</label><div class="seg" id="m_ps">${PLAN_ST.map(([k,l])=>`<button type="button" class="fb ${pst===k?'on':''}" data-v="${k}">${l}</button>`).join('')}</div></div>
       <div class="field"><label>形式</label><input type="text" id="m_format" list="dl_fmt" placeholder="ホール型 / ルーム型 / 周遊型 …" value="${esc(d.format)}"></div>
       <div class="field"><label>会場・場所</label><input type="text" id="m_venue" list="dl_venue" value="${esc(d.venue)}"></div>
     </div>
@@ -487,11 +519,13 @@ function openEdit(id){
   $('#ov').addEventListener('mousedown',e=>{if(e.target.id==='ov')closeModal()});
   $('#m_res').onclick=e=>{const b=e.target.closest('.rb');if(!b)return;res=res===b.dataset.r?'':b.dataset.r;$('#m_res').querySelectorAll('.rb').forEach(x=>x.classList.toggle('on',x.dataset.r===res))};
   $('#m_sc').onclick=e=>{const b=e.target.closest('.sb');if(!b)return;const s=+b.dataset.s;sc=sc===s?0:s;$('#m_sc').querySelectorAll('.sb').forEach(x=>x.classList.toggle('on',+x.dataset.s===sc))};
+  $('#m_st').onclick=e=>{const b=e.target.closest('.fb');if(!b)return;stt=b.dataset.v;$('#m_st').querySelectorAll('.fb').forEach(x=>x.classList.toggle('on',x.dataset.v===stt));$('#m_pwrap').style.display=stt?'':'none'};
+  $('#m_ps').onclick=e=>{const b=e.target.closest('.fb');if(!b)return;pst=b.dataset.v;$('#m_ps').querySelectorAll('.fb').forEach(x=>x.classList.toggle('on',x.dataset.v===pst))};
   $('#mCancel').onclick=closeModal;
   $('#mSave').onclick=()=>{
     const title=$('#m_title').value.trim();
     if(!title){toast('公演名を入力してください');return}
-    upsert(id||newId(),{title,group:$('#m_group').value.trim(),date:$('#m_date').value,result:res,score:sc,
+    upsert(id||newId(),{title,group:$('#m_group').value.trim(),date:$('#m_date').value,time:$('#m_time').value,status:stt,nazolog_plan_status:stt?pst:(d.nazolog_plan_status||''),result:res,score:sc,
       format:$('#m_format').value.trim(),venue:$('#m_venue').value.trim(),impression:$('#m_imp').value.trim(),lesson:$('#m_les').value.trim()});
     closeModal();render();toast('保存しました');
   };
@@ -513,7 +547,7 @@ function barBlock(title,list,note){
   return`<div class="panel"><h2>${title}</h2>${note?`<div class="hint" style="margin-bottom:6px">${note}</div>`:''}${list.length?list.map(a=>barRow(a,maxN)).join(''):'<div class="hint">データなし</div>'}</div>`;
 }
 function renderStats(m){
-  const allRs=live();
+  const allRs=live().filter(r=>!isPlan(r));
   const rs=allRs.filter(matchFmt);
   if(!allRs.length){m.innerHTML='<div class="empty">記録が増えると、ここに成功率や連勝記録が表示されます。</div>';return}
   const s=summary(rs),st=streaks(rs);
@@ -584,6 +618,7 @@ function renderSettings(m){
     </div>
     <p class="hint">「JSONを読み込む」は統合です（同じ公演は新しい更新が優先され、既存の記録の空欄だけ補完します）。「JSONで完全上書き」は初回の移行用で、ファイル内の公演を、面白さの点数以外は手元の内容ごと置き換えます。書き出したJSONは先頭の <code>_readme</code> に項目の説明が入っているので、そのままAIに渡して分析できます。</p>
   </div>
+  <div class="panel"><h2>謎ログ連携</h2>${nzPanelHtml()}<div class="row"><button class="btn" id="nzOpen2">謎ログを開く</button></div></div>
   <div class="panel"><h2>保存場所について</h2>
     <p class="hint">このサイトのコードは公開されていますが、記録そのものはこのブラウザ（localStorage）とあなたのDriveにしかありません。端末を変えるときはDrive連携か、JSONの書き出し→読み込みで移行できます。評価は公開サイトのURLだけで付けてください（ローカルでファイルを直接開くと、保存先が別になります）。</p>
   </div>`;
@@ -591,6 +626,7 @@ function renderSettings(m){
   $('#cid').onchange=e=>{settings.google_client_id=e.target.value.trim();saveSettings()};
   $('#syncNow').onclick=async()=>{settings.google_client_id=$('#cid').value.trim();saveSettings();const ok=await driveSync(true);if(ok){toast('同期しました');if(ui.tab==='settings')renderSettings(m)}};
   $('#exp').onclick=downloadJson;
+  $('#nzOpen2').onclick=()=>{window.open(NZ_ORIGIN+'/','nazolog_sync')};
   let ovMode=false;
   $('#impBtn').onclick=()=>{ovMode=false;$('#impFile').click()};
   $('#impOvBtn').onclick=()=>{
@@ -606,9 +642,163 @@ function renderSettings(m){
   $('#aiBtn').onclick=async()=>{try{await navigator.clipboard.writeText(aiPrompt());toast('コピーしました。AIに貼り付けてください')}catch(err){toast('コピーできませんでした（JSON書き出しを使ってください）',4000)}};
 }
 
+/* ===== 謎ログ側で動くブックマークレット（この関数が文字列として謎ログのタブに渡る） ===== */
+function nzBookmarklet(){
+  var TECHO='https://ykdtmnhnddsbba-jj.github.io',NZ='https://www.nazo.site';
+  if(location.origin!==NZ){alert('このボタンは、手帖の「謎ログに反映」から開いた謎ログのタブで押してください');return}
+  if(!window.opener){alert('手帖の「謎ログに反映」ボタンから開いたタブで押してください');return}
+  if(document.getElementById('nz-panel'))return;
+  var api=document.querySelector('#__nuxt').__vue_app__.config.globalProperties.$api;
+  var wait=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+  var core=function(t){return String(t||'').normalize('NFKC').replace(/【[^】]*】/g,'').replace(/^(名探偵コナン|ダンダダン|リドラの脱出BOX)\s*/,'').replace(/[『』「」]/g,'').trim()};
+  var norm=function(t){return core(t).replace(/[\s~〜～・!！?？。、,.:：\-－_()（）\[\]]/g,'').replace(/噓/g,'嘘').toLowerCase()};
+  var P=document.createElement('div');P.id='nz-panel';
+  P.style.cssText='position:fixed;top:12px;right:12px;width:520px;max-width:94vw;max-height:88vh;overflow:auto;z-index:2147483647;background:#fff;color:#222;border:2px solid #f90;border-radius:12px;padding:14px;font:14px/1.5 sans-serif;box-shadow:0 6px 30px rgba(0,0,0,.35)';
+  document.body.appendChild(P);
+  var show=function(h){P.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center"><b>謎解き手帖 → 謎ログ に反映</b><button id="nz-x" style="border:0;background:none;font-size:18px;cursor:pointer">×</button></div><div style="margin-top:8px">'+h+'</div>';P.querySelector('#nz-x').onclick=function(){P.remove();window.removeEventListener('message',onMsg)}};
+  var uid='',items=[];
+  async function search(title){
+    var c=core(title),kws=[c];if(c.length>8)kws.push(c.slice(0,8));
+    var seen={},out=[];
+    for(var i=0;i<kws.length;i++){
+      var r=await api('/contents',{query:{per:8,'q[keyword]':kws[i]}});
+      (r.contents||[]).forEach(function(x){if(!seen[x.id]){seen[x.id]=1;out.push({id:x.id,title:x.title,rel:x.releaseDate})}});
+      await wait(700);
+    }
+    return out;
+  }
+  async function plan(){
+    show('作品を照合中…（'+items.length+'件）');
+    var rows=[];
+    for(var i=0;i<items.length;i++){
+      var it=items[i],row={it:it,cid:it.cid||'',cands:[],auto:!!it.cid};
+      if(!row.cid){
+        try{row.cands=await search(it.title)}catch(e){row.err=String(e)}
+        var ex=row.cands.filter(function(c){return norm(c.title)===norm(it.title)});
+        if(ex.length===1){row.cid=ex[0].id;row.auto=true}
+      }
+      rows.push(row);
+    }
+    var h='<div style="font-size:12px;color:#666">確認して「実行」を押すと、謎ログに<b>非公開</b>で記録します（1件ずつ間隔をあけて処理）。</div><table style="width:100%;border-collapse:collapse;margin-top:8px;font-size:13px">';
+    rows.forEach(function(r,i){
+      var st=r.it.plan?'予定':'参加済';
+      h+='<tr style="border-top:1px solid #ddd"><td style="padding:4px 2px;vertical-align:top"><b>'+esc(r.it.title)+'</b><br><span style="color:#666">'+esc(r.it.date||'日付なし')+(r.it.time?' '+esc(r.it.time):'')+' ・ '+st+' → '+esc(r.it.nz_status)+'</span></td><td style="padding:4px 2px;vertical-align:top;width:190px">';
+      if(r.auto)h+='<span style="color:#0a7">✔ '+(r.it.cid?'紐づけ済み':'作品一致')+'</span>'+(r.cid&&!r.it.cid?'<br><span style="font-size:11px;color:#888">'+esc((r.cands.find(function(c){return c.id===r.cid})||{}).title||'')+'</span>':'');
+      else{
+        h+='<select data-i="'+i+'" style="max-width:190px"><option value="">（スキップ）</option>'+r.cands.map(function(c){return'<option value="'+esc(c.id)+'">'+esc(c.title)+(c.rel?'（'+esc(c.rel.slice(0,4))+'）':'')+'</option>'}).join('')+'</select>'+(r.cands.length?'':'<br><span style="font-size:11px;color:#c00">候補なし</span>');
+      }
+      h+='</td></tr>';
+    });
+    h+='</table><div style="margin-top:10px;display:flex;gap:8px"><button id="nz-run" style="background:#f90;border:0;border-radius:8px;padding:8px 16px;font-weight:700;cursor:pointer">実行</button><button id="nz-cancel" style="padding:8px 14px;border-radius:8px;cursor:pointer">キャンセル</button></div>';
+    show(h);
+    P.querySelectorAll('select[data-i]').forEach(function(s){s.onchange=function(){rows[+s.dataset.i].cid=s.value}});
+    P.querySelector('#nz-cancel').onclick=function(){P.remove();window.removeEventListener('message',onMsg)};
+    P.querySelector('#nz-run').onclick=function(){run(rows)};
+  }
+  async function runGroup(g){
+    var rid=g.items.map(function(i){return i.rid}).filter(Boolean)[0],rec=null;
+    if(rid)rec=await api('/content_records/'+rid);
+    else{
+      var l=await api('/content_records',{query:{'q[user_id_eq]':uid,'q[content_id_eq]':g.cid,per:5}});await wait(700);
+      if(l.contentRecords&&l.contentRecords[0])rec=await api('/content_records/'+l.contentRecords[0].id);
+    }
+    var ex=(rec&&rec.contentPlays)||[],plays=[],used={};
+    g.items.forEach(function(it){
+      if(!it.date||used[it.date])return;used[it.date]=1;
+      var o={play_date:it.date},e=ex.filter(function(p){return p.playDate===it.date})[0];
+      if(it.time)o.play_time=it.time;
+      if(e)o.id=e.id;
+      plays.push(o);
+    });
+    var latest=g.items.slice().sort(function(a,b){return String(b.date).localeCompare(String(a.date))})[0];
+    var cr={content_record_status_id:latest.nz_status};
+    if(plays.length)cr.content_plays_attributes=plays;
+    if(rec){await api('/content_records/'+rec.id,{method:'PATCH',body:{content_record:cr}});return{rid:rec.id,mode:'更新'}}
+    cr.content_id=g.cid;cr.user_id=uid;cr.disclosure='close';cr.test_play=false;cr.repeat=false;
+    var r=await api('/content_records',{method:'POST',body:{content_record:cr}});
+    return{rid:r.id,mode:'新規'};
+  }
+  async function run(rows){
+    var groups={},results=[],skipped=0;
+    rows.forEach(function(r){if(!r.cid){skipped++;results.push({local_id:r.it.local_id,status:'skip'});return}(groups[r.cid]=groups[r.cid]||{cid:r.cid,items:[]}).items.push(r.it)});
+    var keys=Object.keys(groups),log=[],ok=0;
+    for(var k=0;k<keys.length;k++){
+      var g=groups[keys[k]];
+      show('反映中… '+(k+1)+' / '+keys.length+'<br><span style="font-size:12px;color:#666">'+esc(g.items[0].title)+'</span>');
+      try{
+        var res=await runGroup(g);ok++;
+        g.items.forEach(function(it){results.push({local_id:it.local_id,status:'ok',cid:g.cid,rid:res.rid})});
+        log.push('✔ '+res.mode+'：'+esc(g.items[0].title));
+      }catch(e){
+        g.items.forEach(function(it){results.push({local_id:it.local_id,status:'error'})});
+        log.push('✖ 失敗：'+esc(g.items[0].title)+'（'+esc(String(e&&e.message||e))+'）');
+        break;
+      }
+      await wait(700);
+    }
+    window.opener.postMessage({t:'nz-result',results:results},TECHO);
+    show('<b>'+ok+'件を反映しました</b>'+(skipped?'（スキップ '+skipped+'件）':'')+'<div style="margin-top:8px;font-size:13px">'+log.join('<br>')+'</div><div style="margin-top:8px;font-size:12px;color:#666">結果は手帖に送りました。手帖のタブに戻って確認してください。</div>');
+  }
+  function onMsg(e){
+    if(e.source!==window.opener||e.origin!==TECHO||!e.data||e.data.t!=='nz-items')return;
+    uid=e.data.user_id;items=e.data.items||[];
+    if(!items.length){show('反映する記録はありません（すべて反映済みです）。');return}
+    plan().catch(function(err){show('エラー：'+esc(String(err&&err.message||err)))});
+  }
+  window.addEventListener('message',onMsg);
+  show('手帖から未反映の記録を受け取っています…');
+  window.opener.postMessage({t:'nz-hello'},TECHO);
+}
+
+/* =============== 謎ログ連携（手帖側） =============== */
+function nzItems(){
+  return live().filter(nzPending).map(r=>({local_id:r.id,title:r.title,date:r.date||'',time:r.time||'',plan:isPlan(r),nz_status:nzStatusId(r),cid:r.nazolog_content_id||'',rid:r.nazolog_record_id||''}));
+}
+function bmHref(){return 'javascript:('+encodeURIComponent(nzBookmarklet.toString())+')()'}
+window.addEventListener('message',e=>{
+  if(e.origin!==NZ_ORIGIN||!e.data||typeof e.data!=='object')return;
+  if(e.data.t==='nz-hello'){
+    /* 謎ログに渡すのは、作品名・日付・時刻・ステータスだけ。感想・評価・教訓は送らない */
+    e.source.postMessage({t:'nz-items',user_id:settings.nazolog_user_id,items:nzItems()},e.origin);
+  }else if(e.data.t==='nz-result'&&Array.isArray(e.data.results)){
+    const t=nowIso();let n=0;
+    e.data.results.forEach(x=>{
+      const r=db.records[x&&x.local_id];if(!r||r.deleted||!x||x.status!=='ok')return;
+      db.records[x.local_id]=Object.assign({},r,{nazolog_content_id:String(x.cid||''),nazolog_record_id:String(x.rid||''),nazolog_synced_at:t});
+      db.records[x.local_id].nazolog_sig=nzSig(db.records[x.local_id]);
+      db.records[x.local_id].updated_at=t;n++;
+    });
+    if(n){save();render();toast(`謎ログに ${n}件 反映しました`,4000)}
+  }
+});
+function updateNzBtn(){
+  const b=$('#nzBtn');if(!b)return;const n=nzItems().length;
+  b.textContent=n?`謎ログに反映（${n}）`:'謎ログに反映';
+  b.style.borderColor=n?'var(--gold)':'';b.style.color=n?'var(--gold)':'';
+}
+function nzPanelHtml(){
+  const items=nzItems();
+  return`<p class="hint">未反映の記録を、謎ログに<b>非公開</b>で登録・更新します。謎ログに送るのは「作品名・日付・時刻・ステータス（成功/失敗/参加済み/予定）」だけで、感想・評価・教訓は送りません。</p>
+  <ol class="hint" style="line-height:1.9">
+    <li>下の「謎ログを開く」を押す（新しいタブで謎ログが開きます。サインインしておく）</li>
+    <li>そのタブで、ブックマークバーの <b>「謎ログに反映」</b> を押す</li>
+    <li>確認画面で内容を見て「実行」を押す。結果はこの手帖に自動で戻ります</li>
+  </ol>
+  <p class="hint">初回だけ、このリンクをブックマークバーにドラッグして登録してください： <a href="${bmHref()}" class="btn" style="display:inline-block;text-decoration:none" onclick="event.preventDefault();alert('このリンクはブックマークバーへドラッグして登録してください。登録後、謎ログのタブで押します。');">⭐ 謎ログに反映</a></p>
+  <p class="hint">未反映 ${items.length}件${items.length?'：':''}${items.slice(0,8).map(i=>esc(i.title)).join('、')}${items.length>8?' ほか':''}</p>`;
+}
+function openNzModal(){
+  $('#modalRoot').innerHTML=`<div class="ov" id="ov"><div class="modal"><h2>謎ログに反映</h2>${nzPanelHtml()}<div class="row"><button class="btn pri" id="nzOpen">謎ログを開く</button><button class="btn" id="nzClose">閉じる</button></div></div></div>`;
+  $('#ov').addEventListener('mousedown',e=>{if(e.target.id==='ov')closeModal()});
+  $('#nzClose').onclick=closeModal;
+  $('#nzOpen').onclick=()=>{window.open(NZ_ORIGIN+'/','nazolog_sync')};
+}
+
 /* =============== init =============== */
 $('#nav').onclick=e=>{const b=e.target.closest('button');if(!b)return;ui.tab=b.dataset.tab;render()};
 $('#addBtn').onclick=()=>openEdit(null);
+$('#nzBtn').onclick=openNzModal;
 $('#syncChip').onclick=()=>{if(!settings.google_client_id){ui.tab='settings';render();return}driveSync(true)};
 window.addEventListener('resize',fixHeader);
 render();
