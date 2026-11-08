@@ -13,6 +13,7 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:"Hiragino Sans","Noto Sans JP","Yu Gothic UI",system-ui,sans-serif;line-height:1.6}
 button,input,select,textarea{font:inherit;color:inherit}
+input[type=date],input[type=time]{color-scheme:dark;cursor:pointer}
 header{position:sticky;top:0;z-index:20;background:rgba(18,19,26,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .bar{max-width:1400px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .logo{font-weight:800;font-size:18px;letter-spacing:.04em}
@@ -504,7 +505,6 @@ function openEdit(id){
   const fmts=[...new Set([...FORMATS,...all.map(x=>x.format).filter(Boolean),d.format].filter(Boolean))];
   $('#modalRoot').innerHTML=`<div class="ov" id="ov"><div class="modal">
     <h2>${id?'公演を編集':'公演を追加'}</h2>
-    ${id?'':'<div class="field"><button type="button" class="btn" id="mAI">💬 AIに頼んで追加（依頼文をコピーしてチャットを開く）</button><div class="hint">入力済みの内容が依頼文になります。開いたチャットに貼り付けて送信してください。</div></div>'}
     <div class="field"><label>公演名 *</label><input type="text" id="m_title" value="${esc(d.title)}"></div>
     <div class="grid2">
       <div class="field"><label>団体</label><input type="text" id="m_group" list="dl_group" value="${esc(d.group)}"></div>
@@ -520,6 +520,7 @@ function openEdit(id){
     <div class="field"><label>面白さ（1〜10・もう一度押すと解除）</label><div class="sbs" id="m_sc">${Array.from({length:10},(_,i)=>`<button type="button" class="sb ${sc===i+1?'on':''}" data-s="${i+1}">${i+1}</button>`).join('')}</div></div>
     <div class="field"><label>感想</label><textarea id="m_imp">${esc(d.impression)}</textarea></div>
     <div class="field"><label>教訓（次回に活かすこと）</label><textarea id="m_les" style="min-height:90px">${esc(d.lesson)}</textarea></div>
+    ${id?'':'<div class="hint" style="margin-bottom:6px">項目を入力したあと、AIに調べて追加してもらう場合は下のボタンを押してください（依頼文が入力欄に入った状態でプロジェクトが開きます。入らなければ貼り付けてください）。</div><div class="row" style="margin-bottom:8px"><button type="button" class="btn" id="mAI">💬 AIに頼んで追加</button></div>'}
     <div class="row"><button class="btn pri" id="mSave">保存</button><button class="btn" id="mCancel">キャンセル</button>${id?'<span style="flex:1"></span><button class="btn danger" id="mDel">削除</button>':''}</div>
   </div></div>`;
   document.addEventListener('keydown',escClose);
@@ -528,6 +529,7 @@ function openEdit(id){
   $('#m_sc').onclick=e=>{const b=e.target.closest('.sb');if(!b)return;const s=+b.dataset.s;sc=sc===s?0:s;$('#m_sc').querySelectorAll('.sb').forEach(x=>x.classList.toggle('on',+x.dataset.s===sc))};
   $('#m_st').onclick=e=>{const b=e.target.closest('.fb');if(!b)return;stt=b.dataset.v;$('#m_st').querySelectorAll('.fb').forEach(x=>x.classList.toggle('on',x.dataset.v===stt));$('#m_pwrap').style.display=stt?'':'none'};
   $('#m_ps').onclick=e=>{const b=e.target.closest('.fb');if(!b)return;pst=b.dataset.v;$('#m_ps').querySelectorAll('.fb').forEach(x=>x.classList.toggle('on',x.dataset.v===pst))};
+  ['#m_date','#m_time'].forEach(q=>{const el=$(q);el.addEventListener('click',()=>{try{el.showPicker()}catch(e){}})});
   const ai=$('#mAI');
   if(ai)ai.onclick=()=>{
     const v=x=>($(x).value||'').trim();
@@ -537,7 +539,7 @@ function openEdit(id){
     add('種別',stt==='plan'?'予定':'参加済み');add('形式',v('#m_format'));add('会場',v('#m_venue'));
     add('結果',res);add('面白さ',sc?sc+'/10':'');add('感想',v('#m_imp'));add('教訓',v('#m_les'));
     const text=lines.join('\n');
-    const go=()=>{window.open(AI_PROJECT_URL,'_blank');toast('依頼文をコピーしました。チャットに貼り付けてください')};
+    const go=()=>{window.open(AI_PROJECT_URL+'?q='+encodeURIComponent(text),'_blank');toast('依頼文をコピーしました。チャットに貼り付けてください')};
     if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(go,()=>{prompt('この文章をコピーしてチャットに貼ってください',text);go()});
     else{prompt('この文章をコピーしてチャットに貼ってください',text);go()}
   };
