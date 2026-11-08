@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>謎解き手帖 — 公演の感想・成績・教訓</title>
+<style>
+:root{
+  --bg:#12131a;--panel:#1b1d27;--panel2:#242736;--line:#2e3144;--text:#ecedf3;--sub:#9da1b5;
+  --accent:#ffb84d;--teal:#5eead4;--pink:#ff6b81;--gold:#fbbf24;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Hiragino Sans","Noto Sans JP","Yu Gothic UI",system-ui,sans-serif;line-height:1.6}
+button,input,select,textarea{font:inherit;color:inherit}
+header{position:sticky;top:0;z-index:20;background:rgba(18,19,26,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar{max-width:1400px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{font-weight:800;font-size:18px;letter-spacing:.04em}
+.logo b{color:var(--accent)}
+nav{display:flex;gap:4px;flex:1;flex-wrap:wrap}
+nav button{background:none;border:0;padding:8px 14px;border-radius:999px;color:var(--sub);cursor:pointer;font-weight:600}
+nav button.on{background:var(--panel2);color:var(--text)}
+.chip{font-size:12px;padding:4px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);color:var(--sub);cursor:pointer}
+.chip.ok{color:var(--teal);border-color:#2a5b55}
+.chip.bad{color:var(--gold);border-color:#6b5a1c}
+main{max-width:1400px;margin:0 auto;padding:18px 16px 80px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.toolbar select,.toolbar input[type=text],.field input,.field select,.field textarea,.panel input[type=text]{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.toolbar input[type=text]{min-width:220px;flex:1}
+.btn{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 14px;cursor:pointer;font-weight:600}
+.btn:hover{border-color:var(--sub)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#2a1a00}
+.btn.danger{color:#ff9aa8}
+.stick{position:sticky;top:var(--hh,56px);z-index:15;background:var(--bg);padding:12px 0 2px;margin:-12px 0 8px;border-bottom:1px solid var(--line)}
+.hint{font-size:12.5px;color:var(--sub)}
+.empty{padding:50px 10px;text-align:center;color:var(--sub);line-height:1.9}
+.gh{margin:18px 0 8px;padding:4px 2px;font-size:17px;border-bottom:2px solid var(--accent)}
+.gh small{font-size:12px;color:var(--sub);font-weight:400;margin-left:8px}
+/* record row */
+.rec{display:grid;grid-template-columns:170px minmax(0,1fr) 330px;gap:16px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;margin-bottom:10px}
+.rec:hover{border-color:#4a4f6e}
+.rl{display:flex;flex-direction:column;gap:5px;align-items:flex-start}
+.dt{font-size:13px;color:var(--sub);white-space:nowrap}
+.grp{font-size:12px;font-weight:700;padding:2px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line)}
+.fm{font-size:12px;color:var(--sub)}
+.rm{min-width:0;cursor:pointer}
+.ttl{font-size:16px;font-weight:700;line-height:1.4}
+.imp{font-size:13px;color:#c9ccdc;white-space:pre-wrap;margin-top:4px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.les{font-size:13px;color:var(--accent);white-space:pre-wrap;margin-top:6px;padding:6px 10px;border-left:3px solid var(--accent);background:rgba(255,184,77,.07);border-radius:0 8px 8px 0}
+.rec.open .imp{display:block;-webkit-line-clamp:unset;overflow:visible}
+.rr{display:flex;flex-direction:column;gap:7px}
+.res{display:flex;gap:4px}
+.rb{flex:1;padding:8px 0;border-radius:8px;border:1px solid var(--line);background:var(--panel2);cursor:pointer;font-weight:700;font-size:13px;color:var(--sub)}
+.rb:hover{color:var(--text);border-color:var(--sub)}
+.rb.on.big{background:#3a2f0b;border-color:#8a6f1c;color:var(--gold)}
+.rb.on.ok{background:#16312f;border-color:#2a5b55;color:var(--teal)}
+.rb.on.ng{background:#35171e;border-color:#7a2f3d;color:var(--pink)}
+.sbs{display:flex;gap:3px}
+.sb{flex:1;min-width:0;padding:7px 0;border-radius:7px;border:1px solid var(--line);background:var(--panel2);cursor:pointer;font-weight:700;font-size:13px;color:var(--sub)}
+.sb:hover{border-color:var(--accent);color:var(--text)}
+.sb.on{background:var(--accent);border-color:var(--accent);color:#2a1a00}
+.qb{align-self:flex-end;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:4px 12px;cursor:pointer;font-size:13px;color:var(--sub)}
+.qb:hover{border-color:var(--sub);color:var(--text)}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:1px 9px;border-radius:99px;margin-right:6px}
+.tag.big{background:#3a2f0b;color:var(--gold)}.tag.ok{background:#16312f;color:var(--teal)}.tag.ng{background:#35171e;color:var(--pink)}
+@media(max-width:960px){.rec{grid-template-columns:1fr}.rl{flex-direction:row;flex-wrap:wrap;align-items:center}.qb{align-self:flex-start}}
+/* panels / stats */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:16px}
+.panel h2{margin:0 0 10px;font-size:17px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px}
+.tile .k{font-size:12px;color:var(--sub)}
+.tile .v{font-size:26px;font-weight:800;line-height:1.3}
+.tile .v small{font-size:13px;color:var(--sub);font-weight:500;margin-left:4px}
+.brow{display:grid;grid-template-columns:150px 1fr 150px;gap:10px;align-items:center;font-size:13px;margin:6px 0}
+.brow .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.track{height:12px;background:var(--panel2);border-radius:99px;overflow:hidden;display:flex}
+.track i{display:block;height:100%}
+.track .s-big{background:var(--gold)}.track .s-ok{background:var(--teal)}.track .s-ng{background:var(--pink)}.track .s-none{background:#4a4f6e}
+.brow .st{color:var(--sub);text-align:right;white-space:nowrap}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--sub);margin-bottom:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+@media(max-width:720px){.brow{grid-template-columns:96px 1fr 96px}}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:960px){.two{grid-template-columns:1fr}}
+.lcard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:8px}
+.lcard .lt{font-size:13px;color:var(--sub)}
+.lcard .lb{white-space:pre-wrap;margin-top:4px}
+/* modal */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:50;display:flex;align-items:flex-start;justify-content:center;padding:24px 12px;overflow:auto}
+.modal{background:var(--panel);border:1px solid var(--line);border-radius:18px;max-width:780px;width:100%;padding:18px}
+.modal h2{margin:0 0 12px;font-size:19px}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.field label{font-size:13px;color:var(--sub)}
+.field textarea{min-height:130px;resize:vertical}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:720px){.grid2{grid-template-columns:1fr}}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#000;border:1px solid var(--line);padding:10px 18px;border-radius:999px;z-index:99;font-size:14px}
+footer{max-width:1400px;margin:0 auto;padding:0 16px 40px;color:var(--sub);font-size:12px}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <div class="logo">謎解き<b>手帖</b></div>
+  <nav id="nav"></nav>
+  <button class="btn pri" id="addBtn">＋ 公演を追加</button>
+  <span id="syncChip" class="chip"></span>
+</div></header>
+<main id="main"></main>
+<footer>感想・成績はこのブラウザと（連携すれば）あなたのGoogle Driveにだけ保存されます。このサイト自体にはデータは含まれていません。</footer>
+<div id="modalRoot"></div>
+
+<script>
+'use strict';
+/* =============== utils =============== */
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nowIso=()=>new Date().toISOString();
+function lsGet(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def}catch(e){return def}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}
+function toast(msg,ms=2600){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),ms)}
+const WD='日月火水木金土';
+function fmtDate(d){const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(d||'');if(!m)return '日付なし';const dt=new Date(+m[1],+m[2]-1,+m[3]);return m[1]+'/'+m[2]+'/'+m[3]+'（'+WD[dt.getDay()]+'）'}
+function todayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function newId(){return 'n_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+
+/* =============== state =============== */
+// localStorageは同じgithub.ioの別サイトと共有されるため、サイト固有のプレフィックスを付ける
+const LS_DB='nazotokidb.v1',LS_SET='nazotokidb.settings.v1';
+const DRIVE_FILE='nazotoki-db.json';
+// OAuthクライアントIDは公開されても安全な識別子（秘密ではない）
+const DEFAULT_CLIENT_ID='568813131190-9pb3hf0f3g3rbiglkq4nbk88g4eltk9p.apps.googleusercontent.com';
+const RESULTS=[['大成功','big'],['成功','ok'],['失敗','ng']];
+const RES_CLS={'大成功':'big','成功':'ok','失敗':'ng'};
+const FORMATS=['ホール型','ルーム型','周遊型','ライブ型','持ち帰り型','その他'];
+function emptyDb(){return{schema_version:1,updated_at:null,records:{}}}
+let db=Object.assign(emptyDb(),lsGet(LS_DB,{}));
+if(!db.records||typeof db.records!=='object')db.records={};
+let settings=Object.assign({google_client_id:'',drive_linked:false},lsGet(LS_SET,{}));
+if(!settings.google_client_id)settings.google_client_id=DEFAULT_CLIENT_ID;
+const ui={tab:'list',q:'',group:'',result:'',format:'',year:'',sort:'new',shown:[],lq:'',lres:''};
+
+function saveLocal(){db.updated_at=nowIso();lsSet(LS_DB,db)}
+function save(){saveLocal();scheduleSync()}
+function saveSettings(){lsSet(LS_SET,settings)}
+
+/* =============== data ops =============== */
+const isWin=r=>r.result==='大成功'||r.result==='成功';
+function live(){return Object.entries(db.records).filter(([,r])=>r&&!r.deleted).map(([id,r])=>({id,...r}))}
+// 書き込みはここ1か所に集約
+function upsert(id,patch){
+  const old=db.records[id];const alive=(old&&!old.deleted)?old:null;
+  const cur=Object.assign({title:'',group:'',date:'',result:'',score:0,format:'',venue:'',impression:'',lesson:''},alive||{},patch);
+  cur.created_at=cur.created_at||nowIso();cur.updated_at=nowIso();delete cur.deleted;
+  db.records[id]=cur;save();return cur;
+}
+function removeRecord(id){const r=db.records[id];if(!r)return;db.records[id]={...r,deleted:true,updated_at:nowIso()};save()}
+// 同期用: 同じIDは updated_at が新しい方を採用（削除も tombstone として伝わる）
+function mergeDb(a,b){
+  const out=emptyDb();const x=a.records||{},y=b.records||{};
+  new Set([...Object.keys(x),...Object.keys(y)]).forEach(id=>{
+    const p=x[id],q=y[id];
+    out.records[id]=!p?q:!q?p:((p.updated_at||'')>=(q.updated_at||'')?p:q);
+  });
+  out.updated_at=nowIso();return out;
+}
+function exportObj(){
+  return{_readme:'謎解き手帖の公演記録 / リアル脱出ゲーム等の参加記録。records[ID]: title=公演名, group=団体, date=YYYY-MM-DD, result=大成功|成功|失敗(脱出結果), score=面白さ1-10(0は未評価), format=形式(ホール型/ルーム型/周遊型/ライブ型など), venue=会場・場所, impression=感想, lesson=教訓(次回に活かすこと), deleted=trueは削除済み。このJSONから成功/失敗の傾向、教訓の共通点、次に参加すべき公演を分析してください。',
+    schema_version:1,updated_at:db.updated_at,records:db.records};
+}
+function downloadJson(){
+  const blob=new Blob([JSON.stringify(exportObj(),null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=DRIVE_FILE;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+}
+function importJson(text){
+  const j=JSON.parse(text);
+  if(!j||typeof j.records!=='object'||j.records===null)throw new Error('謎解き手帖のJSON（records入り）ではありません');
+  const before=live().length;
+  db=mergeDb(db,{records:j.records});save();
+  return live().length-before;
+}
+
+/* =============== stats =============== */
+function agg(rs,keyFn){
+  const m=new Map();
+  rs.forEach(r=>{
+    const k=keyFn(r)||'（未設定）';
+    const a=m.get(k)||{key:k,n:0,big:0,ok:0,ng:0,none:0,sSum:0,sN:0};
+    a.n++;
+    if(r.result==='大成功')a.big++;else if(r.result==='成功')a.ok++;else if(r.result==='失敗')a.ng++;else a.none++;
+    if(r.score>0){a.sSum+=r.score;a.sN++}
+    m.set(k,a);
+  });
+  return [...m.values()];
+}
+const byDate=(a,b)=>(a.date||'').localeCompare(b.date||'')||(a.created_at||'').localeCompare(b.created_at||'')||a.id.localeCompare(b.id);
+function streaks(rs){
+  const j=rs.filter(r=>r.result).sort(byDate);
+  let best=0,run=0;
+  j.forEach(r=>{if(isWin(r)){run++;if(run>best)best=run}else run=0});
+  let cur={type:'win',n:0};
+  if(j.length){
+    const lastWin=isWin(j[j.length-1]);cur={type:lastWin?'win':'lose',n:0};
+    for(let i=j.length-1;i>=0&&isWin(j[i])===lastWin;i--)cur.n++;
+  }
+  return{best,cur};
+}
+function summary(rs){
+  const a=agg(rs,()=>'x')[0]||{n:0,big:0,ok:0,ng:0,none:0,sSum:0,sN:0};
+  const judged=a.big+a.ok+a.ng;
+  return{...a,judged,rate:judged?(a.big+a.ok)/judged:null,avgScore:a.sN?a.sSum/a.sN:null};
+}
+const pct=x=>x==null?'—':Math.round(x*100)+'%';
+
+/* =============== filters =============== */
+function filtered(){
+  let a=live();
+  const q=ui.q.trim().toLowerCase();
+  if(q)a=a.filter(r=>[r.title,r.group,r.impression,r.lesson,r.venue,r.format].join('\n').toLowerCase().includes(q));
+  if(ui.group)a=a.filter(r=>r.group===ui.group);
+  if(ui.result)a=a.filter(r=>ui.result==='none'?!r.result:r.result===ui.result);
+  if(ui.format)a=a.filter(r=>r.format===ui.format);
+  if(ui.year)a=a.filter(r=>(r.date||'').slice(0,4)===ui.year);
+  if(ui.sort==='old')a.sort(byDate);
+  else if(ui.sort==='score')a.sort((x,y)=>(y.score||0)-(x.score||0)||byDate(y,x));
+  else a.sort((x,y)=>byDate(y,x));
+  return a;
+}
+function countBy(rs,f){const m=new Map();rs.forEach(r=>{const k=f(r);if(k)m.set(k,(m.get(k)||0)+1)});return[...m.entries()].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]))}
+
+/* =============== Google Drive sync =============== */
+let gToken=null,gExp=0,gClient=null,driveFileId=null,syncState=settings.drive_linked?'need':'off',syncTimer=null,syncing=false;
+function loadGis(){return new Promise((res,rej)=>{
+  if(window.google&&google.accounts&&google.accounts.oauth2)return res();
+  const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';
+  s.onload=res;s.onerror=()=>rej(new Error('Google認証スクリプトを読み込めません'));document.head.appendChild(s);
+})}
+async function driveAuth(interactive){
+  if(!settings.google_client_id.trim())throw new Error('Google クライアントIDが未設定です（設定タブ）');
+  await loadGis();
+  return new Promise((res,rej)=>{
+    gClient=google.accounts.oauth2.initTokenClient({
+      client_id:settings.google_client_id.trim(),scope:'https://www.googleapis.com/auth/drive.file',
+      callback:r=>{if(r.error)return rej(new Error('Google認証: '+r.error));gToken=r.access_token;gExp=Date.now()+(r.expires_in||3600)*1000;res()},
+      error_callback:e=>rej(new Error('Google認証が完了しませんでした'+(e&&e.type?' ('+e.type+')':'')))
+    });
+    gClient.requestAccessToken({prompt:interactive?'':'none'});
+  });
+}
+const gFetch=(url,opt={})=>fetch(url,{...opt,headers:{...(opt.headers||{}),Authorization:'Bearer '+gToken}});
+async function driveSync(interactive){
+  if(syncing)return;syncing=true;setSync('busy');let changed=false;
+  try{
+    if(!gToken||Date.now()>gExp-60000)await driveAuth(interactive);
+    let id=driveFileId;
+    if(!id){
+      const q=encodeURIComponent(`name='${DRIVE_FILE}' and trashed=false`);
+      const r=await gFetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id)&orderBy=${encodeURIComponent('modifiedTime desc')}&pageSize=1`);
+      if(!r.ok)throw new Error('Drive検索に失敗 ('+r.status+')。Drive APIが有効か確認してください');
+      const j=await r.json();id=j.files&&j.files[0]&&j.files[0].id;
+    }
+    if(id){
+      const r=await gFetch(`https://www.googleapis.com/drive/v3/files/${id}?alt=media`);
+      // 読み込めないまま書き込むと既存データを失うので、必ず中断する
+      if(!r.ok)throw new Error('Driveの読み込みに失敗 ('+r.status+')。保存は中止しました');
+      const remote=await r.json();
+      const sig0=JSON.stringify(db.records);
+      db=mergeDb(db,{records:(remote&&remote.records)||{}});saveLocal();
+      if(JSON.stringify(db.records)!==sig0)changed=true;
+    }
+    const body=JSON.stringify(exportObj(),null,1);
+    if(id){
+      const r=await gFetch(`https://www.googleapis.com/upload/drive/v3/files/${id}?uploadType=media`,{method:'PATCH',headers:{'Content-Type':'application/json'},body});
+      if(!r.ok)throw new Error('Drive保存に失敗 ('+r.status+')');
+    }else{
+      const b='nazotodb'+Date.now();
+      const meta=JSON.stringify({name:DRIVE_FILE,mimeType:'application/json'});
+      const mp=`--${b}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${meta}\r\n--${b}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${body}\r\n--${b}--`;
+      const r=await gFetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id',{method:'POST',headers:{'Content-Type':'multipart/related; boundary='+b},body:mp});
+      if(!r.ok)throw new Error('Drive作成に失敗 ('+r.status+')');
+      id=(await r.json()).id;
+    }
+    driveFileId=id;settings.drive_linked=true;saveSettings();setSync('ok');
+    if(changed)render();
+    return true;
+  }catch(e){setSync(interactive?'bad':'need');if(interactive)toast(e.message,5000);console.warn(e);return false}
+  finally{syncing=false}
+}
+function scheduleSync(){
+  if(!settings.drive_linked)return;
+  setSync('dirty');clearTimeout(syncTimer);
+  syncTimer=setTimeout(()=>{if(gToken&&Date.now()<gExp-60000)driveSync(false);else setSync('need')},2500);
+}
+function setSync(s){
+  syncState=s;const c=$('#syncChip');if(!c)return;
+  const map={off:['☁ Drive未連携',''],need:['☁ 要再接続（クリック）','bad'],ok:['☁ 同期済み','ok'],dirty:['☁ 未同期…','bad'],busy:['☁ 同期中…',''],bad:['☁ 同期エラー（クリック）','bad']};
+  const [t,cls]=map[s]||map.off;c.textContent=t;c.className='chip '+cls;
+}
+
+/* =============== rendering =============== */
+const TABS=[['list','一覧'],['stats','成績'],['lessons','教訓'],['settings','設定']];
+function renderNav(){$('#nav').innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" class="${ui.tab===k?'on':''}">${l}</button>`).join('')}
+function render(){
+  renderNav();setSync(syncState);
+  const m=$('#main');
+  if(ui.tab==='list')renderList(m);
+  else if(ui.tab==='stats')renderStats(m);
+  else if(ui.tab==='lessons')renderLessons(m);
+  else renderSettings(m);
+  fixHeader();
+}
+function fixHeader(){const h=$('header');if(h)document.documentElement.style.setProperty('--hh',h.offsetHeight+'px')}
+const opt=(v,l,cur)=>`<option value="${esc(v)}" ${v===cur?'selected':''}>${esc(l)}</option>`;
+
+/* ---- list ---- */
+function renderList(m){
+  const all=live();
+  const groups=countBy(all,r=>r.group),formats=countBy(all,r=>r.format);
+  const years=[...new Set(all.map(r=>(r.date||'').slice(0,4)).filter(Boolean))].sort().reverse();
+  m.innerHTML=`
+  <div class="stick">
+    <div class="toolbar">
+      <input type="text" id="q" placeholder="公演名・団体・感想・教訓から検索" value="${esc(ui.q)}">
+      <select id="fGroup">${opt('','団体: すべて',ui.group)}${groups.map(([g,n])=>opt(g,`${g}（${n}）`,ui.group)).join('')}</select>
+      <select id="fRes">${opt('','結果: すべて',ui.result)}${RESULTS.map(([r])=>opt(r,r,ui.result)).join('')}${opt('none','結果なし',ui.result)}</select>
+      <select id="fFmt">${opt('','形式: すべて',ui.format)}${formats.map(([f,n])=>opt(f,`${f}（${n}）`,ui.format)).join('')}</select>
+      <select id="fYear">${opt('','年: すべて',ui.year)}${years.map(y=>opt(y,y+'年',ui.year)).join('')}</select>
+      <select id="fSort">${opt('new','並び: 日付が新しい順',ui.sort)}${opt('old','並び: 日付が古い順',ui.sort)}${opt('score','並び: 面白さ順',ui.sort)}</select>
+      <button class="btn" id="fClear">条件クリア</button>
+    </div>
+    <div class="hint" id="sum"></div>
+  </div>
+  <div id="list"></div>`;
+  $('#q').oninput=e=>{ui.q=e.target.value;drawList()};
+  [['fGroup','group'],['fRes','result'],['fFmt','format'],['fYear','year'],['fSort','sort']].forEach(([id,k])=>{$('#'+id).onchange=e=>{ui[k]=e.target.value;drawList()}});
+  $('#fClear').onclick=()=>{Object.assign(ui,{q:'',group:'',result:'',format:'',year:'',sort:'new'});renderList(m)};
+  $('#list').onclick=listClick;
+  drawList();
+}
+function recHtml(r){
+  const sc=r.score|0;
+  const place=[r.format,r.venue].filter(Boolean).map(esc).join(' ・ ');
+  return`<article class="rec" data-id="${esc(r.id)}">
+    <div class="rl"><div class="dt">${fmtDate(r.date)}</div><span class="grp">${esc(r.group||'団体なし')}</span>${place?`<div class="fm">${place}</div>`:''}</div>
+    <div class="rm" title="クリックで感想を全文表示/折りたたみ"><div class="ttl">${esc(r.title)}</div>${r.impression?`<div class="imp">${esc(r.impression)}</div>`:''}${r.lesson?`<div class="les">教訓: ${esc(r.lesson)}</div>`:''}</div>
+    <div class="rr">
+      <div class="res">${RESULTS.map(([l,c])=>`<button class="rb ${c} ${r.result===l?'on':''}" data-r="${l}">${l}</button>`).join('')}</div>
+      <div class="sbs">${Array.from({length:10},(_,i)=>`<button class="sb ${sc===i+1?'on':''}" data-s="${i+1}" title="面白さ ${i+1}点（もう一度押すと解除）">${i+1}</button>`).join('')}</div>
+      <button class="qb ed">✎ 編集</button>
+    </div></article>`;
+}
+function drawList(){
+  const rs=filtered();ui.shown=rs.map(r=>r.id);
+  const box=$('#list');if(!box)return;
+  if(!rs.length){
+    box.innerHTML=live().length?'<div class="empty">条件に合う公演がありません。</div>'
+      :'<div class="empty">まだ記録がありません。<br>右上の「＋ 公演を追加」から感想を書き始められます。<br>Notionなどからの移行データは「設定」→「JSONを読み込む」で取り込めます。</div>';
+    updateSummary();return;
+  }
+  const grouped=ui.sort==='new'||ui.sort==='old';
+  let html='',cur=null,cnt={};
+  if(grouped)rs.forEach(r=>{const k=(r.date||'').slice(0,7);cnt[k]=(cnt[k]||0)+1});
+  rs.forEach(r=>{
+    if(grouped){
+      const k=(r.date||'').slice(0,7);
+      if(k!==cur){cur=k;html+=`<h3 class="gh">${k?k.slice(0,4)+'年'+(+k.slice(5))+'月':'日付なし'}<small>${cnt[k]}公演</small></h3>`}
+    }
+    html+=recHtml(r);
+  });
+  box.innerHTML=html;updateSummary();
+}
+function updateSummary(){
+  const el=$('#sum');if(!el)return;
+  const rs=ui.shown.map(id=>({id,...db.records[id]})).filter(r=>!r.deleted);
+  const s=summary(rs);
+  el.textContent=`表示 ${rs.length}件 ／ 成功率 ${pct(s.rate)}（大成功 ${s.big}・成功 ${s.ok}・失敗 ${s.ng}）${s.avgScore!=null?` ／ 面白さ平均 ${s.avgScore.toFixed(1)}`:''}`;
+}
+function refreshRow(row,id){
+  const r=db.records[id];if(!r||!row)return;
+  row.querySelectorAll('.rb').forEach(b=>b.classList.toggle('on',b.dataset.r===r.result));
+  row.querySelectorAll('.sb').forEach(b=>b.classList.toggle('on',+b.dataset.s===(r.score|0)));
+}
+function listClick(e){
+  const row=e.target.closest('.rec');if(!row)return;
+  const id=row.dataset.id,r=db.records[id];if(!r)return;
+  const rb=e.target.closest('.rb'),sb=e.target.closest('.sb');
+  if(rb){upsert(id,{result:r.result===rb.dataset.r?'':rb.dataset.r});refreshRow(row,id);updateSummary();return}
+  if(sb){const s=+sb.dataset.s;upsert(id,{score:(r.score|0)===s?0:s});refreshRow(row,id);updateSummary();return}
+  if(e.target.closest('.ed')){openEdit(id);return}
+  if(e.target.closest('.rm')){if(!(window.getSelection&&String(window.getSelection()).length))row.classList.toggle('open')}
+}
+
+/* ---- modal (add / edit) ---- */
+function closeModal(){$('#modalRoot').innerHTML='';document.removeEventListener('keydown',escClose)}
+function escClose(e){if(e.key==='Escape')closeModal()}
+function openEdit(id){
+  const r=id?db.records[id]:null;
+  const all=live();
+  const topGroup=(countBy(all,x=>x.group)[0]||[''])[0];
+  const d=Object.assign({title:'',group:topGroup,date:todayStr(),result:'',score:0,format:'',venue:'',impression:'',lesson:''},r||{});
+  let res=d.result,sc=d.score|0;
+  const dl=(name,items)=>`<datalist id="${name}">${items.map(v=>`<option value="${esc(v)}">`).join('')}</datalist>`;
+  const fmts=[...new Set([...FORMATS,...all.map(x=>x.format).filter(Boolean)])];
+  $('#modalRoot').innerHTML=`<div class="ov" id="ov"><div class="modal">
+    <h2>${id?'公演を編集':'公演を追加'}</h2>
+    <div class="field"><label>公演名 *</label><input type="text" id="m_title" value="${esc(d.title)}"></div>
+    <div class="grid2">
+      <div class="field"><label>団体</label><input type="text" id="m_group" list="dl_group" value="${esc(d.group)}"></div>
+      <div class="field"><label>日付</label><input type="date" id="m_date" value="${esc(d.date)}"></div>
+      <div class="field"><label>形式</label><input type="text" id="m_format" list="dl_fmt" placeholder="ホール型 / ルーム型 / 周遊型 …" value="${esc(d.format)}"></div>
+      <div class="field"><label>会場・場所</label><input type="text" id="m_venue" list="dl_venue" value="${esc(d.venue)}"></div>
+    </div>
+    ${dl('dl_group',countBy(all,x=>x.group).map(x=>x[0]))}${dl('dl_fmt',fmts)}${dl('dl_venue',countBy(all,x=>x.venue).map(x=>x[0]))}
+    <div class="field"><label>結果</label><div class="res" id="m_res">${RESULTS.map(([l,c])=>`<button type="button" class="rb ${c} ${res===l?'on':''}" data-r="${l}">${l}</button>`).join('')}</div></div>
+    <div class="field"><label>面白さ（1〜10・もう一度押すと解除）</label><div class="sbs" id="m_sc">${Array.from({length:10},(_,i)=>`<button type="button" class="sb ${sc===i+1?'on':''}" data-s="${i+1}">${i+1}</button>`).join('')}</div></div>
+    <div class="field"><label>感想</label><textarea id="m_imp">${esc(d.impression)}</textarea></div>
+    <div class="field"><label>教訓（次回に活かすこと）</label><textarea id="m_les" style="min-height:90px">${esc(d.lesson)}</textarea></div>
+    <div class="row"><button class="btn pri" id="mSave">保存</button><button class="btn" id="mCancel">キャンセル</button>${id?'<span style="flex:1"></span><button class="btn danger" id="mDel">削除</button>':''}</div>
+  </div></div>`;
+  document.addEventListener('keydown',escClose);
+  $('#ov').addEventListener('mousedown',e=>{if(e.target.id==='ov')closeModal()});
+  $('#m_res').onclick=e=>{const b=e.target.closest('.rb');if(!b)return;res=res===b.dataset.r?'':b.dataset.r;$('#m_res').querySelectorAll('.rb').forEach(x=>x.classList.toggle('on',x.dataset.r===res))};
+  $('#m_sc').onclick=e=>{const b=e.target.closest('.sb');if(!b)return;const s=+b.dataset.s;sc=sc===s?0:s;$('#m_sc').querySelectorAll('.sb').forEach(x=>x.classList.toggle('on',+x.dataset.s===sc))};
+  $('#mCancel').onclick=closeModal;
+  $('#mSave').onclick=()=>{
+    const title=$('#m_title').value.trim();
+    if(!title){toast('公演名を入力してください');return}
+    upsert(id||newId(),{title,group:$('#m_group').value.trim(),date:$('#m_date').value,result:res,score:sc,
+      format:$('#m_format').value.trim(),venue:$('#m_venue').value.trim(),impression:$('#m_imp').value.trim(),lesson:$('#m_les').value.trim()});
+    closeModal();render();toast('保存しました');
+  };
+  const del=$('#mDel');
+  if(del)del.onclick=()=>{if(confirm('この公演の記録を削除しますか？（同期先にも反映されます）')){removeRecord(id);closeModal();render();toast('削除しました')}};
+  $('#m_title').focus();
+}
+
+/* ---- stats ---- */
+function barRow(a,maxN){
+  const w=x=>(maxN?x/maxN*100:0)+'%';
+  const judged=a.big+a.ok+a.ng;
+  return`<div class="brow"><div class="nm" title="${esc(a.key)}">${esc(a.key)}</div>
+    <div class="track"><i class="s-big" style="width:${w(a.big)}"></i><i class="s-ok" style="width:${w(a.ok)}"></i><i class="s-ng" style="width:${w(a.ng)}"></i><i class="s-none" style="width:${w(a.none)}"></i></div>
+    <div class="st">${a.n}公演 ・ ${pct(judged?(a.big+a.ok)/judged:null)}${a.sN?` ・ ★${(a.sSum/a.sN).toFixed(1)}`:''}</div></div>`;
+}
+function barBlock(title,list,note){
+  const maxN=Math.max(1,...list.map(a=>a.n));
+  return`<div class="panel"><h2>${title}</h2>${note?`<div class="hint" style="margin-bottom:6px">${note}</div>`:''}${list.length?list.map(a=>barRow(a,maxN)).join(''):'<div class="hint">データなし</div>'}</div>`;
+}
+function renderStats(m){
+  const rs=live();
+  if(!rs.length){m.innerHTML='<div class="empty">記録が増えると、ここに成功率や連勝記録が表示されます。</div>';return}
+  const s=summary(rs),st=streaks(rs);
+  const curTxt=st.cur.n?(st.cur.type==='win'?st.cur.n+'連勝中':st.cur.n+'連敗中'):'—';
+  const groups=agg(rs,r=>r.group).sort((a,b)=>b.n-a.n);
+  const months=agg(rs,r=>(r.date||'').slice(0,7)).sort((a,b)=>b.key.localeCompare(a.key));
+  const fmts=agg(rs,r=>r.format).sort((a,b)=>b.n-a.n);
+  const recent=rs.filter(r=>r.result).sort(byDate).slice(-10);
+  const rs10=summary(recent);
+  m.innerHTML=`
+  <div class="tiles">
+    <div class="tile"><div class="k">公演数</div><div class="v">${s.n}<small>公演</small></div></div>
+    <div class="tile"><div class="k">成功率（大成功＋成功）</div><div class="v">${pct(s.rate)}</div></div>
+    <div class="tile"><div class="k">直近10公演の成功率</div><div class="v">${pct(rs10.rate)}</div></div>
+    <div class="tile"><div class="k">大成功</div><div class="v">${s.big}<small>回</small></div></div>
+    <div class="tile"><div class="k">現在の記録</div><div class="v">${curTxt}</div></div>
+    <div class="tile"><div class="k">最長連勝</div><div class="v">${st.best}<small>連勝</small></div></div>
+    <div class="tile"><div class="k">面白さ平均</div><div class="v">${s.avgScore!=null?s.avgScore.toFixed(1):'—'}<small>${s.sN}件評価</small></div></div>
+  </div>
+  <div class="legend"><span><i style="background:var(--gold)"></i>大成功</span><span><i style="background:var(--teal)"></i>成功</span><span><i style="background:var(--pink)"></i>失敗</span><span><i style="background:#4a4f6e"></i>結果なし</span><span>★=面白さ平均</span></div>
+  <div class="two">
+    ${barBlock('団体別',groups,'バーの長さは公演数、色は結果の内訳')}
+    ${barBlock('形式別',fmts,'形式が未入力の公演は「（未設定）」')}
+  </div>
+  ${barBlock('月別',months)}`;
+}
+
+/* ---- lessons ---- */
+function renderLessons(m){
+  m.innerHTML=`<div class="stick"><div class="toolbar">
+    <input type="text" id="lq" placeholder="教訓をキーワード検索" value="${esc(ui.lq)}">
+    <select id="lres">${opt('','結果: すべて',ui.lres)}${RESULTS.map(([r])=>opt(r,r,ui.lres)).join('')}</select>
+  </div><div class="hint" id="lsum"></div></div><div id="llist"></div>`;
+  $('#lq').oninput=e=>{ui.lq=e.target.value;drawLessons()};
+  $('#lres').onchange=e=>{ui.lres=e.target.value;drawLessons()};
+  drawLessons();
+}
+function drawLessons(){
+  const q=ui.lq.trim().toLowerCase();
+  const rs=live().filter(r=>r.lesson&&(!ui.lres||r.result===ui.lres)&&(!q||(r.lesson+'\n'+r.title).toLowerCase().includes(q))).sort((a,b)=>byDate(b,a));
+  $('#lsum').textContent=`${rs.length}件の教訓`;
+  $('#llist').innerHTML=rs.length?rs.map(r=>`<div class="lcard"><div class="lt">${r.result?`<span class="tag ${RES_CLS[r.result]}">${esc(r.result)}</span>`:''}${esc(r.title)} ・ ${esc(r.group)} ・ ${fmtDate(r.date)}</div><div class="lb">${esc(r.lesson)}</div></div>`).join(''):'<div class="empty">教訓はまだありません。</div>';
+}
+
+/* ---- settings ---- */
+function aiPrompt(){
+  const recs={};Object.entries(db.records).forEach(([id,r])=>{if(!r.deleted)recs[id]=r});
+  return`以下は私の謎解き（リアル脱出ゲーム等）の参加記録です。\n1. 団体・形式ごとの成功/失敗の傾向\n2. 失敗に共通する原因と、教訓から見える改善点\n3. 私に合いそうな次の公演の提案\nを分析してください。\n\n`+JSON.stringify({...exportObj(),records:recs});
+}
+function renderSettings(m){
+  const n=live().length;
+  m.innerHTML=`
+  <div class="panel"><h2>Google Drive に自動保存</h2>
+    <p class="hint">評価を保存するたびに、あなたのDriveの <b>${DRIVE_FILE}</b> へ自動保存します（このアプリが作ったファイルだけを扱う権限）。初回だけDriveのトップにファイルができるので、お好みのフォルダへ移動してください（以後も名前で見つかります）。</p>
+    <div class="field"><label>Google OAuth クライアントID（アニメ手帖と共通）</label><input type="text" id="cid" value="${esc(settings.google_client_id)}"></div>
+    <div class="row"><button class="btn pri" id="syncNow">連携 / 今すぐ同期</button><span class="hint">状態: <span id="syncTxt"></span></span></div>
+    <p class="hint">テストモードのため、ときどき画面右上の「☁ 要再接続」から再接続が必要です。</p>
+  </div>
+  <div class="panel"><h2>データ（現在 ${n}件）</h2>
+    <div class="row">
+      <button class="btn" id="exp">JSONを書き出す</button>
+      <button class="btn" id="impBtn">JSONを読み込む</button>
+      <input type="file" id="impFile" accept="application/json,.json" style="display:none">
+      <button class="btn" id="aiBtn">AI用プロンプトをコピー</button>
+    </div>
+    <p class="hint">読み込みは「統合」です（同じ公演は新しい更新が優先され、既存の記録は消えません）。書き出したJSONは先頭の <code>_readme</code> に項目の説明が入っているので、そのままAIに渡して分析できます。</p>
+  </div>
+  <div class="panel"><h2>保存場所について</h2>
+    <p class="hint">このサイトのコードは公開されていますが、記録そのものはこのブラウザ（localStorage）とあなたのDriveにしかありません。端末を変えるときはDrive連携か、JSONの書き出し→読み込みで移行できます。評価は公開サイトのURLだけで付けてください（ローカルでファイルを直接開くと、保存先が別になります）。</p>
+  </div>`;
+  $('#syncTxt').textContent=({off:'未連携',need:'要再接続',ok:'同期済み',dirty:'未同期',busy:'同期中',bad:'エラー'})[syncState]||'';
+  $('#cid').onchange=e=>{settings.google_client_id=e.target.value.trim();saveSettings()};
+  $('#syncNow').onclick=async()=>{settings.google_client_id=$('#cid').value.trim();saveSettings();const ok=await driveSync(true);if(ok){toast('同期しました');if(ui.tab==='settings')renderSettings(m)}};
+  $('#exp').onclick=downloadJson;
+  $('#impBtn').onclick=()=>$('#impFile').click();
+  $('#impFile').onchange=async e=>{
+    const f=e.target.files[0];if(!f)return;
+    try{const added=importJson(await f.text());toast(`読み込みました（新規 ${added}件）`);renderSettings(m)}
+    catch(err){toast('読み込めません: '+err.message,5000)}
+    e.target.value='';
+  };
+  $('#aiBtn').onclick=async()=>{try{await navigator.clipboard.writeText(aiPrompt());toast('コピーしました。AIに貼り付けてください')}catch(err){toast('コピーできませんでした（JSON書き出しを使ってください）',4000)}};
+}
+
+/* =============== init =============== */
+$('#nav').onclick=e=>{const b=e.target.closest('button');if(!b)return;ui.tab=b.dataset.tab;render()};
+$('#addBtn').onclick=()=>openEdit(null);
+$('#syncChip').onclick=()=>{if(!settings.google_client_id){ui.tab='settings';render();return}driveSync(true)};
+window.addEventListener('resize',fixHeader);
+render();
+</script>
+</body>
+</html>
