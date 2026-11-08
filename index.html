@@ -442,7 +442,9 @@ function setSync(s){
 
 /* =============== rendering =============== */
 const TABS=[['list','一覧'],['week','直近の予定'],['reco','オススメ'],['stats','成績'],['lessons','教訓'],['settings','設定']];
-function weekWarn(){const t0=todayStr(),e=new Date(new Date(t0+'T00:00:00').getTime()+6*864e5),t1=e.getFullYear()+'-'+String(e.getMonth()+1).padStart(2,'0')+'-'+String(e.getDate()).padStart(2,'0');return live().filter(r=>noTicket(r)&&r.date&&r.date<=t1).length}
+/* 直近＝今日から1か月先まで（例：11/8 → 12/8） */
+function weekRange(){const t0=todayStr(),d=new Date(t0+'T00:00:00');d.setMonth(d.getMonth()+1);const t1=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');return[t0,t1]}
+function weekWarn(){const[t0,t1]=weekRange();return live().filter(r=>noTicket(r)&&r.date&&r.date<=t1).length}
 function renderNav(){const ww=weekWarn();$('#nav').innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" class="${ui.tab===k?'on':''}">${l}${k==='week'&&ww?`<small class="wn">⚠${ww}</small>`:''}</button>`).join('');const c=$('#curTab');if(c)c.textContent=(TABS.find(x=>x[0]===ui.tab)||[])[1]||''}
 function render(){
   renderNav();setSync(syncState);
@@ -583,11 +585,9 @@ function recoAddModal(it){
 }
 
 
-/* ---- 直近の予定（当日用）：今日から7日間の予定を、時刻・会場・チケットのリンクつきで表示 ---- */
+/* ---- 直近の予定（当日用）：今日から1か月先までの予定を、時刻・会場・チケットのリンクつきで表示 ---- */
 function renderWeek(m){
-  const t0=todayStr(),d0=new Date(t0+'T00:00:00'),end=new Date(d0.getTime()+6*864e5);
-  const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-  const t1=iso(end);
+  const[t0,t1]=weekRange(),d0=new Date(t0+'T00:00:00');
   const rs=live().filter(r=>isPlan(r)&&r.date>=t0&&r.date<=t1).sort((a,b)=>(a.date+(a.time||'99')).localeCompare(b.date+(b.time||'99')));
   const nodate=live().filter(r=>isPlan(r)&&!r.date).length;
   const lbl=d=>{const k=Math.round((new Date(d+'T00:00:00')-d0)/864e5);return(k===0?'今日':k===1?'明日':'')+(k<2?'　':'')+fmtDate(d)};
@@ -600,9 +600,9 @@ function renderWeek(m){
       <div class="meta">${esc([r.group,r.format,r.venue].filter(Boolean).join(' ／ '))}</div>
       <div class="row" style="margin-top:8px">${tk}${r.venue?`<a class="btn" href="${maps}" target="_blank" rel="noopener">📍 地図</a>`:''}${nz}<button type="button" class="btn wkEdit" data-id="${esc(r.id)}">編集</button></div></div></div>`;
   };
-  let h=`<div class="hint" style="margin-bottom:10px">今日から7日間（${fmtDate(t0)} 〜 ${fmtDate(t1)}）の予定です。${nodate?`日付が未定の予定が${nodate}件あります（一覧で日付を入れると、ここに出ます）。`:''}</div>`;
+  let h=`<div class="hint" style="margin-bottom:10px">今日から1か月先まで（${fmtDate(t0)} 〜 ${fmtDate(t1)}）の予定を、日付の早い順に表示しています。${nodate?`日付が未定の予定が${nodate}件あります（一覧で日付を入れると、ここに出ます）。`:''}</div>`;
   const nw=rs.filter(noTicket).length;if(nw)h=`<div class="warnbar">⚠ チケットのURLが未登録の予定が${nw}件あります。当日に困らないよう、先に登録しておきましょう。</div>`+h;
-  if(!rs.length)h+='<div class="empty">この1週間の予定はありません。<br>オススメの「予定に入れる」や、＋公演を追加（種別：予定）から入れられます。</div>';
+  if(!rs.length)h+='<div class="empty">この1か月の予定はありません。<br>オススメの「予定に入れる」や、＋公演を追加（種別：予定）から入れられます。</div>';
   else{let cur='';rs.forEach(r=>{if(r.date!==cur){cur=r.date;h+=`<div class="gh">${esc(lbl(cur))}</div>`}h+=card(r)})}
   m.innerHTML=h;
   m.onclick=e=>{const b=e.target.closest('.wkEdit');if(b)openEdit(b.dataset.id)};
