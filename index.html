@@ -116,7 +116,7 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 40px;color:var(--sub);font-
 .rc .meta{font-size:13px;color:var(--sub);margin-top:3px}
 .rc a{color:var(--teal);text-decoration:none;font-size:13px;font-weight:600}
 .rc .lk{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
-.dn{font-size:11px;font-weight:700;padding:1px 9px;border-radius:99px;background:#16312f;color:var(--teal);border:1px solid #2a5b55}
+.rdn{font-size:11px;font-weight:700;padding:1px 9px;border-radius:99px;background:#16312f;color:var(--teal);border:1px solid #2a5b55}
 .soon{font-size:11px;font-weight:700;padding:1px 9px;border-radius:99px;background:#35171e;color:var(--pink);border:1px solid #7a2f3d}
 @media(max-width:720px){.rc{grid-template-columns:1fr}.rc .lk{align-items:flex-start;flex-direction:row}}
 </style>
@@ -483,7 +483,7 @@ function renderReco(m){
     const left=it.end&&it.start<=v.today?Math.round((new Date(it.end)-new Date(v.today))/864e5):null;
     const status=it.permanent?'<span class="pl t">常設</span>':it.start>v.today?'<span class="pl">開催予定</span>':'<span class="pl">開催中</span>';
     const why=recoWhy(it,all);
-    return`<div class="rc ${done?'done':''}"><div class="rl2">${status}${left!=null&&left<=14?`<span class="soon">あと${left}日</span>`:''}${done?'<span class="dn">参加済み</span>':plan?'<span class="un">予定に入れ済み</span>':''}<span>${esc(per)}</span></div>
+    return`<div class="rc ${done?'done':''}"><div class="rl2">${status}${left!=null&&left<=14?`<span class="soon">あと${left}日</span>`:''}${done?'<span class="rdn">参加済み</span>':plan?'<span class="un">予定に入れ済み</span>':''}<span>${esc(per)}</span></div>
     <div><div class="ttl">${esc(it.title)}</div><div class="meta">${esc([it.group,RC_CAT[it.category]||it.category,it.venue,it.pref].filter(Boolean).join(' ／ '))}${it.price?' ／ ¥'+it.price.toLocaleString():''}</div>${why&&!done?`<div class="why">💡 ${esc(why)}</div>`:''}</div>
     <div class="lk"><a href="${esc(it.url)}" target="_blank" rel="noopener">謎ログ ↗</a></div></div>`;
   };
