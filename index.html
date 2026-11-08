@@ -239,6 +239,8 @@ function importJson(text,overwrite){
     if(!q||q.deleted||!r||r.deleted||!local[id])return;
     let ch=false;
     FILL.forEach(k=>{if(!r[k]&&q[k]){r[k]=q[k];ch=true}});
+    /* 形式「その他」は仮の値だったので、ファイル側に具体的な形式（Web謎など）があれば置き換える */
+    if(r.format==='その他'&&q.format&&q.format!=='その他'){r.format=q.format;ch=true}
     if(ch)r.updated_at=stampAfter(r);
     /* 謎ログ由来の記録は「取り込んだ時点で謎ログと同じ」とみなす（署名を保存） */
     if(r.nazolog_record_id&&r.nazolog_synced_at&&!r.nazolog_sig)r.nazolog_sig=nzSig(r);
