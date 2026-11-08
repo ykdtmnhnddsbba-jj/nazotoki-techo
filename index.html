@@ -494,12 +494,22 @@ function listClick(e){
 /* ---- modal (add / edit) ---- */
 function closeModal(){$('#modalRoot').innerHTML='';document.removeEventListener('keydown',escClose)}
 function escClose(e){if(e.key==='Escape')closeModal()}
+function comboHtml(id,label,items,val){
+  return`<div class="field"><label>${label}</label><select id="${id}_s"><option value="">（未設定）</option>${items.map(f=>`<option value="${esc(f)}" ${f===val?'selected':''}>${esc(f)}</option>`).join('')}<option value="__new">＋ 新規登録…</option></select><input type="text" id="${id}" placeholder="新しい名前を入力" style="display:none;margin-top:6px"></div>`;
+}
+function comboBind(id){const sel=$('#'+id+'_s'),tx=$('#'+id);sel.onchange=()=>{const n=sel.value==='__new';tx.style.display=n?'':'none';if(n)tx.focus()}}
+function comboVal(id){const sel=$('#'+id+'_s');return sel.value==='__new'?$('#'+id).value.trim():sel.value}
 const AI_PROJECT_URL='https://claude.ai/project/01a1b699-6689-7243-b8b7-f910c6f8a6ed';
 function openEdit(id){
   const r=id?db.records[id]:null;
   const all=live();
   const topGroup=(countBy(all,x=>x.group)[0]||[''])[0];
   const d=Object.assign({title:'',group:topGroup,date:todayStr(),time:'',status:'',nazolog_plan_status:'tentative',result:'',score:0,format:'',venue:id?'':DEFAULT_VENUE,impression:'',lesson:''},r||{});
+  const th=d.time?d.time.slice(0,2):'',tm=d.time?d.time.slice(3,5):'';
+  const hrs=[...new Set([...Array.from({length:14},(_,i)=>String(i+8).padStart(2,'0')),th].filter(Boolean))].sort();
+  const mns=[...new Set(['00','15','30','45',tm].filter(Boolean))].sort();
+  const grps=[...new Set([...countBy(all,x=>x.group).map(x=>x[0]),d.group].filter(Boolean))];
+  const getTime=()=>{const h=$('#m_th').value,m=$('#m_tm').value;return h?h+':'+(m||'00'):''};
   let res=d.result,sc=d.score|0,stt=d.status==='plan'?'plan':'',pst=d.nazolog_plan_status||'tentative';
   const dl=(name,items)=>`<datalist id="${name}">${items.map(v=>`<option value="${esc(v)}">`).join('')}</datalist>`;
   const fmts=[...new Set([...FORMATS,...all.map(x=>x.format).filter(Boolean),d.format].filter(Boolean))];
@@ -507,19 +517,21 @@ function openEdit(id){
     <h2>${id?'公演を編集':'公演を追加'}</h2>
     <div class="field"><label>公演名 *</label><input type="text" id="m_title" value="${esc(d.title)}"></div>
     <div class="grid2">
-      <div class="field"><label>団体</label><input type="text" id="m_group" list="dl_group" value="${esc(d.group)}"></div>
+      ${comboHtml('m_group','団体',grps,d.group)}
       <div class="field"><label>日付</label><input type="date" id="m_date" value="${esc(d.date)}"></div>
-      <div class="field"><label>開始時刻（任意）</label><input type="time" id="m_time" value="${esc(d.time)}"></div>
+      <div class="field"><label>開始時刻（任意）</label><div class="row" style="gap:6px;flex-wrap:nowrap"><select id="m_th"><option value="">--</option>${hrs.map(h=>`<option value="${h}" ${h===th?'selected':''}>${+h}時</option>`).join('')}</select><select id="m_tm"><option value="">--</option>${mns.map(m=>`<option value="${m}" ${m===tm?'selected':''}>${m}分</option>`).join('')}</select></div></div>
       <div class="field"><label>種別</label><div class="seg" id="m_st"><button type="button" class="fb ${stt?'':'on'}" data-v="">参加済み</button><button type="button" class="fb ${stt?'on':''}" data-v="plan">予定</button></div></div>
       <div class="field" id="m_pwrap" style="${stt?'':'display:none'}"><label>謎ログでの予定の扱い</label><div class="seg" id="m_ps">${PLAN_ST.map(([k,l])=>`<button type="button" class="fb ${pst===k?'on':''}" data-v="${k}">${l}</button>`).join('')}</div></div>
-      <div class="field"><label>形式</label><select id="m_format"><option value="">（未設定）</option>${fmts.map(f=>`<option value="${esc(f)}" ${f===d.format?'selected':''}>${esc(f)}</option>`).join('')}</select></div>
+      ${comboHtml('m_format','形式',fmts,d.format)}
       <div class="field"><label>会場・場所</label><input type="text" id="m_venue" list="dl_venue" value="${esc(d.venue)}"></div>
     </div>
     ${dl('dl_group',countBy(all,x=>x.group).map(x=>x[0]))}${dl('dl_venue',countBy(all,x=>x.venue).map(x=>x[0]))}
+    <div id="m_done" style="${stt==='plan'?'display:none':''}">
     <div class="field"><label>結果</label><div class="res" id="m_res">${RESULTS.map(([l,c])=>`<button type="button" class="rb ${c} ${res===l?'on':''}" data-r="${l}">${l}</button>`).join('')}</div></div>
     <div class="field"><label>面白さ（1〜10・もう一度押すと解除）</label><div class="sbs" id="m_sc">${Array.from({length:10},(_,i)=>`<button type="button" class="sb ${sc===i+1?'on':''}" data-s="${i+1}">${i+1}</button>`).join('')}</div></div>
     <div class="field"><label>感想</label><textarea id="m_imp">${esc(d.impression)}</textarea></div>
     <div class="field"><label>教訓（次回に活かすこと）</label><textarea id="m_les" style="min-height:90px">${esc(d.lesson)}</textarea></div>
+    </div>
     ${id?'':'<div class="hint" style="margin-bottom:6px">項目を入力したあと、AIに調べて追加してもらう場合は下のボタンを押してください（依頼文が入力欄に入った状態でプロジェクトが開きます。入らなければ貼り付けてください）。</div><div class="row" style="margin-bottom:8px"><button type="button" class="btn" id="mAI">💬 AIに頼んで追加</button></div>'}
     <div class="row"><button class="btn pri" id="mSave">保存</button><button class="btn" id="mCancel">キャンセル</button>${id?'<span style="flex:1"></span><button class="btn danger" id="mDel">削除</button>':''}</div>
   </div></div>`;
@@ -527,17 +539,18 @@ function openEdit(id){
   $('#ov').addEventListener('mousedown',e=>{if(e.target.id==='ov')closeModal()});
   $('#m_res').onclick=e=>{const b=e.target.closest('.rb');if(!b)return;res=res===b.dataset.r?'':b.dataset.r;$('#m_res').querySelectorAll('.rb').forEach(x=>x.classList.toggle('on',x.dataset.r===res))};
   $('#m_sc').onclick=e=>{const b=e.target.closest('.sb');if(!b)return;const s=+b.dataset.s;sc=sc===s?0:s;$('#m_sc').querySelectorAll('.sb').forEach(x=>x.classList.toggle('on',+x.dataset.s===sc))};
-  $('#m_st').onclick=e=>{const b=e.target.closest('.fb');if(!b)return;stt=b.dataset.v;$('#m_st').querySelectorAll('.fb').forEach(x=>x.classList.toggle('on',x.dataset.v===stt));$('#m_pwrap').style.display=stt?'':'none'};
+  $('#m_st').onclick=e=>{const b=e.target.closest('.fb');if(!b)return;stt=b.dataset.v;$('#m_st').querySelectorAll('.fb').forEach(x=>x.classList.toggle('on',x.dataset.v===stt));$('#m_pwrap').style.display=stt?'':'none';$('#m_done').style.display=stt==='plan'?'none':''};
   $('#m_ps').onclick=e=>{const b=e.target.closest('.fb');if(!b)return;pst=b.dataset.v;$('#m_ps').querySelectorAll('.fb').forEach(x=>x.classList.toggle('on',x.dataset.v===pst))};
-  ['#m_date','#m_time'].forEach(q=>{const el=$(q);el.addEventListener('click',()=>{try{el.showPicker()}catch(e){}})});
+  comboBind('m_group');comboBind('m_format');
+  ['#m_date'].forEach(q=>{const el=$(q);el.addEventListener('click',()=>{try{el.showPicker()}catch(e){}})});
   const ai=$('#mAI');
   if(ai)ai.onclick=()=>{
     const v=x=>($(x).value||'').trim();
-    const lines=['謎解き手帖に次の公演を追加して、謎ログにも反映してください。','追加する前に、公演名からWebや謎ログで実際の公演を調べて、追加する内容をまとめて私に確認してください。'];
+    const lines=['謎解き手帖に次の公演を追加して、謎ログにも反映してください。','追加する前に、公演名からWebや謎ログで実際の公演を調べて、追加する内容をまとめて私に確認してください。','公演名は仮の名前かもしれないので、確認のうえ正式名称に直してください。会場が未指定なら、開催情報から会場（名古屋店かどうかも）まで特定して、確認に含めてください。'];
     const add=(k,x)=>{if(x)lines.push('・'+k+'：'+x)};
-    add('公演名',v('#m_title'));add('団体',v('#m_group'));add('日付',v('#m_date'));add('開始時刻',v('#m_time'));
-    add('種別',stt==='plan'?'予定':'参加済み');add('形式',v('#m_format'));add('会場',v('#m_venue'));
-    add('結果',res);add('面白さ',sc?sc+'/10':'');add('感想',v('#m_imp'));add('教訓',v('#m_les'));
+    add('公演名（仮の名前かもしれません）',v('#m_title'));add('団体',comboVal('m_group'));add('日付',v('#m_date'));add('開始時刻',getTime());
+    add('種別',stt==='plan'?'予定':'参加済み');add('形式',comboVal('m_format'));{const vn=v('#m_venue');add('会場',vn===DEFAULT_VENUE?'':vn)}
+    if(stt!=='plan'){add('結果',res);add('面白さ',sc?sc+'/10':'');add('感想',v('#m_imp'));add('教訓',v('#m_les'))}
     const text=lines.join('\n');
     const go=()=>{window.open(AI_PROJECT_URL+'?q='+encodeURIComponent(text),'_blank');toast('依頼文をコピーしました。チャットに貼り付けてください')};
     if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(go,()=>{prompt('この文章をコピーしてチャットに貼ってください',text);go()});
@@ -547,8 +560,8 @@ function openEdit(id){
   $('#mSave').onclick=()=>{
     const title=$('#m_title').value.trim();
     if(!title){toast('公演名を入力してください');return}
-    upsert(id||newId(),{title,group:$('#m_group').value.trim(),date:$('#m_date').value,time:$('#m_time').value,status:stt,nazolog_plan_status:stt?pst:(d.nazolog_plan_status||''),result:res,score:sc,
-      format:$('#m_format').value,venue:$('#m_venue').value.trim(),impression:$('#m_imp').value.trim(),lesson:$('#m_les').value.trim()});
+    upsert(id||newId(),{title,group:comboVal('m_group'),date:$('#m_date').value,time:getTime(),status:stt,nazolog_plan_status:stt?pst:(d.nazolog_plan_status||''),result:res,score:sc,
+      format:comboVal('m_format'),venue:$('#m_venue').value.trim(),impression:$('#m_imp').value.trim(),lesson:$('#m_les').value.trim()});
     closeModal();render();toast('保存しました');
   };
   const del=$('#mDel');
