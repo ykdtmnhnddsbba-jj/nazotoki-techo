@@ -178,7 +178,19 @@ function importJson(text){
   const j=JSON.parse(text);
   if(!j||typeof j.records!=='object'||j.records===null)throw new Error('謎解き手帖のJSON（records入り）ではありません');
   const before=live().length;
-  db=mergeDb(db,{records:j.records});save();
+  const local=db.records||{};
+  db=mergeDb(db,{records:j.records});
+  /* 読み込みでは、既存記録の「空欄」だけをファイル側の値で補完する（入力済みの値は上書きしない）。
+     手元で先に編集した記録が新しい扱いになり、会場などの追記が反映されない問題を防ぐ。 */
+  const FILL=['group','date','format','venue','impression','lesson'];
+  Object.keys(j.records).forEach(id=>{
+    const q=j.records[id],r=db.records[id];
+    if(!q||q.deleted||!r||r.deleted||!local[id])return;
+    let ch=false;
+    FILL.forEach(k=>{if(!r[k]&&q[k]){r[k]=q[k];ch=true}});
+    if(ch)r.updated_at=nowIso();
+  });
+  save();
   return live().length-before;
 }
 
