@@ -155,7 +155,7 @@ let db=Object.assign(emptyDb(),lsGet(LS_DB,{}));
 if(!db.records||typeof db.records!=='object')db.records={};
 let settings=Object.assign({google_client_id:'',drive_linked:false,nazolog_user_id:'bf53c570'},lsGet(LS_SET,{}));
 if(!settings.google_client_id)settings.google_client_id=DEFAULT_CLIENT_ID;
-const ui={tab:'list',q:'',group:'',result:'',format:'',year:'',status:'',sort:'new',shown:[],lq:'',lres:''};
+const ui={tab:'list',q:'',group:'',result:'',format:[],year:'',status:'',sort:'new',shown:[],lq:'',lres:''};
 
 function saveLocal(){db.updated_at=nowIso();lsSet(LS_DB,db)}
 function save(){saveLocal();scheduleSync()}
@@ -389,8 +389,8 @@ function fixHeader(){const h=$('header');if(h)document.documentElement.style.set
 function fmtBtns(all){
   const fm=countBy(all,r=>r.format);
   const ex=all.filter(r=>!r.format).length;
-  const b=(v,l,n)=>`<button type="button" class="fb ${ui.format===v?'on':''}" data-f="${esc(v)}">${esc(l)}${n!=null?`<small>${n}</small>`:''}</button>`;
-  return`<div class="fbtns" id="fmtBtns"><span class="lb2">形式</span>${b('','すべて',all.length)}${fm.map(([f,n])=>b(f,f,n)).join('')}${ex?b('none','未設定',ex):''}</div>`;
+  const b=(v,l,n)=>`<button type="button" class="fb ${(v===''?!ui.format.length:ui.format.includes(v))?'on':''}" data-f="${esc(v)}">${esc(l)}${n!=null?`<small>${n}</small>`:''}</button>`;
+  return`<div class="fbtns" id="fmtBtns"><span class="lb2">形式（複数選べます）</span>${b('','すべて',all.length)}${fm.map(([f,n])=>b(f,f,n)).join('')}${(ex||ui.format.includes('none'))?b('none','未設定',ex):''}</div>`;
 }
 function stBtns(all){
   const np=all.filter(isPlan).length;
@@ -400,9 +400,12 @@ function stBtns(all){
 function bindFmtBtns(after){
   const sb=$('#stBtns');if(sb)sb.onclick=e=>{const b=e.target.closest('.fb');if(!b)return;ui.status=b.dataset.s;after()};
   const el=$('#fmtBtns');if(!el)return;
-  el.onclick=e=>{const b=e.target.closest('.fb');if(!b)return;ui.format=b.dataset.f;after()};
+  el.onclick=e=>{const b=e.target.closest('.fb');if(!b)return;const v=b.dataset.f;
+    /* 複数選択：押すたびに追加/解除。「すべて」で全解除 */
+    if(v==='')ui.format=[];else ui.format=ui.format.includes(v)?ui.format.filter(x=>x!==v):[...ui.format,v];
+    after()};
 }
-const matchFmt=r=>!ui.format||(ui.format==='none'?!r.format:r.format===ui.format);
+const matchFmt=r=>!ui.format.length||ui.format.some(f=>f==='none'?!r.format:r.format===f);
 const opt=(v,l,cur)=>`<option value="${esc(v)}" ${v===cur?'selected':''}>${esc(l)}</option>`;
 
 /* ---- list ---- */
@@ -426,7 +429,7 @@ function renderList(m){
   <div id="list"></div>`;
   $('#q').oninput=e=>{ui.q=e.target.value;drawList()};
   [['fGroup','group'],['fRes','result'],['fYear','year'],['fSort','sort']].forEach(([id,k])=>{$('#'+id).onchange=e=>{ui[k]=e.target.value;drawList()}});
-  $('#fClear').onclick=()=>{Object.assign(ui,{q:'',group:'',result:'',format:'',year:'',status:'',sort:'new'});renderList(m)};
+  $('#fClear').onclick=()=>{Object.assign(ui,{q:'',group:'',result:'',format:[],year:'',status:'',sort:'new'});renderList(m)};
   bindFmtBtns(()=>renderList(m));
   $('#list').onclick=listClick;
   drawList();
@@ -495,7 +498,7 @@ function openEdit(id){
   const d=Object.assign({title:'',group:topGroup,date:todayStr(),time:'',status:'',nazolog_plan_status:'tentative',result:'',score:0,format:'',venue:id?'':DEFAULT_VENUE,impression:'',lesson:''},r||{});
   let res=d.result,sc=d.score|0,stt=d.status==='plan'?'plan':'',pst=d.nazolog_plan_status||'tentative';
   const dl=(name,items)=>`<datalist id="${name}">${items.map(v=>`<option value="${esc(v)}">`).join('')}</datalist>`;
-  const fmts=[...new Set([...FORMATS,...all.map(x=>x.format).filter(Boolean)])];
+  const fmts=[...new Set([...FORMATS,...all.map(x=>x.format).filter(Boolean),d.format].filter(Boolean))];
   $('#modalRoot').innerHTML=`<div class="ov" id="ov"><div class="modal">
     <h2>${id?'公演を編集':'公演を追加'}</h2>
     <div class="field"><label>公演名 *</label><input type="text" id="m_title" value="${esc(d.title)}"></div>
@@ -505,10 +508,10 @@ function openEdit(id){
       <div class="field"><label>開始時刻（任意）</label><input type="time" id="m_time" value="${esc(d.time)}"></div>
       <div class="field"><label>種別</label><div class="seg" id="m_st"><button type="button" class="fb ${stt?'':'on'}" data-v="">参加済み</button><button type="button" class="fb ${stt?'on':''}" data-v="plan">予定</button></div></div>
       <div class="field" id="m_pwrap" style="${stt?'':'display:none'}"><label>謎ログでの予定の扱い</label><div class="seg" id="m_ps">${PLAN_ST.map(([k,l])=>`<button type="button" class="fb ${pst===k?'on':''}" data-v="${k}">${l}</button>`).join('')}</div></div>
-      <div class="field"><label>形式</label><input type="text" id="m_format" list="dl_fmt" placeholder="ホール型 / ルーム型 / 周遊型 …" value="${esc(d.format)}"></div>
+      <div class="field"><label>形式</label><select id="m_format"><option value="">（未設定）</option>${fmts.map(f=>`<option value="${esc(f)}" ${f===d.format?'selected':''}>${esc(f)}</option>`).join('')}</select></div>
       <div class="field"><label>会場・場所</label><input type="text" id="m_venue" list="dl_venue" value="${esc(d.venue)}"></div>
     </div>
-    ${dl('dl_group',countBy(all,x=>x.group).map(x=>x[0]))}${dl('dl_fmt',fmts)}${dl('dl_venue',countBy(all,x=>x.venue).map(x=>x[0]))}
+    ${dl('dl_group',countBy(all,x=>x.group).map(x=>x[0]))}${dl('dl_venue',countBy(all,x=>x.venue).map(x=>x[0]))}
     <div class="field"><label>結果</label><div class="res" id="m_res">${RESULTS.map(([l,c])=>`<button type="button" class="rb ${c} ${res===l?'on':''}" data-r="${l}">${l}</button>`).join('')}</div></div>
     <div class="field"><label>面白さ（1〜10・もう一度押すと解除）</label><div class="sbs" id="m_sc">${Array.from({length:10},(_,i)=>`<button type="button" class="sb ${sc===i+1?'on':''}" data-s="${i+1}">${i+1}</button>`).join('')}</div></div>
     <div class="field"><label>感想</label><textarea id="m_imp">${esc(d.impression)}</textarea></div>
@@ -526,7 +529,7 @@ function openEdit(id){
     const title=$('#m_title').value.trim();
     if(!title){toast('公演名を入力してください');return}
     upsert(id||newId(),{title,group:$('#m_group').value.trim(),date:$('#m_date').value,time:$('#m_time').value,status:stt,nazolog_plan_status:stt?pst:(d.nazolog_plan_status||''),result:res,score:sc,
-      format:$('#m_format').value.trim(),venue:$('#m_venue').value.trim(),impression:$('#m_imp').value.trim(),lesson:$('#m_les').value.trim()});
+      format:$('#m_format').value,venue:$('#m_venue').value.trim(),impression:$('#m_imp').value.trim(),lesson:$('#m_les').value.trim()});
     closeModal();render();toast('保存しました');
   };
   const del=$('#mDel');
