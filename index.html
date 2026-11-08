@@ -109,6 +109,16 @@ main{max-width:1400px;margin:0 auto;padding:18px 16px 80px}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#000;border:1px solid var(--line);padding:10px 18px;border-radius:999px;z-index:99;font-size:14px}
 footer{max-width:1400px;margin:0 auto;padding:0 16px 40px;color:var(--sub);font-size:12px}
+.rc{display:grid;grid-template-columns:150px minmax(0,1fr) 120px;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;margin-bottom:10px}
+.rc.done{opacity:.6}
+.rc .rl2{display:flex;flex-direction:column;gap:5px;align-items:flex-start;font-size:13px;color:var(--sub)}
+.rc .why{font-size:13px;color:var(--accent);margin-top:6px}
+.rc .meta{font-size:13px;color:var(--sub);margin-top:3px}
+.rc a{color:var(--teal);text-decoration:none;font-size:13px;font-weight:600}
+.rc .lk{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.dn{font-size:11px;font-weight:700;padding:1px 9px;border-radius:99px;background:#16312f;color:var(--teal);border:1px solid #2a5b55}
+.soon{font-size:11px;font-weight:700;padding:1px 9px;border-radius:99px;background:#35171e;color:var(--pink);border:1px solid #7a2f3d}
+@media(max-width:720px){.rc{grid-template-columns:1fr}.rc .lk{align-items:flex-start;flex-direction:row}}
 </style>
 </head>
 <body>
@@ -377,7 +387,7 @@ function setSync(s){
 }
 
 /* =============== rendering =============== */
-const TABS=[['list','一覧'],['stats','成績'],['lessons','教訓'],['settings','設定']];
+const TABS=[['list','一覧'],['reco','オススメ'],['stats','成績'],['lessons','教訓'],['settings','設定']];
 function renderNav(){$('#nav').innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" class="${ui.tab===k?'on':''}">${l}</button>`).join('')}
 function render(){
   renderNav();setSync(syncState);
@@ -385,6 +395,7 @@ function render(){
   if(ui.tab==='list')renderList(m);
   else if(ui.tab==='stats')renderStats(m);
   else if(ui.tab==='lessons')renderLessons(m);
+  else if(ui.tab==='reco')renderReco(m);
   else renderSettings(m);
   updateNzBtn();fixHeader();
 }
@@ -410,6 +421,75 @@ function bindFmtBtns(after){
 }
 const matchFmt=r=>!ui.format.length||ui.format.some(f=>f==='none'?!r.format:r.format===f);
 const opt=(v,l,cur)=>`<option value="${esc(v)}" ${v===cur?'selected':''}>${esc(l)}</option>`;
+
+
+/* ---- オススメ（recommend.json：GitHub Actionsが週1で更新） ---- */
+const RC_FMT={hall:'ホール型',room:'ルーム型',field:'周遊型',stadium:'周遊型',cube:'ルーム型',cafe:'その他',web:'その他',kit:'持ち帰り型'};
+const RC_CAT={hall:'ホール型',room:'ルーム型',field:'周遊型',stadium:'スタジアム型',cube:'キューブ型',cafe:'カフェ型',web:'ネット型',kit:'持ち帰り型'};
+ui.reco={m:0,cat:[],perm:false,hideDone:false};
+let recoData=null,recoErr='';
+function loadReco(){
+  fetch('recommend.json?'+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()})
+    .then(j=>{recoData=j;if(ui.tab==='reco')render()}).catch(e=>{recoErr=String(e.message||e);if(ui.tab==='reco')render()});
+}
+const normT=t=>String(t||'').replace(/[\s　~〜～\-－・:：!！?？()（）「」『』]/g,'').toLowerCase();
+function recoDone(it,all){
+  const n=normT(it.title);
+  return all.some(r=>!isPlan(r)&&(r.nazolog_content_id===it.contentId||normT(r.title)===n));
+}
+function recoPlan(it,all){
+  const n=normT(it.title);
+  return all.some(r=>isPlan(r)&&(r.nazolog_content_id===it.contentId||normT(r.title)===n));
+}
+function recoWhy(it,all){
+  const done=all.filter(r=>!isPlan(r)),w=[];
+  const fm=RC_FMT[it.category];
+  const sc=a=>{const v=a.filter(r=>r.score>0);return v.length?(v.reduce((x,r)=>x+r.score,0)/v.length):0};
+  const g=it.group?done.filter(r=>r.group===it.group):[];
+  if(g.length){const a=sc(g);w.push(`${it.group}は${g.length}件参加済み`+(a?`（平均面白さ${a.toFixed(1)}）`:''))}
+  else if(it.group)w.push(`${it.group}は未参加の団体`);
+  const f=fm?done.filter(r=>r.format===fm):[];
+  if(f.length>=3){const a=sc(f);if(a>=7)w.push(`${fm}は平均${a.toFixed(1)}と好み`)}
+  const vv=done.filter(r=>r.venue&&it.venue&&(r.venue.includes(it.venue)||it.venue.includes(r.venue)));
+  if(vv.length)w.push(`この会場は${vv.length}回行っている`);
+  return w.slice(0,2).join('・');
+}
+function recoView(){
+  const d=recoData,st=ui.reco,all=live();
+  const mk=d.months[st.m],[y,mo]=mk.split('-').map(Number);
+  const first=mk+'-01',last=mk+'-'+String(new Date(y,mo,0).getDate()).padStart(2,'0');
+  const today=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);
+  let rows=d.items.filter(it=>it.start<=last&&(it.end==null||it.end>=first));
+  const nPerm=rows.filter(it=>it.permanent).length;
+  const cats=countBy(rows,it=>RC_CAT[it.category]||it.category);
+  if(!st.perm)rows=rows.filter(it=>!it.permanent);
+  if(st.cat.length)rows=rows.filter(it=>st.cat.includes(RC_CAT[it.category]||it.category));
+  rows=rows.map(it=>({it,done:recoDone(it,all),plan:recoPlan(it,all)}));
+  if(st.hideDone)rows=rows.filter(x=>!x.done);
+  return{rows,cats,nPerm,mk,today};
+}
+function renderReco(m){
+  if(!recoData){m.innerHTML=recoErr?`<div class="empty">オススメを読み込めませんでした（${esc(recoErr)}）。<br>recommend.json は公開サイト上で見られます（ファイルを直接開くと読めません）。</div>`:'<div class="empty">読み込み中…</div>';if(!recoErr&&!recoData)loadReco();return}
+  const st=ui.reco,d=recoData,v=recoView(),all=live();
+  const b=(on,attr,l,n)=>`<button type="button" class="fb ${on?'on':''}" ${attr}>${l}${n!=null?`<small>${n}</small>`:''}</button>`;
+  const head=`<div class="stick"><div class="fbtns" id="rcM"><span class="lb2">期間</span>${d.months.map((x,i)=>b(st.m===i,`data-m="${i}"`,(i?'来月':'今月')+'（'+x.replace('-','年')+'月）')).join('')}</div>
+    <div class="fbtns" id="rcC"><span class="lb2">形式（複数選べます）</span>${b(!st.cat.length,'data-c=""','すべて')}${v.cats.map(([c,n])=>b(st.cat.includes(c),`data-c="${esc(c)}"`,esc(c),n)).join('')}</div>
+    <div class="fbtns" id="rcO"><span class="lb2">表示</span>${b(st.perm,'data-o="perm"','常設も表示',v.nPerm)}${b(st.hideDone,'data-o="done"','参加済みを隠す')}</div>
+    <div class="hint" style="margin-bottom:8px">愛知・岐阜・三重／出典：謎ログ／更新：${esc((d.generated_at||'').replace('T',' ').slice(0,16))}（週1で自動更新）／${v.rows.length}件</div></div>`;
+  const card=({it,done,plan})=>{
+    const per=it.permanent?'常設':(it.start>v.today?`${it.start.slice(5).replace('-','/')} 〜 ${it.end.slice(5).replace('-','/')}`:`〜 ${it.end.slice(5).replace('-','/')}`);
+    const left=it.end&&it.start<=v.today?Math.round((new Date(it.end)-new Date(v.today))/864e5):null;
+    const status=it.permanent?'<span class="pl t">常設</span>':it.start>v.today?'<span class="pl">開催予定</span>':'<span class="pl">開催中</span>';
+    const why=recoWhy(it,all);
+    return`<div class="rc ${done?'done':''}"><div class="rl2">${status}${left!=null&&left<=14?`<span class="soon">あと${left}日</span>`:''}${done?'<span class="dn">参加済み</span>':plan?'<span class="un">予定に入れ済み</span>':''}<span>${esc(per)}</span></div>
+    <div><div class="ttl">${esc(it.title)}</div><div class="meta">${esc([it.group,RC_CAT[it.category]||it.category,it.venue,it.pref].filter(Boolean).join(' ／ '))}${it.price?' ／ ¥'+it.price.toLocaleString():''}</div>${why&&!done?`<div class="why">💡 ${esc(why)}</div>`:''}</div>
+    <div class="lk"><a href="${esc(it.url)}" target="_blank" rel="noopener">謎ログ ↗</a></div></div>`;
+  };
+  m.innerHTML=head+(v.rows.length?v.rows.map(card).join(''):'<div class="empty">条件に合う公演がありません。</div>');
+  $('#rcM').onclick=e=>{const x=e.target.closest('.fb');if(!x)return;st.m=+x.dataset.m;render()};
+  $('#rcC').onclick=e=>{const x=e.target.closest('.fb');if(!x)return;const c=x.dataset.c;st.cat=c===''?[]:st.cat.includes(c)?st.cat.filter(y=>y!==c):[...st.cat,c];render()};
+  $('#rcO').onclick=e=>{const x=e.target.closest('.fb');if(!x)return;if(x.dataset.o==='perm')st.perm=!st.perm;else st.hideDone=!st.hideDone;render()};
+}
 
 /* ---- list ---- */
 function renderList(m){

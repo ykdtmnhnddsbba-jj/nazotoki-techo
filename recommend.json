@@ -1,0 +1,318 @@
+{
+ "generated_at": "2026-11-08T22:00",
+ "months": [
+  "2026-11",
+  "2026-12"
+ ],
+ "window": [
+  "2026-11-01",
+  "2026-12-31"
+ ],
+ "source": "nazo.site（初期データ。常設分は最初の自動更新で追加）",
+ "items": [
+  {
+   "contentId": "8e2efea5",
+   "title": "閉ざされたテンペストダンジョン(異世界迷宮)からの脱出",
+   "category": "hall",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2026-09-10",
+   "end": "2026-11-23",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/8e2efea5",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "2aae6483",
+   "title": "黒き暗殺者(アサシン)からの脱出",
+   "category": "hall",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2026-10-16",
+   "end": "2026-11-23",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/2aae6483",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "3efa4d00",
+   "title": "パズルルームからの脱出",
+   "category": "room",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2026-04-16",
+   "end": "2026-11-29",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/3efa4d00",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "32b450db",
+   "title": "オンダーン星人から地球を守れ!",
+   "category": "field",
+   "venue": "JERA park HEKINAN",
+   "pref": "愛知県",
+   "start": "2026-10-01",
+   "end": "2026-11-29",
+   "permanent": false,
+   "price": 0,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/32b450db",
+   "group": "EFEX(エフェックス)",
+   "groups": [
+    "EFEX(エフェックス)"
+   ]
+  },
+  {
+   "contentId": "a954a536",
+   "title": "昼の魔法遊園地と64匹の妖精",
+   "category": "field",
+   "venue": "ナガシマスパーランド",
+   "pref": "三重県",
+   "start": "2026-11-14",
+   "end": "2026-11-29",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/a954a536",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "fab0a714",
+   "title": "夜の魔法学校からの脱出",
+   "category": "stadium",
+   "venue": "ナガシマスパーランド",
+   "pref": "三重県",
+   "start": "2026-11-14",
+   "end": "2026-11-29",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/fab0a714",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "bda80605",
+   "title": "葵武将隊と5つの試練",
+   "category": "field",
+   "venue": "岡崎城公園",
+   "pref": "愛知県",
+   "start": "2026-08-07",
+   "end": "2026-12-06",
+   "permanent": false,
+   "price": 700,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/bda80605",
+   "group": "EFEX(エフェックス)",
+   "groups": [
+    "EFEX(エフェックス)"
+   ]
+  },
+  {
+   "contentId": "8cae6665",
+   "title": "抜け穴ひそむ ミラクルスタジアム",
+   "category": "stadium",
+   "venue": "ふれあい会議室 名古屋 No.143",
+   "pref": "愛知県",
+   "start": "2026-12-13",
+   "end": "2026-12-13",
+   "permanent": false,
+   "price": 3000,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/8cae6665",
+   "group": "アットビ",
+   "groups": [
+    "アットビ"
+   ]
+  },
+  {
+   "contentId": "01ef8331",
+   "title": "クローバーの国とトランプの魔法",
+   "category": "field",
+   "venue": "鶴舞公園",
+   "pref": "愛知県",
+   "start": "2026-09-01",
+   "end": "2026-12-25",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/01ef8331",
+   "group": "EFEX(エフェックス)",
+   "groups": [
+    "EFEX(エフェックス)"
+   ]
+  },
+  {
+   "contentId": "d14fe11a",
+   "title": "アレハンドロと終わらないフィエスタからの脱出",
+   "category": "field",
+   "venue": "志摩スペイン村",
+   "pref": "三重県",
+   "start": "2026-02-14",
+   "end": "2027-01-11",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/d14fe11a",
+   "group": "NAZO×NAZO劇団",
+   "groups": [
+    "NAZO×NAZO劇団"
+   ]
+  },
+  {
+   "contentId": "116a3be5",
+   "title": "リトルパラレルワールド第2弾 異次元ウヲークツアー",
+   "category": "field",
+   "venue": "野外民族博物館 リトルワールド",
+   "pref": "愛知県",
+   "start": "2026-09-05",
+   "end": "2027-01-11",
+   "permanent": false,
+   "price": 1800,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/116a3be5",
+   "group": "NoEscape",
+   "groups": [
+    "NoEscape"
+   ]
+  },
+  {
+   "contentId": "e0bf36a9",
+   "title": "謎解きゲーム ヒラメキで目的地に到着せよ!の巻",
+   "category": "field",
+   "venue": "野外民族博物館 リトルワールド",
+   "pref": "愛知県",
+   "start": "2026-10-03",
+   "end": "2027-01-11",
+   "permanent": false,
+   "price": 1000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e0bf36a9",
+   "group": "",
+   "groups": []
+  },
+  {
+   "contentId": "02c78a2c",
+   "title": "魔族潜む村からの脱出",
+   "category": "stadium",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2026-10-29",
+   "end": "2027-01-31",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/02c78a2c",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "684d8588",
+   "title": "江戸川乱歩と不可解な残像 ~暁と影~ Scoop01 絶望王",
+   "category": "field",
+   "venue": "博物館明治村",
+   "pref": "愛知県",
+   "start": "2026-09-12",
+   "end": "2027-02-23",
+   "permanent": false,
+   "price": 800,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/684d8588",
+   "group": "タカラッシュ",
+   "groups": [
+    "タカラッシュ"
+   ]
+  },
+  {
+   "contentId": "777bcb84",
+   "title": "江戸川乱歩と不可解な残像 ~暁と影~ Scoop02 奇術師と透明男",
+   "category": "field",
+   "venue": "博物館明治村",
+   "pref": "愛知県",
+   "start": "2026-09-12",
+   "end": "2027-02-23",
+   "permanent": false,
+   "price": 900,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/777bcb84",
+   "group": "タカラッシュ",
+   "groups": [
+    "タカラッシュ"
+   ]
+  },
+  {
+   "contentId": "c9c8332c",
+   "title": "江戸川乱歩と不可解な残像 ~暁と影~ Scoop03 蟻地獄男",
+   "category": "field",
+   "venue": "博物館明治村",
+   "pref": "愛知県",
+   "start": "2026-09-12",
+   "end": "2027-02-23",
+   "permanent": false,
+   "price": 1100,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/c9c8332c",
+   "group": "タカラッシュ",
+   "groups": [
+    "タカラッシュ"
+   ]
+  },
+  {
+   "contentId": "5d846530",
+   "title": "魔法文字と初めての大冒険",
+   "category": "field",
+   "venue": "名古屋PARCO",
+   "pref": "愛知県",
+   "start": "2026-06-16",
+   "end": "2027-02-28",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/5d846530",
+   "group": "NANICA",
+   "groups": [
+    "NANICA"
+   ]
+  },
+  {
+   "contentId": "0f6f10b3",
+   "title": "なぜ蝋燭の灯は消えたのか",
+   "category": "field",
+   "venue": "名古屋観光ホテル",
+   "pref": "愛知県",
+   "start": "2026-11-16",
+   "end": "2027-07-16",
+   "permanent": false,
+   "price": null,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/0f6f10b3",
+   "group": "謎組",
+   "groups": [
+    "謎組"
+   ]
+  }
+ ]
+}
