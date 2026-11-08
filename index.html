@@ -449,7 +449,7 @@ function recoWhy(it,all){
   const sc=a=>{const v=a.filter(r=>r.score>0);return v.length?(v.reduce((x,r)=>x+r.score,0)/v.length):0};
   const g=it.group?done.filter(r=>r.group===it.group):[];
   if(g.length){const a=sc(g);w.push(`${it.group}は${g.length}件参加済み`+(a?`（平均面白さ${a.toFixed(1)}）`:''))}
-  else if(it.group)w.push(`${it.group}は未参加の団体`);
+  else if(it.group&&done.length)w.push(`${it.group}は未参加の団体`);
   const f=fm?done.filter(r=>r.format===fm):[];
   if(f.length>=3){const a=sc(f);if(a>=7)w.push(`${fm}は平均${a.toFixed(1)}と好み`)}
   const vv=done.filter(r=>r.venue&&it.venue&&(r.venue.includes(it.venue)||it.venue.includes(r.venue)));
