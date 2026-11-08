@@ -552,9 +552,18 @@ function openEdit(id){
     add('種別',stt==='plan'?'予定':'参加済み');add('形式',comboVal('m_format'));{const vn=v('#m_venue');add('会場',vn===DEFAULT_VENUE?'':vn)}
     if(stt!=='plan'){add('結果',res);add('面白さ',sc?sc+'/10':'');add('感想',v('#m_imp'));add('教訓',v('#m_les'))}
     const text=lines.join('\n');
-    const go=()=>{window.open(AI_PROJECT_URL+'?q='+encodeURIComponent(text),'_blank');toast('依頼文をコピーしました。チャットに貼り付けてください')};
-    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(go,()=>{prompt('この文章をコピーしてチャットに貼ってください',text);go()});
-    else{prompt('この文章をコピーしてチャットに貼ってください',text);go()}
+    let box=$('#mAIbox');
+    if(!box){box=document.createElement('div');box.id='mAIbox';box.style.cssText='margin:0 0 10px';ai.closest('.row').after(box)}
+    box.innerHTML='<div class="hint" id="mAImsg"></div><textarea id="mAItx" readonly style="min-height:120px;width:100%"></textarea>';
+    const tx=$('#mAItx');tx.value=text;
+    const msg=t=>{$('#mAImsg').textContent=t};
+    const fallback=()=>{try{tx.focus();tx.select();return document.execCommand('copy')}catch(e){return false}};
+    const finish=ok=>{
+      msg(ok?'✅ 依頼文をコピーしました。開いたチャットの入力欄に貼り付けて（Ctrl+V）送信してください。入力欄に入っていればそのまま送信できます。':'⚠️ 自動コピーできませんでした。下の文章を選択してコピーし、プロジェクトのチャットに貼り付けてください。');
+      window.open(AI_PROJECT_URL+'?q='+encodeURIComponent(text),'_blank');
+    };
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(()=>finish(true),()=>finish(fallback()));
+    else finish(fallback());
   };
   $('#mCancel').onclick=closeModal;
   $('#mSave').onclick=()=>{
