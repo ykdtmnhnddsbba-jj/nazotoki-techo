@@ -456,7 +456,7 @@ function renderNav(){const ww=weekWarn();$('#nav').innerHTML=TABS.map(([k,l])=>`
 /* Drive同期とは別のトークン（カレンダー用の権限は、ボタンを押したときだけ求める）。予定ごとに固定のイベントIDで登録するので、何度押しても重複せず更新される */
 const GC_SCOPE='https://www.googleapis.com/auth/calendar.events';
 const GC_DEFAULT_ID='family16137444769724886642@group.calendar.google.com';
-const GC_MIN=90;                 // 終了時刻が分からないので、開始から90分の予定にする
+const GC_MIN=120;                // 所要時間の初期値（謎解きはだいたい2時間）。登録前の確認画面で公演ごとに直せる
 const GC_TOKKEY='gcal_tok:'+G_REDIR,GC_PEND='gcal_pending',GC_ST='gcal_state';
 let gcToken=null,gcExp=0,gcBusy=false;
 (function(){
@@ -476,7 +476,7 @@ let gcToken=null,gcExp=0,gcBusy=false;
   }catch(e){}
 })();
 const gcEligible=r=>!!r&&!r.deleted&&isPlan(r)&&kindOf(r)!=='buy'&&/^\d{4}-\d{2}-\d{2}$/.test(r.date||'');
-const gcSig=r=>[r.title,r.date,r.time||'',r.venue||'',r.ticket_url||'',r.group||''].join('|');
+const gcSig=r=>[r.title,r.date,r.time||'',r.gcal_min||GC_MIN,r.venue||'',r.ticket_url||'',r.group||''].join('|');
 const gcDone=r=>r.gcal_sig===gcSig(r);
 const gcEventId=id=>'techo'+Array.from(new TextEncoder().encode(String(id))).map(b=>b.toString(16).padStart(2,'0')).join('');
 function gcBtn(r,cls){
@@ -489,7 +489,7 @@ function gcBody(r){
   if(/^\d{2}:\d{2}$/.test(r.time||'')){
     const[y,mo,d]=r.date.split('-').map(Number),[h,mi]=r.time.split(':').map(Number);
     b.start={dateTime:r.date+'T'+r.time+':00',timeZone:'Asia/Tokyo'};
-    b.end={dateTime:new Date(Date.UTC(y,mo-1,d,h,mi+GC_MIN)).toISOString().slice(0,19),timeZone:'Asia/Tokyo'};
+    b.end={dateTime:new Date(Date.UTC(y,mo-1,d,h,mi+(+r.gcal_min||GC_MIN))).toISOString().slice(0,19),timeZone:'Asia/Tokyo'};
   }else{
     const[y,mo,d]=r.date.split('-').map(Number);
     b.start={date:r.date};b.end={date:new Date(Date.UTC(y,mo-1,d+1)).toISOString().slice(0,10)};
@@ -511,11 +511,42 @@ function gcRedirect(ids){
   const q=new URLSearchParams({client_id:settings.google_client_id.trim(),redirect_uri:G_REDIR,response_type:'token',scope:GC_SCOPE,state:st,include_granted_scopes:'true'});
   location.href='https://accounts.google.com/o/oauth2/v2/auth?'+q.toString();
 }
-async function gcAdd(ids){
-  if(gcBusy)return;
+/* 登録前の確認画面：題名・日付・開始時刻・所要時間・会場を直せる（直した内容は手帖の記録にも反映） */
+function gcOpen(ids){
   ids=ids.filter(id=>gcEligible(db.records[id]));
   if(!ids.length){toast('カレンダーに入れられる予定（公演系で日付ありの予定）がありません');return}
-  if(!gcToken||gcExp<=Date.now()){gcRedirect(ids);return}
+  const cal=settings.gcal_id?settings.gcal_id:'ファミリー カレンダー';
+  const items=ids.map(id=>{const r=db.records[id];return`<div class="gcI" data-id="${esc(id)}" style="border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px">
+    <div class="field"><label>題名</label><input type="text" data-f="title" value="${esc(r.title)}"></div>
+    <div class="grid2"><div class="field"><label>日付</label><input type="date" data-f="date" value="${esc(r.date)}"></div>
+    <div class="field"><label>開始時刻（空欄＝終日）</label><input type="time" data-f="time" value="${esc(r.time||'')}"></div></div>
+    <div class="grid2"><div class="field"><label>所要時間（分）</label><input type="number" data-f="min" min="5" step="5" value="${+r.gcal_min||GC_MIN}"></div>
+    <div class="field"><label>会場</label><input type="text" data-f="venue" value="${esc(r.venue||'')}"></div></div></div>`}).join('');
+  $('#modalRoot').innerHTML=`<div class="ov" id="ov"><div class="modal" style="max-width:560px"><h2>カレンダーに登録する内容の確認</h2>
+    <div class="hint" style="margin-bottom:10px">登録先：${esc(cal)}。ここで直した内容は、手帖の記録にも反映されます。</div>
+    <div style="max-height:58vh;overflow:auto">${items}</div>
+    <div class="row"><button class="btn pri" id="gc_ok">登録する（${ids.length}件）</button><button class="btn" id="gc_cancel">キャンセル</button></div></div></div>`;
+  document.addEventListener('keydown',escClose);
+  $('#gc_cancel').onclick=closeModal;$('#ov').onmousedown=e=>{if(e.target.id==='ov')closeModal()};
+  $('#gc_ok').onclick=()=>{
+    const out=[];
+    document.querySelectorAll('#modalRoot .gcI').forEach(box=>{
+      const id=box.dataset.id,r=db.records[id];if(!r)return;
+      const v=f=>box.querySelector(`[data-f="${f}"]`).value.trim();
+      const min=Math.max(5,Math.round(+v('min'))||GC_MIN);
+      const upd={title:v('title')||r.title,date:v('date')||r.date,time:v('time'),venue:v('venue'),gcal_min:min};
+      if(Object.keys(upd).some(k=>(r[k]||'')!==upd[k]))db.records[id]=Object.assign({},r,upd,{updated_at:stampAfter(r)});
+      out.push(id);
+    });
+    save();closeModal();
+    if(!gcToken||gcExp<=Date.now()){gcRedirect(out);return}
+    gcSend(out);
+  };
+}
+async function gcSend(ids){
+  if(gcBusy)return;
+  ids=ids.filter(id=>gcEligible(db.records[id]));
+  if(!ids.length)return;
   gcBusy=true;let ok=0,fail=0,msg='';
   for(const id of ids){
     const r=db.records[id];
@@ -525,16 +556,16 @@ async function gcAdd(ids){
   }
   gcBusy=false;if(ok)save();render();
   if(msg==='auth'){toast('カレンダーの認証が切れました。もう一度押してください',4000);try{sessionStorage.removeItem(GC_TOKKEY)}catch(e){}}
-  else if(fail)toast(`カレンダーに${ok}件登録、${fail}件失敗：${msg}`,7000);
+  else if(fail)toast(`カレンダーに${ok}件登録、${fail}件失敗：${msg}`,9000);
   else toast(`ファミリー カレンダーに${ok}件登録しました`);
 }
 function gcStartup(){
   let ids=null;try{ids=JSON.parse(localStorage.getItem(GC_PEND)||'null');localStorage.removeItem(GC_PEND)}catch(e){}
-  if(ids&&ids.length&&gcToken)setTimeout(()=>gcAdd(ids),400);
+  if(ids&&ids.length&&gcToken)setTimeout(()=>gcSend(ids),400);
 }
 document.addEventListener('click',e=>{
-  const b=e.target.closest('.gcal');if(b){gcAdd([b.dataset.id]);return}
-  if(e.target.closest('#gcalAll'))gcAdd(live().filter(r=>gcEligible(r)&&!gcDone(r)).map(r=>r.id));
+  const b=e.target.closest('.gcal');if(b){gcOpen([b.dataset.id]);return}
+  if(e.target.closest('#gcalAll'))gcOpen(live().filter(r=>gcEligible(r)&&!gcDone(r)).map(r=>r.id));
 });
 function render(){
   renderNav();setSync(syncState);
@@ -958,7 +989,7 @@ function renderSettings(m){
     <p class="hint">「JSONを読み込む」は統合です（同じ公演は新しい更新が優先され、既存の記録の空欄だけ補完します）。「JSONで完全上書き」は初回の移行用で、ファイル内の公演を、面白さの点数以外は手元の内容ごと置き換えます。書き出したJSONは先頭の <code>_readme</code> に項目の説明が入っているので、そのままAIに渡して分析できます。</p>
   </div>
   <div class="panel"><h2>Google カレンダー連携</h2>
-    <p class="hint">予定（公演系で日付ありのもの。購入系は対象外）を、ファミリー カレンダーに登録します。一覧と「直近の予定」の「📅 カレンダーに追加」ボタン、または下のボタンで一括登録できます。時刻が入っていれば開始から${GC_MIN}分、なければ終日の予定になります。何度押しても重複せず、変更があれば「カレンダーを更新」で上書きされます。初回は Google の確認画面でカレンダーの権限を許可してください。</p>
+    <p class="hint">予定（公演系で日付ありのもの。購入系は対象外）を、ファミリー カレンダーに登録します。一覧と「直近の予定」の「📅 カレンダーに追加」ボタン、または下のボタンで一括登録できます。時刻が入っていれば所要時間（初期値${GC_MIN}分）の予定、なければ終日の予定になります。登録の前に、内容を確認・修正する画面が出ます。何度押しても重複せず、変更があれば「カレンダーを更新」で上書きされます。初回は Google の確認画面でカレンダーの権限を許可してください。</p>
     <div class="field"><label>登録先カレンダーID（空欄＝ファミリー カレンダー）</label><input type="text" id="gcId" value="${esc(settings.gcal_id||'')}" placeholder="${esc(GC_DEFAULT_ID)}"></div>
     <div class="row"><button class="btn" id="gcalAll">📅 未登録の予定をまとめてカレンダーに追加</button></div>
   </div>
