@@ -164,13 +164,18 @@ const PLAN_LBL=Object.fromEntries(PLAN_ST);
 const NZ_ORIGIN='https://www.nazo.site';
 const TECHO_ORIGIN='https://ykdtmnhnddsbba-jj.github.io';
 const DEFAULT_VENUE='リアル脱出ゲーム名古屋店';
-const FORMATS=['ホール型','ルーム型','周遊型','ライブ型','持ち帰り型','その他'];
+const FORMATS=['ホール型','ルーム型','周遊型','ライブ型','持ち帰り型','Web謎','その他'];
+/* 一覧の区分：公演（ホール・ルーム・ライブなど）／周遊／購入系（持ち帰り・Web謎・その他）。区分は一緒に表示しない */
+const KINDS=[['show','公演'],['tour','周遊'],['buy','購入系']];
+const kindOf=r=>r.format==='周遊型'?'tour':(r.format==='持ち帰り型'||r.format==='Web謎'||r.format==='その他')?'buy':'show';
+const isBuy=r=>kindOf(r)==='buy';
+const buyStage=r=>!isPlan(r)?'done':(r.nazolog_plan_status==='defined'?'owned':'wish');
 function emptyDb(){return{schema_version:1,updated_at:null,records:{}}}
 let db=Object.assign(emptyDb(),lsGet(LS_DB,{}));
 if(!db.records||typeof db.records!=='object')db.records={};
 let settings=Object.assign({google_client_id:'',drive_linked:false,nazolog_user_id:'bf53c570'},lsGet(LS_SET,{}));
 if(!settings.google_client_id)settings.google_client_id=DEFAULT_CLIENT_ID;
-const ui={tab:'list',q:'',group:'',result:'',format:[],year:'',status:'',sort:'new',shown:[],lq:'',lres:''};
+const ui={tab:'list',kind:'show',q:'',group:'',result:'',format:[],year:'',status:'',sort:'new',shown:[],lq:'',lres:''};
 
 function saveLocal(){db.updated_at=nowIso();lsSet(LS_DB,db)}
 function save(){saveLocal();scheduleSync()}
@@ -282,9 +287,10 @@ function filtered(){
   if(q)a=a.filter(r=>[r.title,r.group,r.impression,r.lesson,r.venue,r.format].join('\n').toLowerCase().includes(q));
   if(ui.group)a=a.filter(r=>r.group===ui.group);
   if(ui.result)a=a.filter(r=>ui.result==='none'?!r.result:r.result===ui.result);
+  a=a.filter(r=>kindOf(r)===ui.kind);
   a=a.filter(matchFmt);
   if(ui.year)a=a.filter(r=>(r.date||'').slice(0,4)===ui.year);
-  if(ui.status)a=a.filter(r=>ui.status==='plan'?isPlan(r):!isPlan(r));
+  if(ui.status){if(ui.kind==='buy')a=a.filter(r=>buyStage(r)===ui.status);else a=a.filter(r=>ui.status==='plan'?isPlan(r):!isPlan(r))}
   if(ui.sort==='old')a.sort(byDate);
   else if(ui.sort==='score')a.sort((x,y)=>(y.score||0)-(x.score||0)||byDate(y,x));
   else a.sort((x,y)=>byDate(y,x));
@@ -408,9 +414,16 @@ function fmtBtns(all){
   const b=(v,l,n)=>`<button type="button" class="fb ${(v===''?!ui.format.length:ui.format.includes(v))?'on':''}" data-f="${esc(v)}">${esc(l)}${n!=null?`<small>${n}</small>`:''}</button>`;
   return`<div class="fbtns" id="fmtBtns"><span class="lb2">形式（複数選べます）</span>${b('','すべて',all.length)}${fm.map(([f,n])=>b(f,f,n)).join('')}${(ex||ui.format.includes('none'))?b('none','未設定',ex):''}</div>`;
 }
+function kindBtns(all){
+  return`<div class="fbtns" id="kindBtns"><span class="lb2">区分</span>${KINDS.map(([k,l])=>`<button type="button" class="fb ${ui.kind===k?'on':''}" data-k="${k}">${l}<small>${all.filter(r=>kindOf(r)===k).length}</small></button>`).join('')}</div>`;
+}
 function stBtns(all){
-  const np=all.filter(isPlan).length;
   const b=(v,l,n)=>`<button type="button" class="fb ${ui.status===v?'on':''}" data-s="${v}">${l}<small>${n}</small></button>`;
+  if(ui.kind==='buy'){
+    const c=st=>all.filter(r=>buyStage(r)===st).length;
+    return`<div class="fbtns" id="stBtns"><span class="lb2">種別</span>${b('','すべて',all.length)}${b('wish','購入予定',c('wish'))}${b('owned','購入済み・未プレイ',c('owned'))}${b('done','プレイ済み',c('done'))}</div>`;
+  }
+  const np=all.filter(isPlan).length;
   return`<div class="fbtns" id="stBtns"><span class="lb2">種別</span>${b('','すべて',all.length)}${b('plan','予定',np)}${b('done','参加済み',all.length-np)}</div>`;
 }
 function bindFmtBtns(after){
@@ -426,7 +439,7 @@ const opt=(v,l,cur)=>`<option value="${esc(v)}" ${v===cur?'selected':''}>${esc(l
 
 
 /* ---- オススメ（recommend.json：GitHub Actionsが週1で更新） ---- */
-const RC_FMT={hall:'ホール型',room:'ルーム型',field:'周遊型',stadium:'周遊型',cube:'ルーム型',cafe:'その他',web:'その他',kit:'持ち帰り型'};
+const RC_FMT={hall:'ホール型',room:'ルーム型',field:'周遊型',stadium:'周遊型',cube:'ルーム型',cafe:'その他',web:'Web謎',kit:'持ち帰り型'};
 const RC_CAT={hall:'ホール型',room:'ルーム型',field:'周遊型',stadium:'スタジアム型',cube:'キューブ型',cafe:'カフェ型',web:'ネット型',kit:'持ち帰り型'};
 ui.reco={m:0,cat:[],perm:false,hideDone:false};
 let recoData=null,recoErr='';
@@ -496,7 +509,8 @@ function renderReco(m){
 /* ---- list ---- */
 function renderList(m){
   const all=live();
-  const groups=countBy(all,r=>r.group);
+  const allK=all.filter(r=>kindOf(r)===ui.kind);
+  const groups=countBy(allK,r=>r.group);
   const years=[...new Set(all.map(r=>(r.date||'').slice(0,4)).filter(Boolean))].sort().reverse();
   m.innerHTML=`
   <div class="stick">
@@ -508,13 +522,14 @@ function renderList(m){
       <select id="fSort">${opt('new','並び: 日付が新しい順',ui.sort)}${opt('old','並び: 日付が古い順',ui.sort)}${opt('score','並び: 面白さ順',ui.sort)}</select>
       <button class="btn" id="fClear">条件クリア</button>
     </div>
-    ${stBtns(all)}${fmtBtns(all)}
+    ${kindBtns(all)}${stBtns(allK)}${fmtBtns(allK)}
     <div class="hint" id="sum"></div>
   </div>
   <div id="list"></div>`;
   $('#q').oninput=e=>{ui.q=e.target.value;drawList()};
   [['fGroup','group'],['fRes','result'],['fYear','year'],['fSort','sort']].forEach(([id,k])=>{$('#'+id).onchange=e=>{ui[k]=e.target.value;drawList()}});
   $('#fClear').onclick=()=>{Object.assign(ui,{q:'',group:'',result:'',format:[],year:'',status:'',sort:'new'});renderList(m)};
+  $('#kindBtns').onclick=e=>{const b=e.target.closest('.fb');if(!b)return;ui.kind=b.dataset.k;ui.status='';ui.format=[];ui.group='';renderList(m)};
   bindFmtBtns(()=>renderList(m));
   $('#list').onclick=listClick;
   drawList();
@@ -523,12 +538,12 @@ function recHtml(r){
   const sc=r.score|0;
   const place=[r.format,r.venue].filter(Boolean).map(esc).join(' ・ ');
   return`<article class="rec" data-id="${esc(r.id)}">
-    <div class="rl"><div class="dt">${fmtDate(r.date)}${r.time?' '+esc(r.time):''}</div>${isPlan(r)?`<span class="pl ${r.nazolog_plan_status==='tentative'?'t':''}">予定・${esc(PLAN_LBL[r.nazolog_plan_status||'tentative']||'仮予定')}${r.price?' ¥'+Number(r.price).toLocaleString():''}</span>`:''}${nzPending(r)?'<span class="un" title="謎ログに未反映">未反映</span>':''}<span class="grp">${esc(r.group||'団体なし')}</span>${place?`<div class="fm">${place}</div>`:''}</div>
+    <div class="rl"><div class="dt">${fmtDate(r.date)}${r.time?' '+esc(r.time):''}</div>${isPlan(r)?`<span class="pl ${r.nazolog_plan_status==='tentative'?'t':''}">${isBuy(r)?(r.nazolog_plan_status==='defined'?'購入済み・未プレイ':'購入予定'):'予定・'+esc(PLAN_LBL[r.nazolog_plan_status||'tentative']||'仮予定')}${r.price?' ¥'+Number(r.price).toLocaleString():''}</span>`:''}${nzPending(r)?'<span class="un" title="謎ログに未反映">未反映</span>':''}<span class="grp">${esc(r.group||'団体なし')}</span>${place?`<div class="fm">${place}</div>`:''}</div>
     <div class="rm" title="クリックで感想を全文表示/折りたたみ"><div class="ttl">${esc(r.title)}</div>${r.impression?`<div class="imp">${esc(r.impression)}</div>`:''}${r.lesson?`<div class="les">教訓: ${esc(r.lesson)}</div>`:''}</div>
     <div class="rr">
-      <div class="res">${RESULTS.map(([l,c])=>`<button class="rb ${c} ${r.result===l?'on':''}" data-r="${l}">${l}</button>`).join('')}</div>
+      ${isBuy(r)?'':`<div class="res">${RESULTS.map(([l,c])=>`<button class="rb ${c} ${r.result===l?'on':''}" data-r="${l}">${l}</button>`).join('')}</div>`}
       <div class="sbs">${Array.from({length:10},(_,i)=>`<button class="sb ${sc===i+1?'on':''}" data-s="${i+1}" title="面白さ ${i+1}点（もう一度押すと解除）">${i+1}</button>`).join('')}</div>
-      <div class="row" style="justify-content:flex-end">${isPlan(r)?'<button class="qb dn" title="参加済みにして、結果を入れられるようにします">✔ 参加済みにする</button>':''}<button class="qb ed">✎ 編集</button></div>
+      <div class="row" style="justify-content:flex-end">${isPlan(r)?`<button class="qb dn" title="${isBuy(r)?'プレイ済みにします':'参加済みにして、結果を入れられるようにします'}">✔ ${isBuy(r)?'プレイ済みにする':'参加済みにする'}</button>`:''}<button class="qb ed">✎ 編集</button></div>
     </div></article>`;
 }
 function drawList(){
@@ -555,6 +570,7 @@ function updateSummary(){
   const el=$('#sum');if(!el)return;
   const rs=ui.shown.map(id=>({id,...db.records[id]})).filter(r=>!r.deleted);
   const s=summary(rs);
+  if(ui.kind==='buy'){el.textContent=`表示 ${rs.length}件${s.avgScore!=null?` ／ 面白さ平均 ${s.avgScore.toFixed(1)}`:''}`;return}
   el.textContent=`表示 ${rs.length}件 ／ 成功率 ${pct(s.rate)}（大成功 ${s.big}・成功 ${s.ok}・失敗 ${s.ng}）${s.avgScore!=null?` ／ 面白さ平均 ${s.avgScore.toFixed(1)}`:''}`;
 }
 function refreshRow(row,id){
