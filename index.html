@@ -154,6 +154,10 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 40px;color:var(--sub);font-
 .wk a.btn.pri{color:#2a1a00}
 .wkt{white-space:nowrap}
 @media(max-width:720px){.wk{grid-template-columns:1fr;gap:4px}.wkt{font-size:17px}}
+.warn{font-size:11px;font-weight:700;padding:1px 9px;border-radius:99px;background:#3b1c1c;color:#ff9a9a;border:1px solid #8a3a3a}
+.warnbar{background:#3b1c1c;border:1px solid #8a3a3a;color:#ffb3b3;border-radius:10px;padding:8px 12px;margin:0 0 10px;font-size:13.5px;font-weight:600}
+.wk.nt{border-color:#8a3a3a}
+.wn{margin-left:4px;color:#ff9a9a;font-weight:700}
 </style>
 </head>
 <body>
@@ -220,6 +224,9 @@ function saveSettings(){lsSet(LS_SET,settings)}
 
 /* =============== data ops =============== */
 const isPlan=r=>r.status==='plan';
+/* 参加予定（購入系を除く）でチケットのURLが無い → 警告。日付が過ぎた予定は対象外 */
+const hasTk=r=>/^https?:\/\//i.test(r.ticket_url||'');
+const noTicket=r=>isPlan(r)&&kindOf(r)!=='buy'&&!hasTk(r)&&(!r.date||r.date>=todayStr());
 /* 謎ログに送る内容（作品・日付・時刻・ステータス）が変わったかを判定するための署名 */
 const nzSig=r=>[isPlan(r)?'plan':'done',r.result||'',r.date||'',r.time||'',isPlan(r)?nzPlanId(r.nazolog_plan_status):''].join('|');
 const nzPending=r=>!r.deleted&&r.nazolog_sig!==nzSig(r);
@@ -435,7 +442,8 @@ function setSync(s){
 
 /* =============== rendering =============== */
 const TABS=[['list','一覧'],['week','直近の予定'],['reco','オススメ'],['stats','成績'],['lessons','教訓'],['settings','設定']];
-function renderNav(){$('#nav').innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" class="${ui.tab===k?'on':''}">${l}</button>`).join('');const c=$('#curTab');if(c)c.textContent=(TABS.find(x=>x[0]===ui.tab)||[])[1]||''}
+function weekWarn(){const t0=todayStr(),e=new Date(new Date(t0+'T00:00:00').getTime()+6*864e5),t1=e.getFullYear()+'-'+String(e.getMonth()+1).padStart(2,'0')+'-'+String(e.getDate()).padStart(2,'0');return live().filter(r=>noTicket(r)&&r.date&&r.date<=t1).length}
+function renderNav(){const ww=weekWarn();$('#nav').innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" class="${ui.tab===k?'on':''}">${l}${k==='week'&&ww?`<small class="wn">⚠${ww}</small>`:''}</button>`).join('');const c=$('#curTab');if(c)c.textContent=(TABS.find(x=>x[0]===ui.tab)||[])[1]||''}
 function render(){
   renderNav();setSync(syncState);
   const m=$('#main');
@@ -588,11 +596,12 @@ function renderWeek(m){
     const tu=/^https?:\/\//i.test(r.ticket_url||'')?r.ticket_url:'';
     const tk=tu?`<a class="btn pri" href="${esc(tu)}" target="_blank" rel="noopener">🎫 チケットを開く</a>`:`<button type="button" class="btn wkEdit" data-id="${esc(r.id)}">🎫 チケットURLを登録</button>`;
     const nz=r.nazolog_content_id?`<a class="btn" href="https://www.nazo.site/content/contents/${esc(r.nazolog_content_id)}" target="_blank" rel="noopener">謎ログ ↗</a>`:'';
-    return`<div class="wk"><div class="wkt">${r.time?esc(r.time):'時刻未定'}</div><div class="wkm"><div class="ttl">${esc(r.title)}</div>
+    return`<div class="wk ${noTicket(r)?'nt':''}"><div class="wkt">${r.time?esc(r.time):'時刻未定'}</div><div class="wkm"><div class="ttl">${esc(r.title)}</div>${noTicket(r)?'<div class="warn" style="display:inline-block;margin-top:4px">⚠ チケットのURLが未登録です</div>':''}
       <div class="meta">${esc([r.group,r.format,r.venue].filter(Boolean).join(' ／ '))}</div>
       <div class="row" style="margin-top:8px">${tk}${r.venue?`<a class="btn" href="${maps}" target="_blank" rel="noopener">📍 地図</a>`:''}${nz}<button type="button" class="btn wkEdit" data-id="${esc(r.id)}">編集</button></div></div></div>`;
   };
   let h=`<div class="hint" style="margin-bottom:10px">今日から7日間（${fmtDate(t0)} 〜 ${fmtDate(t1)}）の予定です。${nodate?`日付が未定の予定が${nodate}件あります（一覧で日付を入れると、ここに出ます）。`:''}</div>`;
+  const nw=rs.filter(noTicket).length;if(nw)h=`<div class="warnbar">⚠ チケットのURLが未登録の予定が${nw}件あります。当日に困らないよう、先に登録しておきましょう。</div>`+h;
   if(!rs.length)h+='<div class="empty">この1週間の予定はありません。<br>オススメの「予定に入れる」や、＋公演を追加（種別：予定）から入れられます。</div>';
   else{let cur='';rs.forEach(r=>{if(r.date!==cur){cur=r.date;h+=`<div class="gh">${esc(lbl(cur))}</div>`}h+=card(r)})}
   m.innerHTML=h;
@@ -606,6 +615,7 @@ function renderList(m){
   const groups=countBy(allK,r=>r.group);
   const years=[...new Set(all.map(r=>(r.date||'').slice(0,4)).filter(Boolean))].sort().reverse();
   m.innerHTML=`
+  ${(()=>{const n=all.filter(noTicket).length;return n?`<div class="warnbar">⚠ チケットのURLが未登録の予定が${n}件あります（編集から登録できます）</div>`:''})()}
   <div class="stick">
     ${kindTabs(all)}
     <div class="toolbar">
@@ -632,7 +642,7 @@ function recHtml(r){
   const sc=r.score|0;
   const place=[r.format,r.venue].filter(Boolean).map(esc).join(' ・ ');
   return`<article class="rec" data-id="${esc(r.id)}">
-    <div class="rl"><div class="dt">${fmtDate(r.date)}${r.time?' '+esc(r.time):''}</div>${isPlan(r)?`<span class="pl ${r.nazolog_plan_status==='tentative'?'t':''}">${isBuy(r)?(r.nazolog_plan_status==='defined'?'購入済み・未プレイ':'購入予定'):'予定・'+esc(PLAN_LBL[r.nazolog_plan_status||'tentative']||'仮予定')}${r.price?' ¥'+Number(r.price).toLocaleString():''}</span>`:''}${nzPending(r)?'<span class="un" title="謎ログに未反映">未反映</span>':''}<span class="grp">${esc(r.group||'団体なし')}</span>${place?`<div class="fm">${place}</div>`:''}</div>
+    <div class="rl"><div class="dt">${fmtDate(r.date)}${r.time?' '+esc(r.time):''}</div>${isPlan(r)?`<span class="pl ${r.nazolog_plan_status==='tentative'?'t':''}">${isBuy(r)?(r.nazolog_plan_status==='defined'?'購入済み・未プレイ':'購入予定'):'予定・'+esc(PLAN_LBL[r.nazolog_plan_status||'tentative']||'仮予定')}${r.price?' ¥'+Number(r.price).toLocaleString():''}</span>`:''}${noTicket(r)?'<span class="warn" title="チケットのURLが未登録です。編集から登録してください">⚠ チケット未登録</span>':''}${nzPending(r)?'<span class="un" title="謎ログに未反映">未反映</span>':''}<span class="grp">${esc(r.group||'団体なし')}</span>${place?`<div class="fm">${place}</div>`:''}</div>
     <div class="rm" title="クリックで感想を全文表示/折りたたみ"><div class="ttl">${esc(r.title)}</div>${r.impression?`<div class="imp">${esc(r.impression)}</div>`:''}${r.lesson?`<div class="les">教訓: ${esc(r.lesson)}</div>`:''}</div>
     <div class="rr">
       ${isBuy(r)?'':`<div class="res">${RESULTS.map(([l,c])=>`<button class="rb ${c} ${r.result===l?'on':''}" data-r="${l}">${l}</button>`).join('')}</div>`}
