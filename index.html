@@ -468,8 +468,8 @@ function setSync(s){
 }
 
 /* =============== rendering =============== */
-const TABS=[['plan','これから'],['buy','買い物'],['reco','探す'],['done','実績']];
-const TAB_LBL={plan:'これから',buy:'買い物',reco:'探す',done:'実績',settings:'設定'};
+const TABS=[['done','実績'],['plan','これから'],['buy','買い物'],['reco','オススメ']];
+const TAB_LBL={plan:'これから',buy:'買い物',reco:'オススメ',done:'実績',settings:'設定'};
 /* 直近＝今日から1か月先まで（例：11/8 → 12/8） */
 function weekRange(){const t0=todayStr(),d=new Date(t0+'T00:00:00');d.setMonth(d.getMonth()+1);const t1=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');return[t0,t1]}
 function weekWarn(){const[t0,t1]=weekRange();return live().filter(r=>noTicket(r)&&r.date&&r.date<=t1).length}
@@ -768,7 +768,7 @@ function renderWeek(m){
   if(gp)h+=`<div class="row" style="margin-bottom:10px"><button type="button" class="btn" id="gcalAll">📅 未登録の予定${gp}件をファミリー カレンダーに追加</button></div>`;
   const nw=rs.filter(noTicket).length;if(nw)h=`<div class="warnbar">⚠ チケットのURLが未登録の予定が${nw}件あります。当日に困らないよう、先に登録しておきましょう。</div>`+h;
   if(past.length){h+=`<div class="gh">日付が過ぎた予定<small>参加済みにするか、日付を直してください</small></div>`;past.forEach(r=>{h+=card(r)})}
-  if(!rs.length&&!past.length&&!(all&&nd.length))h+=`<div class="empty">${all?'予定はありません。':'この1か月の予定はありません。'}<br>「探す」の「予定に入れる」や、＋追加（種別：予定）から入れられます。</div>`;
+  if(!rs.length&&!past.length&&!(all&&nd.length))h+=`<div class="empty">${all?'予定はありません。':'この1か月の予定はありません。'}<br>「オススメ」の「予定に入れる」や、＋追加（種別：予定）から入れられます。</div>`;
   else{let cur='';rs.forEach(r=>{if(r.date!==cur){cur=r.date;h+=`<div class="gh">${esc(all?fmtDate(cur):lbl(cur))}</div>`}h+=card(r)})}
   if(all&&nd.length){h+=`<div class="gh">日付未定</div>`;nd.forEach(r=>{h+=card(r)})}
   m.innerHTML=sub+h;
@@ -803,7 +803,7 @@ function renderBuy(m){
       <div class="row" style="margin-top:8px">${act}${tu?`<a class="btn" href="${esc(tu)}" target="_blank" rel="noopener">🛒 購入ページ</a>`:''}${nz}${gcEligible(r)?gcBtn(r,'btn'):''}<button type="button" class="btn byEdit" data-id="${esc(r.id)}">編集</button></div></div></div>`;
   };
   let h=`<div class="totbar"><span>${v==='wish'?'買う予定':'手元にある'}<b>${rs.length}</b>件</span><span>合計<b>${yen(tot)}</b>${noPr?`（価格未登録 ${noPr}件）`:''}</span></div>`;
-  h+=rs.length?rs.map(card).join(''):`<div class="empty">${v==='wish'?'買う予定のものはありません。<br>「探す」の購入系から「予定に入れる」か、＋追加で入れられます。':'手元にある未プレイのものはありません。'}</div>`;
+  h+=rs.length?rs.map(card).join(''):`<div class="empty">${v==='wish'?'買う予定のものはありません。<br>「オススメ」の購入系から「予定に入れる」か、＋追加で入れられます。':'手元にある未プレイのものはありません。'}</div>`;
   m.innerHTML=sub+h;
   $('#byV').onclick=e=>{const b=e.target.closest('button');if(!b)return;ui.buyView=b.dataset.v;render()};
   m.onclick=e=>{const b=e.target.closest('button');if(!b||!b.dataset.id)return;const id=b.dataset.id;
