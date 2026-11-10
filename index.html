@@ -135,6 +135,21 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 40px;color:var(--sub);font-
 .hlinks a{font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel2);color:var(--teal);text-decoration:none;font-weight:600;white-space:nowrap}
 .hlinks a:hover{border-color:var(--teal)}
 .curtab{display:none;font-size:13px;color:var(--sub)}
+nav button small{font-size:11px;margin-left:5px;padding:0 7px;border-radius:99px;background:var(--panel2);color:var(--sub);font-weight:700}
+nav button small.wn{background:#3b1c1c;color:#ff9a9a}
+#gearBtn{padding:6px 11px;font-size:16px;line-height:1.2}
+#gearBtn.on{border-color:var(--accent)}
+.subtabs.sm button{flex:none;padding:7px 16px}
+.bycard{display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;margin-bottom:10px}
+.bycard .pr{font-size:19px;font-weight:800;color:var(--accent);white-space:nowrap}
+.bycard .pr small{display:block;font-size:12px;color:var(--sub);font-weight:500}
+.bycard .meta{font-size:13px;color:var(--sub);margin-top:3px}
+.bycard .btn{text-decoration:none;display:inline-block;font-size:14px}
+.bycard a.btn{color:var(--text)}
+.bycard a.btn.pri{color:#2a1a00}
+.totbar{display:flex;gap:16px;flex-wrap:wrap;align-items:baseline;margin:0 0 10px;font-size:13px;color:var(--sub)}
+.totbar b{font-size:20px;color:var(--text);margin:0 3px}
+@media(max-width:720px){.bycard{grid-template-columns:1fr;gap:4px}}
 #hdrToggle{display:none;padding:6px 12px}
 @media(max-width:720px){
   .bar{padding:8px 12px;gap:8px}
@@ -143,8 +158,8 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 40px;color:var(--sub);font-
   #hdrToggle{display:block;order:3}
   nav{order:4;flex:1 1 100%;flex-wrap:nowrap;overflow-x:auto;gap:2px;-webkit-overflow-scrolling:touch}
   nav button{white-space:nowrap;padding:7px 12px;flex:none}
-  #nzBtn,#addBtn,#syncChip,.hlinks{order:5}
-  header.collapsed nav,header.collapsed #nzBtn,header.collapsed #addBtn,header.collapsed #syncChip,header.collapsed .hlinks{display:none}
+  #nzBtn,#addBtn,#syncChip,.hlinks,#gearBtn{order:5}
+  header.collapsed nav,header.collapsed #nzBtn,header.collapsed #addBtn,header.collapsed #syncChip,header.collapsed .hlinks,header.collapsed #gearBtn{display:none}
   main{padding:12px 10px 80px}
   .stick{position:static;margin:0 0 8px;padding:0 0 6px}
   .toolbar{gap:8px}
@@ -177,9 +192,10 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 40px;color:var(--sub);font-
   <button class="btn" id="hdrToggle" type="button" aria-label="メニューを開閉">☰</button>
   <nav id="nav"></nav>
   <button class="btn" id="nzBtn">謎ログに反映</button>
-  <button class="btn pri" id="addBtn">＋ 公演を追加</button>
+  <button class="btn pri" id="addBtn">＋ 追加</button>
   <span class="hlinks"><a href="https://realdgame.jp/shop/nagoya/" target="_blank" rel="noopener noreferrer">リアル脱出ゲーム名古屋店 ↗</a><a href="https://escape.id/" target="_blank" rel="noopener noreferrer">ESCAPE.ID ↗</a></span>
   <span id="syncChip" class="chip"></span>
+  <button class="btn" id="gearBtn" type="button" title="設定" aria-label="設定">⚙</button>
 </div></header>
 <main id="main"></main>
 <footer>感想・成績はこのブラウザと（連携すれば）あなたのGoogle Driveにだけ保存されます。このサイト自体にはデータは含まれていません。</footer>
@@ -227,7 +243,8 @@ let db=Object.assign(emptyDb(),lsGet(LS_DB,{}));
 if(!db.records||typeof db.records!=='object')db.records={};
 let settings=Object.assign({google_client_id:'',drive_linked:false,nazolog_user_id:'bf53c570',gcal_id:''},lsGet(LS_SET,{}));
 if(!settings.google_client_id)settings.google_client_id=DEFAULT_CLIENT_ID;
-const ui={tab:'list',kind:'show',q:'',group:'',result:'',format:[],year:'',status:'',sort:'new',shown:[],lq:'',lres:''};
+const TAB_KEYS=['plan','buy','reco','done','settings'];
+const ui={tab:(()=>{const t=lsGet('techo_tab','plan');return TAB_KEYS.includes(t)?t:'plan'})(),planView:'month',buyView:'wish',doneView:'rec',kind:'show',q:'',group:'',result:'',format:[],year:'',status:'',sort:'new',shown:[],lq:'',lres:''};
 
 function saveLocal(){db.updated_at=nowIso();lsSet(LS_DB,db)}
 function save(){saveLocal();scheduleSync()}
@@ -344,10 +361,9 @@ function filtered(){
   if(q)a=a.filter(r=>[r.title,r.group,r.impression,r.lesson,r.venue,r.format].join('\n').toLowerCase().includes(q));
   if(ui.group)a=a.filter(r=>r.group===ui.group);
   if(ui.result)a=a.filter(r=>ui.result==='none'?!r.result:r.result===ui.result);
-  a=a.filter(r=>kindOf(r)===ui.kind);
+  a=a.filter(r=>!isPlan(r)&&kindOf(r)===ui.kind);
   a=a.filter(matchFmt);
   if(ui.year)a=a.filter(r=>(r.date||'').slice(0,4)===ui.year);
-  if(ui.status){if(ui.kind==='buy')a=a.filter(r=>buyStage(r)===ui.status);else a=a.filter(r=>ui.status==='plan'?isPlan(r):!isPlan(r))}
   if(ui.sort==='old')a.sort(byDate);
   else if(ui.sort==='score')a.sort((x,y)=>(y.score||0)-(x.score||0)||byDate(y,x));
   else a.sort((x,y)=>byDate(y,x));
@@ -452,11 +468,12 @@ function setSync(s){
 }
 
 /* =============== rendering =============== */
-const TABS=[['list','一覧'],['week','直近の予定'],['reco','オススメ'],['stats','成績'],['lessons','教訓'],['settings','設定']];
+const TABS=[['plan','これから'],['buy','買い物'],['reco','探す'],['done','実績']];
+const TAB_LBL={plan:'これから',buy:'買い物',reco:'探す',done:'実績',settings:'設定'};
 /* 直近＝今日から1か月先まで（例：11/8 → 12/8） */
 function weekRange(){const t0=todayStr(),d=new Date(t0+'T00:00:00');d.setMonth(d.getMonth()+1);const t1=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');return[t0,t1]}
 function weekWarn(){const[t0,t1]=weekRange();return live().filter(r=>noTicket(r)&&r.date&&r.date<=t1).length}
-function renderNav(){const ww=weekWarn();$('#nav').innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" class="${ui.tab===k?'on':''}">${l}${k==='week'&&ww?`<small class="wn">⚠${ww}</small>`:''}</button>`).join('');const c=$('#curTab');if(c)c.textContent=(TABS.find(x=>x[0]===ui.tab)||[])[1]||''}
+function renderNav(){const ww=weekWarn(),nw=buyItems('wish').length;$('#nav').innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" class="${ui.tab===k?'on':''}">${l}${k==='plan'&&ww?`<small class="wn" title="チケット未登録">⚠${ww}</small>`:''}${k==='buy'&&nw?`<small title="買う予定">${nw}</small>`:''}</button>`).join('');const c=$('#curTab');if(c)c.textContent=TAB_LBL[ui.tab]||'';const g=$('#gearBtn');if(g)g.classList.toggle('on',ui.tab==='settings')}
 /* =============== Google カレンダー（ファミリー カレンダーへ登録） =============== */
 /* Drive同期とは別のトークン（カレンダー用の権限は、ボタンを押したときだけ求める）。予定ごとに固定のイベントIDで登録するので、何度押しても重複せず更新される */
 const GC_SCOPE='https://www.googleapis.com/auth/calendar.events';
@@ -576,11 +593,11 @@ document.addEventListener('click',e=>{
 function render(){
   renderNav();setSync(syncState);
   const m=$('#main');
-  if(ui.tab==='list')renderList(m);
-  else if(ui.tab==='stats')renderStats(m);
-  else if(ui.tab==='lessons')renderLessons(m);
+  m.onclick=null;
+  if(ui.tab==='plan')renderWeek(m);
+  else if(ui.tab==='buy')renderBuy(m);
   else if(ui.tab==='reco')renderReco(m);
-  else if(ui.tab==='week')renderWeek(m);
+  else if(ui.tab==='done')renderDone(m);
   else renderSettings(m);
   updateNzBtn();fixHeader();
 }
@@ -605,7 +622,7 @@ function stBtns(all){
   return`<div class="fbtns" id="stBtns"><span class="lb2">種別</span>${b('','すべて',all.length)}${b('plan','予定',np)}${b('done','参加済み',all.length-np)}</div>`;
 }
 function kindTabs(all){
-  return`<div class="subtabs" id="kindTabs">${KINDS.map(([k,l])=>`<button type="button" class="${ui.kind===k?'on':''}" data-k="${k}">${l}<small>${all.filter(r=>kindOf(r)===k).length}</small></button>`).join('')}</div>`;
+  return`<div class="fbtns" id="kindTabs"><span class="lb2">区分</span>${KINDS.map(([k,l])=>`<button type="button" class="fb ${ui.kind===k?'on':''}" data-k="${k}">${l}<small>${all.filter(r=>kindOf(r)===k).length}</small></button>`).join('')}</div>`;
 }
 function bindFmtBtns(after){
   const sb=$('#stBtns');if(sb)sb.onclick=e=>{const b=e.target.closest('.fb');if(!b)return;ui.status=b.dataset.s;after()};
@@ -722,39 +739,88 @@ function recoAddModal(it){
 
 
 /* ---- 直近の予定（当日用）：今日から1か月先までの予定を、時刻・会場・チケットのリンクつきで表示 ---- */
+/* これから：予定（公演・周遊・日付のある購入系）。「1か月以内」と「すべて」 */
+const inPlanTab=r=>isPlan(r)&&(!isBuy(r)||!!r.date);
 function renderWeek(m){
   const[t0,t1]=weekRange(),d0=new Date(t0+'T00:00:00');
-  const rs=live().filter(r=>isPlan(r)&&r.date>=t0&&r.date<=t1).sort((a,b)=>(a.date+(a.time||'99')).localeCompare(b.date+(b.time||'99')));
-  const nodate=live().filter(r=>isPlan(r)&&!r.date).length;
+  const allP=live().filter(inPlanTab);
+  const byDT=(a,b)=>(a.date+(a.time||'99')).localeCompare(b.date+(b.time||'99'));
+  const mon=allP.filter(r=>r.date>=t0&&r.date<=t1).sort(byDT);
+  const all=ui.planView==='all';
+  const rs=all?allP.filter(r=>r.date>=t0).sort(byDT):mon;
+  const past=all?allP.filter(r=>r.date&&r.date<t0).sort(byDT):[];
+  const nd=allP.filter(r=>!r.date);
+  const nodate=nd.length;
   const lbl=d=>{const k=Math.round((new Date(d+'T00:00:00')-d0)/864e5);return(k===0?'今日':k===1?'明日':'')+(k<2?'　':'')+fmtDate(d)};
   const card=r=>{
     const maps='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(r.venue||r.title);
     const tu=/^https?:\/\//i.test(r.ticket_url||'')?r.ticket_url:'';
-    const tk=tu?`<a class="btn pri" href="${esc(tu)}" target="_blank" rel="noopener">🎫 チケットを開く</a>`:`<button type="button" class="btn wkEdit" data-id="${esc(r.id)}">🎫 チケットURLを登録</button>`;
+    const tk=isBuy(r)?(tu?`<a class="btn" href="${esc(tu)}" target="_blank" rel="noopener">🛒 購入ページ</a>`:''):tu?`<a class="btn pri" href="${esc(tu)}" target="_blank" rel="noopener">🎫 チケットを開く</a>`:`<button type="button" class="btn wkEdit" data-id="${esc(r.id)}">🎫 チケットURLを登録</button>`;
     const nz=r.nazolog_content_id?`<a class="btn" href="https://www.nazo.site/content/contents/${esc(r.nazolog_content_id)}" target="_blank" rel="noopener">謎ログ ↗</a>`:'';
-    return`<div class="wk ${noTicket(r)?'nt':''}"><div class="wkt">${r.time?esc(r.time):'時刻未定'}</div><div class="wkm"><div class="ttl">${esc(r.title)}</div>${noTicket(r)?'<div class="warn" style="display:inline-block;margin-top:4px">⚠ チケットのURLが未登録です</div>':''}
+    const dn=`<button type="button" class="btn wkDone" data-id="${esc(r.id)}">✔ ${isBuy(r)?'プレイ済みにする':'参加済みにする'}</button>`;
+    return`<div class="wk ${noTicket(r)?'nt':''}"><div class="wkt">${r.time?esc(r.time):'時刻未定'}${all&&r.date?`<div class="hint" style="font-weight:500">${esc(fmtDate(r.date).slice(5))}</div>`:''}</div><div class="wkm"><div class="ttl">${isBuy(r)?'<span class="pl t" style="margin-right:6px">購入系</span>':''}${esc(r.title)}</div>${noTicket(r)?'<div class="warn" style="display:inline-block;margin-top:4px">⚠ チケットのURLが未登録です</div>':''}
       <div class="meta">${esc([r.group,r.format,r.venue].filter(Boolean).join(' ／ '))}</div>
-      <div class="row" style="margin-top:8px">${tk}${r.venue?`<a class="btn" href="${maps}" target="_blank" rel="noopener">📍 地図</a>`:''}${nz}${gcEligible(r)?gcBtn(r,'btn'):''}<button type="button" class="btn wkEdit" data-id="${esc(r.id)}">編集</button></div></div></div>`;
+      <div class="row" style="margin-top:8px">${tk}${r.venue?`<a class="btn" href="${maps}" target="_blank" rel="noopener">📍 地図</a>`:''}${nz}${gcEligible(r)?gcBtn(r,'btn'):''}${dn}<button type="button" class="btn wkEdit" data-id="${esc(r.id)}">編集</button></div></div></div>`;
   };
-  let h=`<div class="hint" style="margin-bottom:10px">今日から1か月先まで（${fmtDate(t0)} 〜 ${fmtDate(t1)}）の予定を、日付の早い順に表示しています。${nodate?`日付が未定の予定が${nodate}件あります（一覧で日付を入れると、ここに出ます）。`:''}</div>`;
+  const sub=`<div class="stick"><div class="subtabs sm" id="plV"><button type="button" class="${all?'':'on'}" data-v="month">1か月以内<small>${mon.length}</small></button><button type="button" class="${all?'on':''}" data-v="all">すべての予定<small>${allP.length}</small></button></div></div>`;
+  let h=`<div class="hint" style="margin-bottom:10px">${all?'すべての予定を日付の早い順に表示しています（日付が過ぎた予定・日付未定も含む）。':`今日から1か月先まで（${fmtDate(t0)} 〜 ${fmtDate(t1)}）の予定を、日付の早い順に表示しています。${nodate?`日付が未定の予定が${nodate}件あります（「すべての予定」に出ます）。`:''}`}購入系は日付を入れたものだけ出ます。</div>`;
   const gp=live().filter(r=>gcEligible(r)&&!gcDone(r)).length;
   if(gp)h+=`<div class="row" style="margin-bottom:10px"><button type="button" class="btn" id="gcalAll">📅 未登録の予定${gp}件をファミリー カレンダーに追加</button></div>`;
   const nw=rs.filter(noTicket).length;if(nw)h=`<div class="warnbar">⚠ チケットのURLが未登録の予定が${nw}件あります。当日に困らないよう、先に登録しておきましょう。</div>`+h;
-  if(!rs.length)h+='<div class="empty">この1か月の予定はありません。<br>オススメの「予定に入れる」や、＋公演を追加（種別：予定）から入れられます。</div>';
-  else{let cur='';rs.forEach(r=>{if(r.date!==cur){cur=r.date;h+=`<div class="gh">${esc(lbl(cur))}</div>`}h+=card(r)})}
-  m.innerHTML=h;
-  m.onclick=e=>{const b=e.target.closest('.wkEdit');if(b)openEdit(b.dataset.id)};
+  if(past.length){h+=`<div class="gh">日付が過ぎた予定<small>参加済みにするか、日付を直してください</small></div>`;past.forEach(r=>{h+=card(r)})}
+  if(!rs.length&&!past.length&&!(all&&nd.length))h+=`<div class="empty">${all?'予定はありません。':'この1か月の予定はありません。'}<br>「探す」の「予定に入れる」や、＋追加（種別：予定）から入れられます。</div>`;
+  else{let cur='';rs.forEach(r=>{if(r.date!==cur){cur=r.date;h+=`<div class="gh">${esc(all?fmtDate(cur):lbl(cur))}</div>`}h+=card(r)})}
+  if(all&&nd.length){h+=`<div class="gh">日付未定</div>`;nd.forEach(r=>{h+=card(r)})}
+  m.innerHTML=sub+h;
+  $('#plV').onclick=e=>{const b=e.target.closest('button');if(!b)return;ui.planView=b.dataset.v;render()};
+  m.onclick=e=>{const b=e.target.closest('.wkEdit');if(b){openEdit(b.dataset.id);return}
+    const d=e.target.closest('.wkDone');if(d){markDone(d.dataset.id)}};
+}
+
+/* ---- 実績（記録／成績／教訓） ---- */
+const DONE_V=[['rec','記録'],['stats','成績'],['lessons','教訓']];
+function doneTabs(){const n=live().filter(r=>!isPlan(r)),nl=n.filter(r=>r.lesson).length;
+  return`<div class="subtabs sm" id="dnV">${DONE_V.map(([k,l])=>`<button type="button" class="${ui.doneView===k?'on':''}" data-v="${k}">${l}${k==='rec'?`<small>${n.length}</small>`:k==='lessons'?`<small>${nl}</small>`:''}</button>`).join('')}</div>`}
+function bindDoneTabs(){const el=$('#dnV');if(el)el.onclick=e=>{const b=e.target.closest('button');if(!b||b.dataset.v===ui.doneView)return;ui.doneView=b.dataset.v;render()}}
+function renderDone(m){if(ui.doneView==='stats')renderStats(m);else if(ui.doneView==='lessons')renderLessons(m);else renderList(m)}
+function markDone(id){const r=db.records[id];if(!r)return;upsert(id,{status:''});render();toast(isBuy(r)?'プレイ済みにしました（実績に移動）':'参加済みにしました。実績で結果を入れてください',3500)}
+
+/* ---- 買い物（購入系の予定）：買う予定 → 手元にある（未プレイ） → 遊んだら実績へ ---- */
+const buyItems=st=>live().filter(r=>isBuy(r)&&isPlan(r)&&buyStage(r)===st);
+const yen=n=>'¥'+Number(n||0).toLocaleString();
+function renderBuy(m){
+  const wish=buyItems('wish'),own=buyItems('owned'),v=ui.buyView==='owned'?'owned':'wish';
+  const sum=a=>a.reduce((t,r)=>t+(+r.price||0),0);
+  const sort=a=>a.sort((x,y)=>(x.date||'9999').localeCompare(y.date||'9999')||x.title.localeCompare(y.title));
+  const rs=sort(v==='wish'?wish:own),tot=sum(rs),noPr=rs.filter(r=>!(+r.price)).length;
+  const sub=`<div class="stick"><div class="subtabs sm" id="byV"><button type="button" class="${v==='wish'?'on':''}" data-v="wish">買う予定<small>${wish.length}</small></button><button type="button" class="${v==='owned'?'on':''}" data-v="owned">手元にある（未プレイ）<small>${own.length}</small></button></div></div>`;
+  const card=r=>{
+    const tu=/^https?:\/\//i.test(r.ticket_url||'')?r.ticket_url:'';
+    const nz=r.nazolog_content_id?`<a class="btn" href="https://www.nazo.site/content/contents/${esc(r.nazolog_content_id)}" target="_blank" rel="noopener">謎ログ ↗</a>`:'';
+    const act=v==='wish'?`<button type="button" class="btn pri byGot" data-id="${esc(r.id)}">✔ 買った</button>`:`<button type="button" class="btn pri byDone" data-id="${esc(r.id)}">✔ 遊んだ（実績へ）</button>`;
+    return`<div class="bycard"><div class="pr">${+r.price?yen(r.price):'<span class="hint">価格未登録</span>'}<small>${r.date?esc(fmtDate(r.date)):'日付なし'}</small></div><div><div class="ttl">${esc(r.title)}${nzPending(r)?' <span class="un" title="謎ログに未反映">未反映</span>':''}</div>
+      <div class="meta">${esc([r.group,r.format].filter(Boolean).join(' ／ '))}</div>
+      <div class="row" style="margin-top:8px">${act}${tu?`<a class="btn" href="${esc(tu)}" target="_blank" rel="noopener">🛒 購入ページ</a>`:''}${nz}${gcEligible(r)?gcBtn(r,'btn'):''}<button type="button" class="btn byEdit" data-id="${esc(r.id)}">編集</button></div></div></div>`;
+  };
+  let h=`<div class="totbar"><span>${v==='wish'?'買う予定':'手元にある'}<b>${rs.length}</b>件</span><span>合計<b>${yen(tot)}</b>${noPr?`（価格未登録 ${noPr}件）`:''}</span></div>`;
+  h+=rs.length?rs.map(card).join(''):`<div class="empty">${v==='wish'?'買う予定のものはありません。<br>「探す」の購入系から「予定に入れる」か、＋追加で入れられます。':'手元にある未プレイのものはありません。'}</div>`;
+  m.innerHTML=sub+h;
+  $('#byV').onclick=e=>{const b=e.target.closest('button');if(!b)return;ui.buyView=b.dataset.v;render()};
+  m.onclick=e=>{const b=e.target.closest('button');if(!b||!b.dataset.id)return;const id=b.dataset.id;
+    if(b.classList.contains('byEdit'))openEdit(id);
+    else if(b.classList.contains('byGot')){upsert(id,{nazolog_plan_status:'defined'});render();toast('「手元にある」に移しました')}
+    else if(b.classList.contains('byDone'))markDone(id)};
 }
 
 /* ---- list ---- */
 function renderList(m){
-  const all=live();
+  const all=live().filter(r=>!isPlan(r));
   const allK=all.filter(r=>kindOf(r)===ui.kind);
   const groups=countBy(allK,r=>r.group);
   const years=[...new Set(all.map(r=>(r.date||'').slice(0,4)).filter(Boolean))].sort().reverse();
   m.innerHTML=`
-  ${(()=>{const n=all.filter(noTicket).length;return n?`<div class="warnbar">⚠ チケットのURLが未登録の予定が${n}件あります（編集から登録できます）</div>`:''})()}
   <div class="stick">
+    ${doneTabs()}
     ${kindTabs(all)}
     <div class="toolbar">
       <input type="text" id="q" placeholder="公演名・団体・感想・教訓から検索" value="${esc(ui.q)}">
@@ -764,13 +830,14 @@ function renderList(m){
       <select id="fSort">${opt('new','並び: 日付が新しい順',ui.sort)}${opt('old','並び: 日付が古い順',ui.sort)}${opt('score','並び: 面白さ順',ui.sort)}</select>
       <button class="btn" id="fClear">条件クリア</button>
     </div>
-    ${stBtns(allK)}${fmtBtns(allK)}
+    ${fmtBtns(allK)}
     <div class="hint" id="sum"></div>
   </div>
   <div id="list"></div>`;
   $('#q').oninput=e=>{ui.q=e.target.value;drawList()};
   [['fGroup','group'],['fRes','result'],['fYear','year'],['fSort','sort']].forEach(([id,k])=>{$('#'+id).onchange=e=>{ui[k]=e.target.value;drawList()}});
   $('#fClear').onclick=()=>{Object.assign(ui,{q:'',group:'',result:'',format:[],year:'',status:'',sort:'new'});renderList(m)};
+  bindDoneTabs();
   $('#kindTabs').onclick=e=>{const b=e.target.closest('button');if(!b||b.dataset.k===ui.kind)return;ui.kind=b.dataset.k;ui.status='';ui.format=[];ui.group='';renderList(m)};
   bindFmtBtns(()=>renderList(m));
   $('#list').onclick=listClick;
@@ -792,8 +859,8 @@ function drawList(){
   const rs=filtered();ui.shown=rs.map(r=>r.id);
   const box=$('#list');if(!box)return;
   if(!rs.length){
-    box.innerHTML=live().length?'<div class="empty">条件に合う公演がありません。</div>'
-      :'<div class="empty">まだ記録がありません。<br>右上の「＋ 公演を追加」から感想を書き始められます。<br>Notionなどからの移行データは「設定」→「JSONを読み込む」で取り込めます。</div>';
+    box.innerHTML=live().length?'<div class="empty">条件に合う記録がありません。</div>'
+      :'<div class="empty">まだ記録がありません。<br>右上の「＋ 追加」から感想を書き始められます。<br>Notionなどからの移行データは「設定」→「JSONを読み込む」で取り込めます。</div>';
     updateSummary();return;
   }
   const grouped=ui.sort==='new'||ui.sort==='old';
@@ -840,11 +907,11 @@ function comboHtml(id,label,items,val){
 function comboBind(id){const sel=$('#'+id+'_s'),tx=$('#'+id);sel.onchange=()=>{const n=sel.value==='__new';tx.style.display=n?'':'none';if(n)tx.focus()}}
 function comboVal(id){const sel=$('#'+id+'_s');return sel.value==='__new'?$('#'+id).value.trim():sel.value}
 const AI_PROJECT_URL='https://claude.ai/project/01a1b699-6689-7243-b8b7-f910c6f8a6ed';
-function openEdit(id){
+function openEdit(id,preset){
   const r=id?db.records[id]:null;
   const all=live();
   const topGroup=(countBy(all,x=>x.group)[0]||[''])[0];
-  const d=Object.assign({title:'',group:topGroup,date:todayStr(),time:'',status:'',nazolog_plan_status:'tentative',result:'',score:0,format:'',venue:id?'':DEFAULT_VENUE,impression:'',lesson:''},r||{});
+  const d=Object.assign({title:'',group:topGroup,date:todayStr(),time:'',status:'',nazolog_plan_status:'tentative',result:'',score:0,format:'',venue:id?'':DEFAULT_VENUE,impression:'',lesson:''},r?{}:(preset||{}),r||{});
   const th=d.time?d.time.slice(0,2):'',tm=d.time?d.time.slice(3,5):'';
   const hrs=[...new Set([...Array.from({length:14},(_,i)=>String(i+8).padStart(2,'0')),th].filter(Boolean))].sort();
   const mns=[...new Set(['00','15','30','45',tm].filter(Boolean))].sort();
@@ -864,7 +931,8 @@ function openEdit(id){
       <div class="field" id="m_pwrap" style="${stt?'':'display:none'}"><label>謎ログでの予定の扱い</label><div class="seg" id="m_ps">${PLAN_ST.map(([k,l])=>`<button type="button" class="fb ${pst===k?'on':''}" data-v="${k}">${l}</button>`).join('')}</div></div>
       ${comboHtml('m_format','形式',fmts,d.format)}
       <div class="field"><label>会場・場所</label><input type="text" id="m_venue" list="dl_venue" value="${esc(d.venue)}"></div>
-      <div class="field"><label>チケットのURL（予定のとき「直近の予定」に表示）</label><input type="url" id="m_tk" placeholder="https://" value="${esc(d.ticket_url||'')}"></div>
+      <div class="field"><label>チケット／購入ページのURL</label><input type="url" id="m_tk" placeholder="https://" value="${esc(d.ticket_url||'')}"></div>
+      <div class="field"><label>価格（円・任意）</label><input type="number" id="m_price" min="0" step="1" inputmode="numeric" value="${+d.price?esc(d.price):''}"></div>
     </div>
     ${dl('dl_group',countBy(all,x=>x.group).map(x=>x[0]))}${dl('dl_venue',countBy(all,x=>x.venue).map(x=>x[0]))}
     <div id="m_done" style="${stt==='plan'?'display:none':''}">
@@ -911,7 +979,7 @@ function openEdit(id){
     const title=$('#m_title').value.trim();
     if(!title){toast('公演名を入力してください');return}
     upsert(id||newId(),{title,group:comboVal('m_group'),date:$('#m_date').value,time:getTime(),status:stt,nazolog_plan_status:stt?pst:(d.nazolog_plan_status||''),result:res,score:sc,
-      format:comboVal('m_format'),venue:$('#m_venue').value.trim(),ticket_url:$('#m_tk').value.trim(),impression:$('#m_imp').value.trim(),lesson:$('#m_les').value.trim()});
+      format:comboVal('m_format'),venue:$('#m_venue').value.trim(),ticket_url:$('#m_tk').value.trim(),price:(+$('#m_price').value>0?Math.round(+$('#m_price').value):''),impression:$('#m_imp').value.trim(),lesson:$('#m_les').value.trim()});
     closeModal();render();toast('保存しました');
   };
   const del=$('#mDel');
@@ -934,7 +1002,7 @@ function barBlock(title,list,note){
 function renderStats(m){
   const allRs=live().filter(r=>!isPlan(r));
   const rs=allRs.filter(matchFmt);
-  if(!allRs.length){m.innerHTML='<div class="empty">記録が増えると、ここに成功率や連勝記録が表示されます。</div>';return}
+  if(!allRs.length){m.innerHTML=`<div class="stick">${doneTabs()}</div><div class="empty">記録が増えると、ここに成功率や連勝記録が表示されます。</div>`;bindDoneTabs();return}
   const s=summary(rs),st=streaks(rs);
   const curTxt=st.cur.n?(st.cur.type==='win'?st.cur.n+'連勝中':st.cur.n+'連敗中'):'—';
   const groups=agg(rs,r=>r.group).sort((a,b)=>b.n-a.n);
@@ -943,7 +1011,7 @@ function renderStats(m){
   const recent=rs.filter(r=>r.result).sort(byDate).slice(-10);
   const rs10=summary(recent);
   m.innerHTML=`
-  ${fmtBtns(allRs)}
+  <div class="stick">${doneTabs()}${fmtBtns(allRs)}</div>
   <div class="tiles">
     <div class="tile"><div class="k">公演数</div><div class="v">${s.n}<small>公演</small></div></div>
     <div class="tile"><div class="k">成功率（大成功＋成功）</div><div class="v">${pct(s.rate)}</div></div>
@@ -959,18 +1027,18 @@ function renderStats(m){
     ${barBlock('形式別',fmts,'形式が未入力の公演は「（未設定）」')}
   </div>
   ${barBlock('月別',months)}`;
-  bindFmtBtns(()=>renderStats(m));
+  bindDoneTabs();bindFmtBtns(()=>renderStats(m));
 }
 
 /* ---- lessons ---- */
 function renderLessons(m){
-  m.innerHTML=`<div class="stick"><div class="toolbar">
+  m.innerHTML=`<div class="stick">${doneTabs()}<div class="toolbar">
     <input type="text" id="lq" placeholder="教訓をキーワード検索" value="${esc(ui.lq)}">
     <select id="lres">${opt('','結果: すべて',ui.lres)}${RESULTS.map(([r])=>opt(r,r,ui.lres)).join('')}</select>
   </div><div class="hint" id="lsum"></div></div><div id="llist"></div>`;
   $('#lq').oninput=e=>{ui.lq=e.target.value;drawLessons()};
   $('#lres').onchange=e=>{ui.lres=e.target.value;drawLessons()};
-  drawLessons();
+  bindDoneTabs();drawLessons();
 }
 function drawLessons(){
   const q=ui.lq.trim().toLowerCase();
@@ -1195,10 +1263,14 @@ function openNzModal(){
 }
 
 /* =============== init =============== */
-$('#nav').onclick=e=>{const b=e.target.closest('button');if(!b)return;ui.tab=b.dataset.tab;if(isMobile())setHdr(true);render()};
-$('#addBtn').onclick=()=>openEdit(null);
+function goTab(t){ui.tab=t;lsSet('techo_tab',t);if(isMobile())setHdr(true);window.scrollTo(0,0);render()}
+$('#nav').onclick=e=>{const b=e.target.closest('button');if(!b)return;goTab(b.dataset.tab)};
+let prevTab=ui.tab==='settings'?'plan':ui.tab;
+$('#gearBtn').onclick=()=>{if(ui.tab==='settings')goTab(prevTab);else{prevTab=ui.tab;goTab('settings')}};
+/* 開いているタブに合わせて初期値を変える：これから＝予定、買い物＝購入予定 */
+$('#addBtn').onclick=()=>openEdit(null,ui.tab==='plan'?{status:'plan'}:ui.tab==='buy'?{status:'plan',nazolog_plan_status:ui.buyView==='owned'?'defined':'wishlist',format:'持ち帰り型',venue:'',date:''}:null);
 $('#nzBtn').onclick=openNzModal;
-$('#syncChip').onclick=()=>{if(!settings.google_client_id){ui.tab='settings';render();return}driveSync(true)};
+$('#syncChip').onclick=()=>{if(!settings.google_client_id){goTab('settings');return}driveSync(true)};
 window.addEventListener('resize',applyHdr);
 $('#hdrToggle').onclick=()=>setHdr(!hdrCollapsed);
 applyHdr();
