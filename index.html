@@ -154,12 +154,17 @@ nav button small.wn{background:#3b1c1c;color:#ff9a9a}
 @media(max-width:720px){
   .bar{padding:8px 12px;gap:8px}
   .logo{order:1;font-size:16px}
-  .curtab{display:block;order:2;flex:1}
-  #hdrToggle{display:block;order:3}
+  .curtab{display:none}
+  #hdrToggle{display:block;order:3;margin-left:auto}
   nav{order:4;flex:1 1 100%;flex-wrap:nowrap;overflow-x:auto;gap:2px;-webkit-overflow-scrolling:touch}
   nav button{white-space:nowrap;padding:7px 12px;flex:none}
   #nzBtn,#addBtn,#syncChip,.hlinks,#gearBtn{order:5}
-  header.collapsed nav,header.collapsed #nzBtn,header.collapsed #addBtn,header.collapsed #syncChip,header.collapsed .hlinks,header.collapsed #gearBtn{display:none}
+  header.collapsed #nzBtn,header.collapsed #addBtn,header.collapsed #syncChip,header.collapsed .hlinks,header.collapsed #gearBtn{display:none}
+  /* 閉じているときは「実績」「予定」（と今開いているタブ）だけを出す */
+  header.collapsed nav{order:2;flex:1 1 0;min-width:0}
+  header.collapsed nav button{padding:6px 10px}
+  header.collapsed nav button small{margin-left:3px;padding:0 5px}
+  header.collapsed nav button:not([data-tab=done]):not([data-tab=plan]):not(.on){display:none}
   main{padding:12px 10px 80px}
   .stick{position:static;margin:0 0 8px;padding:0 0 6px}
   .toolbar{gap:8px}
@@ -468,8 +473,8 @@ function setSync(s){
 }
 
 /* =============== rendering =============== */
-const TABS=[['done','実績'],['plan','これから'],['buy','買い物'],['reco','オススメ']];
-const TAB_LBL={plan:'これから',buy:'買い物',reco:'オススメ',done:'実績',settings:'設定'};
+const TABS=[['done','実績'],['plan','予定'],['buy','買い物'],['reco','オススメ']];
+const TAB_LBL={plan:'予定',buy:'買い物',reco:'オススメ',done:'実績',settings:'設定'};
 /* 直近＝今日から1か月先まで（例：11/8 → 12/8） */
 function weekRange(){const t0=todayStr(),d=new Date(t0+'T00:00:00');d.setMonth(d.getMonth()+1);const t1=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');return[t0,t1]}
 function weekWarn(){const[t0,t1]=weekRange();return live().filter(r=>noTicket(r)&&r.date&&r.date<=t1).length}
@@ -739,7 +744,7 @@ function recoAddModal(it){
 
 
 /* ---- 直近の予定（当日用）：今日から1か月先までの予定を、時刻・会場・チケットのリンクつきで表示 ---- */
-/* これから：予定（公演・周遊・日付のある購入系）。「1か月以内」と「すべて」 */
+/* 予定タブ：予定（公演・周遊・日付のある購入系）。「1か月以内」と「すべて」 */
 const inPlanTab=r=>isPlan(r)&&(!isBuy(r)||!!r.date);
 function renderWeek(m){
   const[t0,t1]=weekRange(),d0=new Date(t0+'T00:00:00');
@@ -1267,7 +1272,7 @@ function goTab(t){ui.tab=t;lsSet('techo_tab',t);if(isMobile())setHdr(true);windo
 $('#nav').onclick=e=>{const b=e.target.closest('button');if(!b)return;goTab(b.dataset.tab)};
 let prevTab=ui.tab==='settings'?'plan':ui.tab;
 $('#gearBtn').onclick=()=>{if(ui.tab==='settings')goTab(prevTab);else{prevTab=ui.tab;goTab('settings')}};
-/* 開いているタブに合わせて初期値を変える：これから＝予定、買い物＝購入予定 */
+/* 開いているタブに合わせて初期値を変える：予定タブ＝予定、買い物＝購入予定 */
 $('#addBtn').onclick=()=>openEdit(null,ui.tab==='plan'?{status:'plan'}:ui.tab==='buy'?{status:'plan',nazolog_plan_status:ui.buyView==='owned'?'defined':'wishlist',format:'持ち帰り型',venue:'',date:''}:null);
 $('#nzBtn').onclick=openNzModal;
 $('#syncChip').onclick=()=>{if(!settings.google_client_id){goTab('settings');return}driveSync(true)};
