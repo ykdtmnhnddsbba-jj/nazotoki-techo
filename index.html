@@ -62,6 +62,7 @@ main{max-width:1400px;margin:0 auto;padding:18px 16px 80px}
 .sb:hover{border-color:var(--accent);color:var(--text)}
 .sb.on{background:var(--accent);border-color:var(--accent);color:#2a1a00}
 .qb{align-self:flex-end;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:4px 12px;cursor:pointer;font-size:13px;color:var(--sub)}
+a.qb{text-decoration:none;display:inline-block;color:var(--teal)}
 .qb:hover{border-color:var(--sub);color:var(--text)}
 .tag{display:inline-block;font-size:11px;font-weight:700;padding:1px 9px;border-radius:99px;margin-right:6px}
 .tag.big{background:#3a2f0b;color:var(--gold)}.tag.ok{background:#16312f;color:var(--teal)}.tag.ng{background:#35171e;color:var(--pink)}
@@ -857,7 +858,7 @@ function recHtml(r){
     <div class="rr">
       ${isBuy(r)?'':`<div class="res">${RESULTS.map(([l,c])=>`<button class="rb ${c} ${r.result===l?'on':''}" data-r="${l}">${l}</button>`).join('')}</div>`}
       <div class="sbs">${Array.from({length:10},(_,i)=>`<button class="sb ${sc===i+1?'on':''}" data-s="${i+1}" title="面白さ ${i+1}点（もう一度押すと解除）">${i+1}</button>`).join('')}</div>
-      <div class="row" style="justify-content:flex-end">${gcEligible(r)?gcBtn(r,'qb'):''}${isPlan(r)?`<button class="qb dn" title="${isBuy(r)?'プレイ済みにします':'参加済みにして、結果を入れられるようにします'}">✔ ${isBuy(r)?'プレイ済みにする':'参加済みにする'}</button>`:''}<button class="qb ed">✎ 編集</button></div>
+      <div class="row" style="justify-content:flex-end">${r.nazolog_content_id?`<a class="qb" href="https://www.nazo.site/content/contents/${esc(r.nazolog_content_id)}" target="_blank" rel="noopener" title="謎ログの作品ページを新しいタブで開きます">謎ログ ↗</a>`:''}${gcEligible(r)?gcBtn(r,'qb'):''}${isPlan(r)?`<button class="qb dn" title="${isBuy(r)?'プレイ済みにします':'参加済みにして、結果を入れられるようにします'}">✔ ${isBuy(r)?'プレイ済みにする':'参加済みにする'}</button>`:''}<button class="qb ed">✎ 編集</button></div>
     </div></article>`;
 }
 function drawList(){
