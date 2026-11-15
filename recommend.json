@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-09T06:48+09:00",
+ "generated_at": "2026-11-15T20:32+09:00",
  "months": [
   "2026-11",
   "2026-12"
@@ -10,6 +10,159 @@
  ],
  "source": "nazo.site",
  "items": [
+  {
+   "contentId": "7903e606",
+   "title": "2",
+   "category": "hall",
+   "venue": "大阪祭典なにわ区民ホール(旧 浪速区民センター)",
+   "pref": "大阪府",
+   "start": "2026-11-14",
+   "end": "2026-11-15",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/7903e606",
+   "group": "C-lock-row",
+   "groups": [
+    "C-lock-row"
+   ]
+  },
+  {
+   "contentId": "192765f7",
+   "title": "IQ+240〜コートを羽織れば名推理〜",
+   "category": "hall",
+   "venue": "B.B.S. Event Dining",
+   "pref": "大阪府",
+   "start": "2026-11-14",
+   "end": "2026-11-15",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/192765f7",
+   "group": "激富/GEKITONG",
+   "groups": [
+    "激富/GEKITONG"
+   ]
+  },
+  {
+   "contentId": "01041038",
+   "title": "J0001N US!",
+   "category": "hall",
+   "venue": "大阪祭典なにわ区民ホール(旧 浪速区民センター)",
+   "pref": "大阪府",
+   "start": "2026-11-14",
+   "end": "2026-11-15",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/01041038",
+   "group": "0001(ゼロイチ)",
+   "groups": [
+    "0001(ゼロイチ)"
+   ]
+  },
+  {
+   "contentId": "392c30f3",
+   "title": "みえる謎展",
+   "category": "cafe",
+   "venue": "大阪祭典なにわ区民ホール(旧 浪速区民センター)",
+   "pref": "大阪府",
+   "start": "2026-11-14",
+   "end": "2026-11-15",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/392c30f3",
+   "group": "C-lock-row",
+   "groups": [
+    "C-lock-row"
+   ]
+  },
+  {
+   "contentId": "607ad031",
+   "title": "ニブンノイチ",
+   "category": "hall",
+   "venue": "大阪祭典なにわ区民ホール(旧 浪速区民センター)",
+   "pref": "大阪府",
+   "start": "2026-11-14",
+   "end": "2026-11-15",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/607ad031",
+   "group": "C-lock-row",
+   "groups": [
+    "C-lock-row"
+   ]
+  },
+  {
+   "contentId": "249d9f5f",
+   "title": "公私婚同",
+   "category": "hall",
+   "venue": "大阪祭典なにわ区民ホール(旧 浪速区民センター)",
+   "pref": "大阪府",
+   "start": "2026-11-14",
+   "end": "2026-11-15",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/249d9f5f",
+   "group": "CrazyLemon",
+   "groups": [
+    "CrazyLemon"
+   ]
+  },
+  {
+   "contentId": "6d16f498",
+   "title": "天上 〜TENJO〜",
+   "category": "room",
+   "venue": "メゾン高麗橋605号室",
+   "pref": "大阪府",
+   "start": "2026-11-14",
+   "end": "2026-11-15",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/6d16f498",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "930b1763",
+   "title": "謎の結婚相談所",
+   "category": "room",
+   "venue": "大阪祭典なにわ区民ホール(旧 浪速区民センター)",
+   "pref": "大阪府",
+   "start": "2026-11-14",
+   "end": "2026-11-15",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/930b1763",
+   "group": "CrossXOne",
+   "groups": [
+    "CrossXOne"
+   ]
+  },
+  {
+   "contentId": "e74ae436",
+   "title": "記憶を収めたタイムカプセル",
+   "category": "field",
+   "venue": "びわ湖バレイ",
+   "pref": "滋賀県",
+   "start": "2026-07-18",
+   "end": "2026-11-23",
+   "permanent": false,
+   "price": 1000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e74ae436",
+   "group": "リドレイク",
+   "groups": [
+    "リドレイク"
+   ]
+  },
   {
    "contentId": "8e2efea5",
    "title": "閉ざされたテンペストダンジョン(異世界迷宮)からの脱出",
@@ -42,6 +195,74 @@
    "group": "SCRAP",
    "groups": [
     "SCRAP"
+   ]
+  },
+  {
+   "contentId": "593d91aa",
+   "title": "真夜中の宇宙博物館からの脱出",
+   "category": "hall",
+   "venue": "リアル脱出ゲーム大阪南堀江店",
+   "pref": "大阪府",
+   "start": "2026-10-29",
+   "end": "2026-11-23",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/593d91aa",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "59857f07",
+   "title": "7枚目のコンポジション",
+   "category": "stadium",
+   "venue": "京都市京セラ美術館",
+   "pref": "京都府",
+   "start": "2026-11-21",
+   "end": "2026-11-23",
+   "permanent": false,
+   "price": null,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/59857f07",
+   "group": "体験する美術館",
+   "groups": [
+    "体験する美術館"
+   ]
+  },
+  {
+   "contentId": "a9a5e463",
+   "title": "アクアリウムは紐解けない",
+   "category": "hall",
+   "venue": "NLC新御堂ビル",
+   "pref": "大阪府",
+   "start": "2026-11-21",
+   "end": "2026-11-23",
+   "permanent": false,
+   "price": null,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/a9a5e463",
+   "group": "ナゾトキアドベンチャー",
+   "groups": [
+    "ナゾトキアドベンチャー"
+   ]
+  },
+  {
+   "contentId": "595d8655",
+   "title": "謎解きハウスからの脱出",
+   "category": "room",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2025-02-28",
+   "end": "2026-11-29",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/595d8655",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
    ]
   },
   {
@@ -79,6 +300,21 @@
    ]
   },
   {
+   "contentId": "5063be98",
+   "title": "最強剣豪決闘計画",
+   "category": "field",
+   "venue": "ひらかたパーク",
+   "pref": "大阪府",
+   "start": "2026-10-31",
+   "end": "2026-11-29",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/5063be98",
+   "group": "",
+   "groups": []
+  },
+  {
    "contentId": "fab0a714",
    "title": "夜の魔法学校からの脱出",
    "category": "stadium",
@@ -88,7 +324,7 @@
    "end": "2026-11-29",
    "permanent": false,
    "price": null,
-   "playable": false,
+   "playable": true,
    "url": "https://www.nazo.site/content/contents/fab0a714",
    "group": "SCRAP",
    "groups": [
@@ -105,11 +341,96 @@
    "end": "2026-11-29",
    "permanent": false,
    "price": null,
-   "playable": false,
+   "playable": true,
    "url": "https://www.nazo.site/content/contents/a954a536",
    "group": "SCRAP",
    "groups": [
     "SCRAP"
+   ]
+  },
+  {
+   "contentId": "13f804e6",
+   "title": "キオクセンター",
+   "category": "room",
+   "venue": "チマミレアトリエ",
+   "pref": "大阪府",
+   "start": "2026-11-27",
+   "end": "2026-11-29",
+   "permanent": false,
+   "price": null,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/13f804e6",
+   "group": "不思議収集部",
+   "groups": [
+    "不思議収集部"
+   ]
+  },
+  {
+   "contentId": "2d556dc0",
+   "title": "誰も知らない閉店後の旅行代理店からの脱出",
+   "category": "other",
+   "venue": "JTBエキマルシェ大阪店",
+   "pref": "大阪府",
+   "start": "2026-11-27",
+   "end": "2026-11-29",
+   "permanent": false,
+   "price": null,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/2d556dc0",
+   "group": "よだかのレコード",
+   "groups": [
+    "よだかのレコード"
+   ]
+  },
+  {
+   "contentId": "ffc23fbc",
+   "title": "交差する街の物語(ミステリー)  Aコース:「颯太篇」",
+   "category": "field",
+   "venue": "大阪ステーションシティ",
+   "pref": "大阪府",
+   "start": "2026-04-29",
+   "end": "2026-11-30",
+   "permanent": false,
+   "price": 1200,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/ffc23fbc",
+   "group": "よだかのレコード",
+   "groups": [
+    "よだかのレコード"
+   ]
+  },
+  {
+   "contentId": "c5b9d1c5",
+   "title": "交差する街の物語(ミステリー) Bコース 美月篇",
+   "category": "field",
+   "venue": "大阪ステーションシティ",
+   "pref": "大阪府",
+   "start": "2026-04-29",
+   "end": "2026-11-30",
+   "permanent": false,
+   "price": 1200,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/c5b9d1c5",
+   "group": "よだかのレコード",
+   "groups": [
+    "よだかのレコード"
+   ]
+  },
+  {
+   "contentId": "b4c2c446",
+   "title": "なんばマルイに眠る謎",
+   "category": "field",
+   "venue": "なんばマルイ",
+   "pref": "大阪府",
+   "start": "2026-09-01",
+   "end": "2026-11-30",
+   "permanent": false,
+   "price": 0,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/b4c2c446",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
    ]
   },
   {
@@ -130,6 +451,74 @@
    ]
   },
   {
+   "contentId": "0efa6e64",
+   "title": "疾風の追走(ハイウェイ)からの脱出",
+   "category": "hall",
+   "venue": "京都烏丸コンベンションホール",
+   "pref": "京都府",
+   "start": "2026-12-05",
+   "end": "2026-12-06",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/0efa6e64",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "3d5c28bb",
+   "title": "緋色の捜査網からの脱出",
+   "category": "hall",
+   "venue": "リアル脱出ゲーム京都店",
+   "pref": "京都府",
+   "start": "2026-10-09",
+   "end": "2026-12-13",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/3d5c28bb",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "0efa6e64",
+   "title": "疾風の追走(ハイウェイ)からの脱出",
+   "category": "hall",
+   "venue": "読売テレビ 新社屋 10hall",
+   "pref": "大阪府",
+   "start": "2026-10-24",
+   "end": "2026-12-13",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/0efa6e64",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "d8e6d65d",
+   "title": "ラスフェルの塔",
+   "category": "hall",
+   "venue": "マルコノスタルジ",
+   "pref": "大阪府",
+   "start": "2026-12-04",
+   "end": "2026-12-13",
+   "permanent": false,
+   "price": null,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/d8e6d65d",
+   "group": "空空-karakara-",
+   "groups": [
+    "空空-karakara-"
+   ]
+  },
+  {
    "contentId": "8cae6665",
    "title": "抜け穴ひそむ ミラクルスタジアム",
    "category": "stadium",
@@ -147,6 +536,23 @@
    ]
   },
   {
+   "contentId": "2bd6e752",
+   "title": "人類置換プログラム",
+   "category": "room",
+   "venue": "ふれあい貸し会議室 栄No142",
+   "pref": "愛知県",
+   "start": "2026-12-18",
+   "end": "2026-12-20",
+   "permanent": false,
+   "price": null,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/2bd6e752",
+   "group": "Primalade(プライマレード)",
+   "groups": [
+    "Primalade(プライマレード)"
+   ]
+  },
+  {
    "contentId": "01ef8331",
    "title": "クローバーの国とトランプの魔法",
    "category": "field",
@@ -161,6 +567,108 @@
    "group": "EFEX(エフェックス)",
    "groups": [
     "EFEX(エフェックス)"
+   ]
+  },
+  {
+   "contentId": "d070cf09",
+   "title": "キラリ町と不思議なつぼみ 中級コース",
+   "category": "field",
+   "venue": "大阪府立男女共同参画・青少年センター (ドーンセンター)",
+   "pref": "大阪府",
+   "start": "2026-09-18",
+   "end": "2026-12-27",
+   "permanent": false,
+   "price": 0,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/d070cf09",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "82dc4819",
+   "title": "キラリ町と不思議なつぼみ 初級コース",
+   "category": "field",
+   "venue": "大阪府立男女共同参画・青少年センター (ドーンセンター)",
+   "pref": "大阪府",
+   "start": "2026-09-18",
+   "end": "2026-12-27",
+   "permanent": false,
+   "price": 0,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/82dc4819",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "85bbbd30",
+   "title": "世界最強の謎、始めました",
+   "category": "cafe",
+   "venue": "はてな珈琲店 梅田店",
+   "pref": "大阪府",
+   "start": "2026-10-09",
+   "end": "2026-12-31",
+   "permanent": false,
+   "price": 1650,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/85bbbd30",
+   "group": "探偵アトリエ",
+   "groups": [
+    "探偵アトリエ"
+   ]
+  },
+  {
+   "contentId": "85bbbd30",
+   "title": "世界最強の謎、始めました",
+   "category": "cafe",
+   "venue": "はてな珈琲店 神戸三宮店",
+   "pref": "兵庫県",
+   "start": "2026-10-09",
+   "end": "2026-12-31",
+   "permanent": false,
+   "price": 1650,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/85bbbd30",
+   "group": "探偵アトリエ",
+   "groups": [
+    "探偵アトリエ"
+   ]
+  },
+  {
+   "contentId": "a19584cd",
+   "title": "届かないよるに謎を添えて",
+   "category": "cafe",
+   "venue": "はてな珈琲店 梅田店",
+   "pref": "大阪府",
+   "start": "2026-11-04",
+   "end": "2026-12-31",
+   "permanent": false,
+   "price": 2200,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/a19584cd",
+   "group": "探偵アトリエ",
+   "groups": [
+    "探偵アトリエ"
+   ]
+  },
+  {
+   "contentId": "a19584cd",
+   "title": "届かないよるに謎を添えて",
+   "category": "cafe",
+   "venue": "はてな珈琲店 神戸三宮店",
+   "pref": "兵庫県",
+   "start": "2026-11-04",
+   "end": "2026-12-31",
+   "permanent": false,
+   "price": 2200,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/a19584cd",
+   "group": "探偵アトリエ",
+   "groups": [
+    "探偵アトリエ"
    ]
   },
   {
@@ -216,6 +724,74 @@
    "contentId": "02c78a2c",
    "title": "魔族潜む村からの脱出",
    "category": "stadium",
+   "venue": "リアル脱出ゲーム大阪心斎橋店",
+   "pref": "大阪府",
+   "start": "2026-10-16",
+   "end": "2027-01-11",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/02c78a2c",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "5e73e351",
+   "title": "さよなら、僕らのマジックアワー",
+   "category": "hall",
+   "venue": "リアル脱出ゲーム大阪南堀江店",
+   "pref": "大阪府",
+   "start": "2026-11-27",
+   "end": "2027-01-11",
+   "permanent": false,
+   "price": null,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/5e73e351",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "61c3d104",
+   "title": "宝箱が消えちゃった!? 怪盗団ファントムからのナゾ",
+   "category": "field",
+   "venue": "ひらかたパーク",
+   "pref": "大阪府",
+   "start": "2026-12-05",
+   "end": "2027-01-11",
+   "permanent": false,
+   "price": null,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/61c3d104",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "d0b376ba",
+   "title": "マッド博士の異常な遺言状",
+   "category": "hall",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2026-12-10",
+   "end": "2027-01-24",
+   "permanent": false,
+   "price": null,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/d0b376ba",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "02c78a2c",
+   "title": "魔族潜む村からの脱出",
+   "category": "stadium",
    "venue": "リアル脱出ゲーム名古屋店",
    "pref": "愛知県",
    "start": "2026-10-29",
@@ -246,6 +822,23 @@
     "なぞねこ"
    ],
    "manual": true
+  },
+  {
+   "contentId": "a52767ea",
+   "title": "じゃんけんデスゲームからの脱出",
+   "category": "hall",
+   "venue": "リアル脱出ゲーム京都店",
+   "pref": "京都府",
+   "start": "2026-12-18",
+   "end": "2027-02-14",
+   "permanent": false,
+   "price": null,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/a52767ea",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
   },
   {
    "contentId": "684d8588",
@@ -316,6 +909,74 @@
    ]
   },
   {
+   "contentId": "d9548b22",
+   "title": "BIGBANG MYSTERY 上級編",
+   "category": "field",
+   "venue": "堺市立ビッグバン",
+   "pref": "大阪府",
+   "start": "2026-08-06",
+   "end": "2027-03-31",
+   "permanent": false,
+   "price": 2000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/d9548b22",
+   "group": "KAGENAZO",
+   "groups": [
+    "KAGENAZO"
+   ]
+  },
+  {
+   "contentId": "65da4110",
+   "title": "BIGBANG MYSTERY 中級編",
+   "category": "field",
+   "venue": "堺市立ビッグバン",
+   "pref": "大阪府",
+   "start": "2026-08-06",
+   "end": "2027-03-31",
+   "permanent": false,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/65da4110",
+   "group": "KAGENAZO",
+   "groups": [
+    "KAGENAZO"
+   ]
+  },
+  {
+   "contentId": "947ee189",
+   "title": "BIGBANG MYSTERY 初級編",
+   "category": "field",
+   "venue": "堺市立ビッグバン",
+   "pref": "大阪府",
+   "start": "2026-08-06",
+   "end": "2027-03-31",
+   "permanent": false,
+   "price": 700,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/947ee189",
+   "group": "KAGENAZO",
+   "groups": [
+    "KAGENAZO"
+   ]
+  },
+  {
+   "contentId": "9eb033bb",
+   "title": "ひこにゃんと彦根城に眠る謎を解け!",
+   "category": "field",
+   "venue": "彦根城",
+   "pref": "滋賀県",
+   "start": "2026-10-01",
+   "end": "2027-03-31",
+   "permanent": false,
+   "price": 1000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/9eb033bb",
+   "group": "ピコン!",
+   "groups": [
+    "ピコン!"
+   ]
+  },
+  {
    "contentId": "0f6f10b3",
    "title": "なぜ蝋燭の灯は消えたのか",
    "category": "field",
@@ -347,6 +1008,193 @@
    "group": "SCRAP",
    "groups": [
     "SCRAP"
+   ]
+  },
+  {
+   "contentId": "18d34c0f",
+   "title": "ぼくの自由なぞ研究",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2016-10-28",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/18d34c0f",
+   "group": "きまぐれボックス",
+   "groups": [
+    "きまぐれボックス"
+   ]
+  },
+  {
+   "contentId": "620a6efd",
+   "title": "たぬきには向かない職業",
+   "category": "cafe",
+   "venue": "ジェリーの謎解きルーム",
+   "pref": "静岡県",
+   "start": "2017-04-26",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/620a6efd",
+   "group": "たぬき探偵ジェリー (維新エンターテインメント)",
+   "groups": [
+    "たぬき探偵ジェリー (維新エンターテインメント)"
+   ]
+  },
+  {
+   "contentId": "e46643e7",
+   "title": "マスタッシュ伯爵の奇妙な夜想会",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2017-05-01",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e46643e7",
+   "group": "マスタッシュ",
+   "groups": [
+    "マスタッシュ"
+   ]
+  },
+  {
+   "contentId": "e12d830a",
+   "title": "海の中のおしゃれなレストラン",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2017-11-22",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e12d830a",
+   "group": "きまぐれボックス",
+   "groups": [
+    "きまぐれボックス"
+   ]
+  },
+  {
+   "contentId": "b5a5cd72",
+   "title": "最初で最後の謎本",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2017-12-06",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/b5a5cd72",
+   "group": "ラジエル -Rasiel Library-",
+   "groups": [
+    "ラジエル -Rasiel Library-"
+   ]
+  },
+  {
+   "contentId": "82c90df1",
+   "title": "XYZの悲劇",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2018-01-01",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/82c90df1",
+   "group": "U&N",
+   "groups": [
+    "U&N"
+   ]
+  },
+  {
+   "contentId": "5b3b523c",
+   "title": "WISDOM QUEST 〜封印されし賢者の書〜",
+   "category": "cafe",
+   "venue": "ボードゲームショップDDT 長堀橋店",
+   "pref": "大阪府",
+   "start": "2018-04-14",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/5b3b523c",
+   "group": "きまぐれボックス",
+   "groups": [
+    "きまぐれボックス"
+   ]
+  },
+  {
+   "contentId": "32b1d204",
+   "title": "奥寺くんの秘密",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2018-04-18",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/32b1d204",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "32b1d204",
+   "title": "奥寺くんの秘密",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2018-04-18",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/32b1d204",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "12536ebf",
+   "title": "売れない絵描き",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2018-04-26",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/12536ebf",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "12536ebf",
+   "title": "売れない絵描き",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2018-04-26",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/12536ebf",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
    ]
   },
   {
@@ -418,6 +1266,40 @@
    ]
   },
   {
+   "contentId": "04ce66d3",
+   "title": "取調室からの脱出",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2018-09-26",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/04ce66d3",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "04ce66d3",
+   "title": "取調室からの脱出",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2018-09-26",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/04ce66d3",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
    "contentId": "72de4655",
    "title": "カトリーエイルと死者からの手紙",
    "category": "field",
@@ -435,6 +1317,108 @@
    ]
   },
   {
+   "contentId": "72de4655",
+   "title": "カトリーエイルと死者からの手紙",
+   "category": "field",
+   "venue": "リアル脱出ゲーム大阪恵美須町店",
+   "pref": "大阪府",
+   "start": "2018-10-24",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/72de4655",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "2359608b",
+   "title": "ミステリーボックス",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2018-11-14",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/2359608b",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "2359608b",
+   "title": "ミステリーボックス",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2018-11-14",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/2359608b",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "05dfb915",
+   "title": "難波裏路地物語",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2019-02-21",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/05dfb915",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "5b3b523c",
+   "title": "WISDOM QUEST 〜封印されし賢者の書〜",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2019-03-06",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/5b3b523c",
+   "group": "きまぐれボックス",
+   "groups": [
+    "きまぐれボックス"
+   ]
+  },
+  {
+   "contentId": "5b3b523c",
+   "title": "WISDOM QUEST 〜封印されし賢者の書〜",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2019-03-06",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/5b3b523c",
+   "group": "きまぐれボックス",
+   "groups": [
+    "きまぐれボックス"
+   ]
+  },
+  {
    "contentId": "79355b8a",
    "title": "なごや大須 謎解き食べ歩き",
    "category": "field",
@@ -449,6 +1433,57 @@
    "group": "SCRAP",
    "groups": [
     "SCRAP"
+   ]
+  },
+  {
+   "contentId": "f946a470",
+   "title": "BIRTHDAY BOX",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2019-06-21",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/f946a470",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "7b4bae97",
+   "title": "大冒険ラリーハント ~幻のイブキドラゴンを捕まえろ~",
+   "category": "field",
+   "venue": "グリーンパーク山東",
+   "pref": "滋賀県",
+   "start": "2019-06-29",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/7b4bae97",
+   "group": "タカラッシュ",
+   "groups": [
+    "タカラッシュ"
+   ]
+  },
+  {
+   "contentId": "31d14e3b",
+   "title": "地の巻 〜外伝〜",
+   "category": "field",
+   "venue": "ニジゲンノモリ",
+   "pref": "兵庫県",
+   "start": "2019-09-14",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/31d14e3b",
+   "group": "NAZO×NAZO劇団",
+   "groups": [
+    "NAZO×NAZO劇団"
    ]
   },
   {
@@ -486,6 +1521,108 @@
    ]
   },
   {
+   "contentId": "e1a922a7",
+   "title": "ニジゲンノモリに眠るお宝をさがせ!",
+   "category": "field",
+   "venue": "ニジゲンノモリ",
+   "pref": "兵庫県",
+   "start": "2020-07-18",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e1a922a7",
+   "group": "NAZO×NAZO劇団",
+   "groups": [
+    "NAZO×NAZO劇団"
+   ]
+  },
+  {
+   "contentId": "a3aaa582",
+   "title": "呪い箱(呪われたおふだ復刻)",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2020-08-05",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/a3aaa582",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "a3aaa582",
+   "title": "呪い箱(呪われたおふだ復刻)",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2020-08-05",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/a3aaa582",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "d7f90e22",
+   "title": "ひよっこ勇者と旅立ちの装備",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2020-11-18",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/d7f90e22",
+   "group": "リドレイク",
+   "groups": [
+    "リドレイク"
+   ]
+  },
+  {
+   "contentId": "377fd35d",
+   "title": "奥寺君と謎の紙飛行機",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2020-11-20",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/377fd35d",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "377fd35d",
+   "title": "奥寺君と謎の紙飛行機",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2020-11-20",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/377fd35d",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
    "contentId": "3438b5ad",
    "title": "Christmas",
    "category": "room",
@@ -503,6 +1640,40 @@
    ]
   },
   {
+   "contentId": "86b0e77c",
+   "title": "巨大不明生物の細胞を追跡せよ!!",
+   "category": "field",
+   "venue": "ニジゲンノモリ",
+   "pref": "兵庫県",
+   "start": "2020-11-21",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/86b0e77c",
+   "group": "NAZO×NAZO劇団",
+   "groups": [
+    "NAZO×NAZO劇団"
+   ]
+  },
+  {
+   "contentId": "d7f90e22",
+   "title": "ひよっこ勇者と旅立ちの装備",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2020-11-22",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/d7f90e22",
+   "group": "リドレイク",
+   "groups": [
+    "リドレイク"
+   ]
+  },
+  {
    "contentId": "1aa94641",
    "title": "ミステリータワーからの脱出",
    "category": "cube",
@@ -514,6 +1685,72 @@
    "price": null,
    "playable": true,
    "url": "https://www.nazo.site/content/contents/1aa94641",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "1968a436",
+   "title": "謎解き!ニンジャ",
+   "category": "field",
+   "venue": "甲賀の里 忍術村",
+   "pref": "滋賀県",
+   "start": "2021-01-01",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/1968a436",
+   "group": "",
+   "groups": []
+  },
+  {
+   "contentId": "ffc83ae5",
+   "title": "女王と国のために",
+   "category": "room",
+   "venue": "Studio Escape(女王と国のためにスタジオ)",
+   "pref": "大阪府",
+   "start": "2021-02-24",
+   "end": null,
+   "permanent": true,
+   "price": 4950,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/ffc83ae5",
+   "group": "Studio Escape",
+   "groups": [
+    "Studio Escape"
+   ]
+  },
+  {
+   "contentId": "1aa94641",
+   "title": "ミステリータワーからの脱出",
+   "category": "cube",
+   "venue": "リアル脱出ゲーム大阪恵美須町店",
+   "pref": "大阪府",
+   "start": "2021-04-23",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/1aa94641",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "5ac990ea",
+   "title": "鍵だらけの部屋からの脱出",
+   "category": "room",
+   "venue": "リアル脱出ゲーム京都店",
+   "pref": "京都府",
+   "start": "2021-04-23",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/5ac990ea",
    "group": "SCRAP",
    "groups": [
     "SCRAP"
@@ -775,6 +2012,40 @@
    ]
   },
   {
+   "contentId": "e98bd6e0",
+   "title": "魔法のランプと失われた鍵",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2021-07-07",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e98bd6e0",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "e98bd6e0",
+   "title": "魔法のランプと失われた鍵",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2021-07-07",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e98bd6e0",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
    "contentId": "37777dd7",
    "title": "ワンルーム遭難中",
    "category": "cafe",
@@ -789,6 +2060,57 @@
    "group": "繭玉工房",
    "groups": [
     "繭玉工房"
+   ]
+  },
+  {
+   "contentId": "892225c4",
+   "title": "賢者とカギ眠る洞窟",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2021-07-14",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/892225c4",
+   "group": "NoEscape",
+   "groups": [
+    "NoEscape"
+   ]
+  },
+  {
+   "contentId": "c9635d0b",
+   "title": "とびだす!なぞとき怪獣図鑑 〜ゴジラ淡路島に上陸〜",
+   "category": "field",
+   "venue": "ニジゲンノモリ",
+   "pref": "兵庫県",
+   "start": "2021-07-16",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/c9635d0b",
+   "group": "NAZO×NAZO劇団",
+   "groups": [
+    "NAZO×NAZO劇団"
+   ]
+  },
+  {
+   "contentId": "892225c4",
+   "title": "賢者とカギ眠る洞窟",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2021-07-21",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/892225c4",
+   "group": "NoEscape",
+   "groups": [
+    "NoEscape"
    ]
   },
   {
@@ -840,6 +2162,40 @@
    "group": "かえりみち工房",
    "groups": [
     "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "f290d146",
+   "title": "魔王城からの脱出II",
+   "category": "room",
+   "venue": "リアル脱出ゲーム京都店",
+   "pref": "京都府",
+   "start": "2021-08-04",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/f290d146",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "961f98e2",
+   "title": "“暁”ハイド・アンド・シーク 〜忍里に潜む“暁”を見つけ出せ!〜",
+   "category": "field",
+   "venue": "ニジゲンノモリ",
+   "pref": "兵庫県",
+   "start": "2021-09-04",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/961f98e2",
+   "group": "NAZO×NAZO劇団",
+   "groups": [
+    "NAZO×NAZO劇団"
    ]
   },
   {
@@ -945,6 +2301,40 @@
    ]
   },
   {
+   "contentId": "e9ba66a0",
+   "title": "ガリレオ・ガリレイ 最期の考察",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2022-02-02",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e9ba66a0",
+   "group": "きまぐれボックス",
+   "groups": [
+    "きまぐれボックス"
+   ]
+  },
+  {
+   "contentId": "e9ba66a0",
+   "title": "ガリレオ・ガリレイ 最期の考察",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2022-02-02",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e9ba66a0",
+   "group": "きまぐれボックス",
+   "groups": [
+    "きまぐれボックス"
+   ]
+  },
+  {
    "contentId": "d937c7ce",
    "title": "謎の壁からの脱出",
    "category": "room",
@@ -959,6 +2349,23 @@
    "group": "SCRAP",
    "groups": [
     "SCRAP"
+   ]
+  },
+  {
+   "contentId": "cd83f03c",
+   "title": "まちがいだらけの案内本(ガイドブック)",
+   "category": "field",
+   "venue": "近江鉄道",
+   "pref": "滋賀県",
+   "start": "2022-04-08",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/cd83f03c",
+   "group": "謎猫奇譚",
+   "groups": [
+    "謎猫奇譚"
    ]
   },
   {
@@ -979,6 +2386,23 @@
    ]
   },
   {
+   "contentId": "c16c311c",
+   "title": "妖精たちのカンタービレ",
+   "category": "field",
+   "venue": "ROKKO森の音ミュージアム",
+   "pref": "兵庫県",
+   "start": "2022-04-29",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/c16c311c",
+   "group": "フラップゼロα(team ZEPET)",
+   "groups": [
+    "フラップゼロα(team ZEPET)"
+   ]
+  },
+  {
    "contentId": "3b020c00",
    "title": "XXナゾ(傷だらけのナゾ)",
    "category": "cafe",
@@ -996,12 +2420,112 @@
    ]
   },
   {
+   "contentId": "3d892ff8",
+   "title": "18分探偵と密室ゴンドラの謎",
+   "category": "room",
+   "venue": "オオサカホイール",
+   "pref": "大阪府",
+   "start": "2022-05-14",
+   "end": null,
+   "permanent": true,
+   "price": 2000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/3d892ff8",
+   "group": "よだかのレコード",
+   "groups": [
+    "よだかのレコード"
+   ]
+  },
+  {
+   "contentId": "d18c483a",
+   "title": "デンキュー",
+   "category": "cafe",
+   "venue": "ジェリーの謎解きルーム",
+   "pref": "静岡県",
+   "start": "2022-07-02",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/d18c483a",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
    "contentId": "a0b41098",
    "title": "ガネーシャ箱",
    "category": "cafe",
    "venue": "謎解きカフェ&ボードゲーム なぞねこ",
    "pref": "愛知県",
    "start": "2022-07-05",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/a0b41098",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "c1e175a8",
+   "title": "トレジャーハント",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2022-07-06",
+   "end": null,
+   "permanent": true,
+   "price": 1200,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/c1e175a8",
+   "group": "",
+   "groups": []
+  },
+  {
+   "contentId": "4fd94164",
+   "title": "ゴジラ迫るホテルからの脱出",
+   "category": "field",
+   "venue": "熱海ベイリゾート後楽園",
+   "pref": "静岡県",
+   "start": "2022-07-14",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/4fd94164",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "a0b41098",
+   "title": "ガネーシャ箱",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2022-09-01",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/a0b41098",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "a0b41098",
+   "title": "ガネーシャ箱",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2022-09-07",
    "end": null,
    "permanent": true,
    "price": null,
@@ -1098,6 +2622,23 @@
    ]
   },
   {
+   "contentId": "a9dd5f99",
+   "title": "マダム・ルクレールの交霊会",
+   "category": "room",
+   "venue": "セントレジスホテル大阪",
+   "pref": "大阪府",
+   "start": "2022-12-03",
+   "end": null,
+   "permanent": true,
+   "price": 4950,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/a9dd5f99",
+   "group": "Studio Escape",
+   "groups": [
+    "Studio Escape"
+   ]
+  },
+  {
    "contentId": "332af48a",
    "title": "謎のタワーマンションからの脱出",
    "category": "room",
@@ -1129,6 +2670,74 @@
    "group": "SCRAP",
    "groups": [
     "SCRAP"
+   ]
+  },
+  {
+   "contentId": "332af48a",
+   "title": "謎のタワーマンションからの脱出",
+   "category": "room",
+   "venue": "リアル脱出ゲーム大阪恵美須町店",
+   "pref": "大阪府",
+   "start": "2023-03-09",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/332af48a",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "f445d5e4",
+   "title": "宇宙港スカイビルの秘密",
+   "category": "field",
+   "venue": "梅田スカイビル",
+   "pref": "大阪府",
+   "start": "2023-03-18",
+   "end": null,
+   "permanent": true,
+   "price": 3500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/f445d5e4",
+   "group": "クロネコキューブ",
+   "groups": [
+    "クロネコキューブ"
+   ]
+  },
+  {
+   "contentId": "91f53f0a",
+   "title": "失踪した駅長をおっちょこちょいな駅員と探す謎解き",
+   "category": "field",
+   "venue": "近江鉄道",
+   "pref": "滋賀県",
+   "start": "2023-04-24",
+   "end": null,
+   "permanent": true,
+   "price": 2500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/91f53f0a",
+   "group": "謎猫奇譚",
+   "groups": [
+    "謎猫奇譚"
+   ]
+  },
+  {
+   "contentId": "9382ab66",
+   "title": "笑ってはいけないお笑いライブからの脱出(リメイク)",
+   "category": "stadium",
+   "venue": "ジェリーの謎解きルーム",
+   "pref": "静岡県",
+   "start": "2023-05-05",
+   "end": null,
+   "permanent": true,
+   "price": 2000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/9382ab66",
+   "group": "たぬき探偵ジェリー (維新エンターテインメント)",
+   "groups": [
+    "たぬき探偵ジェリー (維新エンターテインメント)"
    ]
   },
   {
@@ -1251,6 +2860,57 @@
    ]
   },
   {
+   "contentId": "355d1ad6",
+   "title": "ゴーストハンターズ",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2023-07-07",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/355d1ad6",
+   "group": "きまぐれボックス",
+   "groups": [
+    "きまぐれボックス"
+   ]
+  },
+  {
+   "contentId": "355d1ad6",
+   "title": "ゴーストハンターズ",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2023-07-07",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/355d1ad6",
+   "group": "きまぐれボックス",
+   "groups": [
+    "きまぐれボックス"
+   ]
+  },
+  {
+   "contentId": "4427f65f",
+   "title": "宇宙から届いたメッセージ",
+   "category": "field",
+   "venue": "びわ湖バレイ",
+   "pref": "滋賀県",
+   "start": "2023-08-01",
+   "end": null,
+   "permanent": true,
+   "price": 1000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/4427f65f",
+   "group": "NAZO×NAZO劇団",
+   "groups": [
+    "NAZO×NAZO劇団"
+   ]
+  },
+  {
    "contentId": "80801771",
    "title": "人狼村からの脱出 (ルーム型)",
    "category": "room",
@@ -1265,6 +2925,57 @@
    "group": "SCRAP",
    "groups": [
     "SCRAP"
+   ]
+  },
+  {
+   "contentId": "8ae4e8fd",
+   "title": "漆黒の悟り",
+   "category": "room",
+   "venue": "Studio Escape(暗黒の座禅スタジオ)",
+   "pref": "大阪府",
+   "start": "2023-08-12",
+   "end": null,
+   "permanent": true,
+   "price": 4950,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/8ae4e8fd",
+   "group": "Studio Escape",
+   "groups": [
+    "Studio Escape"
+   ]
+  },
+  {
+   "contentId": "79d925ae",
+   "title": "メッキュー",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2023-09-08",
+   "end": null,
+   "permanent": true,
+   "price": 1200,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/79d925ae",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "79d925ae",
+   "title": "メッキュー",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2023-09-08",
+   "end": null,
+   "permanent": true,
+   "price": 1200,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/79d925ae",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
    ]
   },
   {
@@ -1320,6 +3031,40 @@
    ]
   },
   {
+   "contentId": "79bdc110",
+   "title": "ジーニアスボックス 〜ある博士が遺した秘密〜 (カフェ謎ver.)",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2023-12-20",
+   "end": null,
+   "permanent": true,
+   "price": 1800,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/79bdc110",
+   "group": "ナゾトキアドベンチャー",
+   "groups": [
+    "ナゾトキアドベンチャー"
+   ]
+  },
+  {
+   "contentId": "79bdc110",
+   "title": "ジーニアスボックス 〜ある博士が遺した秘密〜 (カフェ謎ver.)",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2023-12-20",
+   "end": null,
+   "permanent": true,
+   "price": 1800,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/79bdc110",
+   "group": "ナゾトキアドベンチャー",
+   "groups": [
+    "ナゾトキアドベンチャー"
+   ]
+  },
+  {
    "contentId": "dd9d2c8e",
    "title": "4つのキューブとまわる床",
    "category": "cafe",
@@ -1334,6 +3079,41 @@
    "group": "リドレイク",
    "groups": [
     "リドレイク"
+   ]
+  },
+  {
+   "contentId": "295ef35c",
+   "title": "伏見稲荷裏参道 ナゾトキラリー",
+   "category": "field",
+   "venue": "末吉餅",
+   "pref": "京都府",
+   "start": "2024-03-08",
+   "end": null,
+   "permanent": true,
+   "price": 300,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/295ef35c",
+   "group": "Toy×ボーズ",
+   "groups": [
+    "Toy×ボーズ"
+   ]
+  },
+  {
+   "contentId": "2eab6188",
+   "title": "謀略のテンペストサーカスからの脱出",
+   "category": "field",
+   "venue": "リアル脱出ゲーム大阪恵美須町店",
+   "pref": "大阪府",
+   "start": "2024-03-14",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/2eab6188",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP",
+    "よだかのレコード"
    ]
   },
   {
@@ -1353,6 +3133,21 @@
     "SCRAP",
     "よだかのレコード"
    ]
+  },
+  {
+   "contentId": "da35a8a7",
+   "title": "非公認グランフロント大阪周遊",
+   "category": "field",
+   "venue": "グランフロント大阪",
+   "pref": "大阪府",
+   "start": "2024-05-25",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/da35a8a7",
+   "group": "",
+   "groups": []
   },
   {
    "contentId": "c8639f9d",
@@ -1403,6 +3198,108 @@
    "group": "ミステリージャック",
    "groups": [
     "ミステリージャック"
+   ]
+  },
+  {
+   "contentId": "73cf18bc",
+   "title": "熱川ばにおとまぼろしのバナナを見つけ出せ!",
+   "category": "field",
+   "venue": "熱川バナナワニ園",
+   "pref": "静岡県",
+   "start": "2024-07-17",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/73cf18bc",
+   "group": "よだかのレコード",
+   "groups": [
+    "よだかのレコード"
+   ]
+  },
+  {
+   "contentId": "f7b99580",
+   "title": "雨の降らない街",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2024-07-18",
+   "end": null,
+   "permanent": true,
+   "price": 1400,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/f7b99580",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "f7b99580",
+   "title": "雨の降らない街",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2024-07-18",
+   "end": null,
+   "permanent": true,
+   "price": 1400,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/f7b99580",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "b7b79841",
+   "title": "エスケープトラップ",
+   "category": "room",
+   "venue": "エスケープトラップ",
+   "pref": "兵庫県",
+   "start": "2024-08-08",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/b7b79841",
+   "group": "エスケープトラップ",
+   "groups": [
+    "エスケープトラップ"
+   ]
+  },
+  {
+   "contentId": "9679c072",
+   "title": "平成謎シリーズ ギャル謎",
+   "category": "cafe",
+   "venue": "ジェリーの謎解きルーム",
+   "pref": "静岡県",
+   "start": "2024-09-08",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/9679c072",
+   "group": "たぬき探偵ジェリー (維新エンターテインメント)",
+   "groups": [
+    "たぬき探偵ジェリー (維新エンターテインメント)"
+   ]
+  },
+  {
+   "contentId": "0419dbb2",
+   "title": "BEAT TOWER",
+   "category": "cube",
+   "venue": "リアル脱出ゲーム大阪恵美須町店",
+   "pref": "大阪府",
+   "start": "2024-09-11",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/0419dbb2",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
    ]
   },
   {
@@ -1457,6 +3354,74 @@
    ]
   },
   {
+   "contentId": "cace3801",
+   "title": "閉ざされた地下牢からの脱出",
+   "category": "room",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2024-10-25",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/cace3801",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "f56b2ec0",
+   "title": "謎解き探偵事務所",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2024-11-09",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/f56b2ec0",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "f56b2ec0",
+   "title": "謎解き探偵事務所",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2024-11-09",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/f56b2ec0",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "434ec6ba",
+   "title": "魔女の住む家からの脱出",
+   "category": "room",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2024-11-22",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/434ec6ba",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
    "contentId": "36fdfa11",
    "title": "リニア・鉄道館とまぼろしの車両",
    "category": "field",
@@ -1471,6 +3436,91 @@
    "group": "タカラッシュ",
    "groups": [
     "タカラッシュ"
+   ]
+  },
+  {
+   "contentId": "08be862d",
+   "title": "アイテムだらけの部屋からの脱出",
+   "category": "room",
+   "venue": "リアル脱出ゲーム大阪恵美須町店",
+   "pref": "大阪府",
+   "start": "2025-03-07",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/08be862d",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "c7ed4fa0",
+   "title": "サウナクエスト 第一章[初級] 灼熱の洞窟に眠る秘宝",
+   "category": "room",
+   "venue": "BIWAKO SAUNA",
+   "pref": "滋賀県",
+   "start": "2025-03-07",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/c7ed4fa0",
+   "group": "リドレイク",
+   "groups": [
+    "リドレイク"
+   ]
+  },
+  {
+   "contentId": "827720f7",
+   "title": "サウナクエスト 第三章[上級] 知恵の試練からの脱出",
+   "category": "room",
+   "venue": "BIWAKO SAUNA",
+   "pref": "滋賀県",
+   "start": "2025-03-07",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/827720f7",
+   "group": "リドレイク",
+   "groups": [
+    "リドレイク"
+   ]
+  },
+  {
+   "contentId": "79ee3589",
+   "title": "サウナクエスト 第二章[中級] マグマゴーレム討伐戦",
+   "category": "room",
+   "venue": "BIWAKO SAUNA",
+   "pref": "滋賀県",
+   "start": "2025-03-07",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/79ee3589",
+   "group": "リドレイク",
+   "groups": [
+    "リドレイク"
+   ]
+  },
+  {
+   "contentId": "c149c0cf",
+   "title": "幻の宝石 漆黒のダイヤモンドを奪取せよ!",
+   "category": "stadium",
+   "venue": "ひらかたパーク",
+   "pref": "大阪府",
+   "start": "2025-03-14",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/c149c0cf",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
    ]
   },
   {
@@ -1491,6 +3541,57 @@
    ]
   },
   {
+   "contentId": "d265be39",
+   "title": "初代魔王の箱と最高の魔術解除士",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2025-04-11",
+   "end": null,
+   "permanent": true,
+   "price": 2000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/d265be39",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "d265be39",
+   "title": "初代魔王の箱と最高の魔術解除士",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2025-04-11",
+   "end": null,
+   "permanent": true,
+   "price": 2000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/d265be39",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "816dca64",
+   "title": "脱出体験ベーシックIIプラン(ノーマル)",
+   "category": "room",
+   "venue": "LunaSpell Escape Room",
+   "pref": "静岡県",
+   "start": "2025-04-20",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/816dca64",
+   "group": "Luna Spell",
+   "groups": [
+    "Luna Spell"
+   ]
+  },
+  {
    "contentId": "2e4a21d4",
    "title": "マグノリア銀行からの脱出 (ルーム型)",
    "category": "room",
@@ -1505,6 +3606,121 @@
    "group": "SCRAP",
    "groups": [
     "SCRAP"
+   ]
+  },
+  {
+   "contentId": "3953fc09",
+   "title": "KITTE大阪と約束の手紙",
+   "category": "field",
+   "venue": "KITTE大阪",
+   "pref": "大阪府",
+   "start": "2025-05-29",
+   "end": null,
+   "permanent": true,
+   "price": 2600,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/3953fc09",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "60b3aa76",
+   "title": "MYSTERY MAIL BOX 〜Mystery Manからの招待状〜 優雅なる深紅",
+   "category": "field",
+   "venue": "リアル脱出ゲーム大阪恵美須町店",
+   "pref": "大阪府",
+   "start": "2025-05-29",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/60b3aa76",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "18c60da2",
+   "title": "MYSTERY MAIL BOX 〜Mystery Manからの招待状〜 繋がりし紺碧",
+   "category": "field",
+   "venue": "リアル脱出ゲーム大阪恵美須町店",
+   "pref": "大阪府",
+   "start": "2025-06-09",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/18c60da2",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "8690a0bc",
+   "title": "MYSTERY MAIL BOX 〜Mystery Manからの招待状〜 遙かなる黄金",
+   "category": "field",
+   "venue": "リアル脱出ゲーム大阪恵美須町店",
+   "pref": "大阪府",
+   "start": "2025-06-09",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/8690a0bc",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "4dac2e23",
+   "title": "SECRETLAB",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2025-06-13",
+   "end": null,
+   "permanent": true,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/4dac2e23",
+   "group": "",
+   "groups": []
+  },
+  {
+   "contentId": "4dac2e23",
+   "title": "SECRETLAB",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2025-06-13",
+   "end": null,
+   "permanent": true,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/4dac2e23",
+   "group": "",
+   "groups": []
+  },
+  {
+   "contentId": "403e603d",
+   "title": "鉱山に眠る宝石を探せ",
+   "category": "field",
+   "venue": "キウイフルーツカントリー",
+   "pref": "静岡県",
+   "start": "2025-06-21",
+   "end": null,
+   "permanent": true,
+   "price": 1000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/403e603d",
+   "group": "たぬき探偵ジェリー (維新エンターテインメント)",
+   "groups": [
+    "たぬき探偵ジェリー (維新エンターテインメント)"
    ]
   },
   {
@@ -1525,6 +3741,87 @@
    ]
   },
   {
+   "contentId": "85b841a8",
+   "title": "ポンコツ団長がいるギルドに転生した件",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2025-08-06",
+   "end": null,
+   "permanent": true,
+   "price": 1200,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/85b841a8",
+   "group": "",
+   "groups": []
+  },
+  {
+   "contentId": "85b841a8",
+   "title": "ポンコツ団長がいるギルドに転生した件",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2025-08-06",
+   "end": null,
+   "permanent": true,
+   "price": 1200,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/85b841a8",
+   "group": "",
+   "groups": []
+  },
+  {
+   "contentId": "a374ab94",
+   "title": "脱出体験ベーシックIIプラン(上級編)",
+   "category": "room",
+   "venue": "LunaSpell Escape Room",
+   "pref": "静岡県",
+   "start": "2025-08-10",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/a374ab94",
+   "group": "Luna Spell",
+   "groups": [
+    "Luna Spell"
+   ]
+  },
+  {
+   "contentId": "bfa4f9e8",
+   "title": "魔法ナゾ使い適正試験",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2025-09-11",
+   "end": null,
+   "permanent": true,
+   "price": 1200,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/bfa4f9e8",
+   "group": "ナゾトキアドベンチャー",
+   "groups": [
+    "ナゾトキアドベンチャー"
+   ]
+  },
+  {
+   "contentId": "bfa4f9e8",
+   "title": "魔法ナゾ使い適正試験",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2025-09-11",
+   "end": null,
+   "permanent": true,
+   "price": 1200,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/bfa4f9e8",
+   "group": "ナゾトキアドベンチャー",
+   "groups": [
+    "ナゾトキアドベンチャー"
+   ]
+  },
+  {
    "contentId": "cddec693",
    "title": "パズルルームからの脱出2",
    "category": "room",
@@ -1539,6 +3836,74 @@
    "group": "SCRAP",
    "groups": [
     "SCRAP"
+   ]
+  },
+  {
+   "contentId": "2f596989",
+   "title": "さいころぼっくす",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2025-10-22",
+   "end": null,
+   "permanent": true,
+   "price": 1320,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/2f596989",
+   "group": "なぞねこ",
+   "groups": [
+    "なぞねこ"
+   ]
+  },
+  {
+   "contentId": "2f596989",
+   "title": "さいころぼっくす",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2025-10-22",
+   "end": null,
+   "permanent": true,
+   "price": 1320,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/2f596989",
+   "group": "なぞねこ",
+   "groups": [
+    "なぞねこ"
+   ]
+  },
+  {
+   "contentId": "c72415f7",
+   "title": "卓上現場推理",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2025-10-22",
+   "end": null,
+   "permanent": true,
+   "price": 2500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/c72415f7",
+   "group": "なぞねこ",
+   "groups": [
+    "なぞねこ"
+   ]
+  },
+  {
+   "contentId": "c72415f7",
+   "title": "卓上現場推理",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2025-10-22",
+   "end": null,
+   "permanent": true,
+   "price": 2500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/c72415f7",
+   "group": "なぞねこ",
+   "groups": [
+    "なぞねこ"
    ]
   },
   {
@@ -1578,6 +3943,40 @@
    ]
   },
   {
+   "contentId": "8d61736e",
+   "title": "1LDKからの脱出~リフォーム編~",
+   "category": "room",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2025-11-01",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/8d61736e",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "440d575b",
+   "title": "ときどき監視員が見回りに来る部屋からの脱出",
+   "category": "room",
+   "venue": "リアル脱出ゲーム大阪恵美須町店",
+   "pref": "大阪府",
+   "start": "2025-11-07",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/440d575b",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
    "contentId": "f933c18b",
    "title": "ドラキュラ城からの脱出",
    "category": "hall",
@@ -1592,6 +3991,23 @@
    "group": "SCRAP",
    "groups": [
     "SCRAP"
+   ]
+  },
+  {
+   "contentId": "3b922fab",
+   "title": "ウワサの学校からの脱出",
+   "category": "room",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2025-12-09",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/3b922fab",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
    ]
   },
   {
@@ -1697,6 +4113,108 @@
    ]
   },
   {
+   "contentId": "c93adc35",
+   "title": "喫茶まぼろしに眠るタイムカプセル",
+   "category": "cafe",
+   "venue": "喫茶 まぼろし",
+   "pref": "大阪府",
+   "start": "2026-01-24",
+   "end": null,
+   "permanent": true,
+   "price": 2000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/c93adc35",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "1e589b31",
+   "title": "はてなだらけの宇宙旅行",
+   "category": "cafe",
+   "venue": "はてな珈琲店 梅田店",
+   "pref": "大阪府",
+   "start": "2026-01-26",
+   "end": null,
+   "permanent": true,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/1e589b31",
+   "group": "探偵アトリエ",
+   "groups": [
+    "探偵アトリエ"
+   ]
+  },
+  {
+   "contentId": "8963d1e4",
+   "title": "ハテナモンスターと呪われた木箱",
+   "category": "cafe",
+   "venue": "はてな珈琲店 梅田店",
+   "pref": "大阪府",
+   "start": "2026-01-26",
+   "end": null,
+   "permanent": true,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/8963d1e4",
+   "group": "探偵アトリエ",
+   "groups": [
+    "探偵アトリエ"
+   ]
+  },
+  {
+   "contentId": "ca38a81c",
+   "title": "中学校落第危機からの脱出",
+   "category": "cafe",
+   "venue": "はてな珈琲店 梅田店",
+   "pref": "大阪府",
+   "start": "2026-01-26",
+   "end": null,
+   "permanent": true,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/ca38a81c",
+   "group": "探偵アトリエ",
+   "groups": [
+    "探偵アトリエ"
+   ]
+  },
+  {
+   "contentId": "a26f5e50",
+   "title": "怪盗ハテナからの挑戦状",
+   "category": "cafe",
+   "venue": "はてな珈琲店 梅田店",
+   "pref": "大阪府",
+   "start": "2026-01-26",
+   "end": null,
+   "permanent": true,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/a26f5e50",
+   "group": "探偵アトリエ",
+   "groups": [
+    "探偵アトリエ"
+   ]
+  },
+  {
+   "contentId": "7a1bfda7",
+   "title": "鏡の国のアリク",
+   "category": "cafe",
+   "venue": "はてな珈琲店 梅田店",
+   "pref": "大阪府",
+   "start": "2026-01-26",
+   "end": null,
+   "permanent": true,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/7a1bfda7",
+   "group": "探偵アトリエ",
+   "groups": [
+    "探偵アトリエ"
+   ]
+  },
+  {
    "contentId": "849f4691",
    "title": "DRAW",
    "category": "room",
@@ -1719,6 +4237,23 @@
    "category": "cube",
    "venue": "リアル脱出ゲーム名古屋店",
    "pref": "愛知県",
+   "start": "2026-02-16",
+   "end": null,
+   "permanent": true,
+   "price": 0,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/515e3189",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "515e3189",
+   "title": "リトルミステリータワーからの脱出",
+   "category": "cube",
+   "venue": "リアル脱出ゲーム大阪恵美須町店",
+   "pref": "大阪府",
    "start": "2026-02-16",
    "end": null,
    "permanent": true,
@@ -1759,6 +4294,125 @@
    "price": null,
    "playable": true,
    "url": "https://www.nazo.site/content/contents/f0cddd5f",
+   "group": "ナゾトキアドベンチャー",
+   "groups": [
+    "ナゾトキアドベンチャー"
+   ]
+  },
+  {
+   "contentId": "e5bc5408",
+   "title": "謎の館からの脱出",
+   "category": "room",
+   "venue": "京都府京都市上京区",
+   "pref": "京都府",
+   "start": "2026-02-27",
+   "end": null,
+   "permanent": true,
+   "price": 120000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e5bc5408",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "48cdb49d",
+   "title": "道頓堀街歩き謎解き",
+   "category": "field",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2026-03-01",
+   "end": null,
+   "permanent": true,
+   "price": 1000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/48cdb49d",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "403e603d",
+   "title": "鉱山に眠る宝石を探せ",
+   "category": "field",
+   "venue": "亀の井ホテル 焼津",
+   "pref": "静岡県",
+   "start": "2026-03-01",
+   "end": null,
+   "permanent": true,
+   "price": 1000,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/403e603d",
+   "group": "たぬき探偵ジェリー (維新エンターテインメント)",
+   "groups": [
+    "たぬき探偵ジェリー (維新エンターテインメント)"
+   ]
+  },
+  {
+   "contentId": "db8e448c",
+   "title": "星座がくれたちいさな宝物",
+   "category": "cafe",
+   "venue": "はてな珈琲店 梅田店",
+   "pref": "大阪府",
+   "start": "2026-03-18",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/db8e448c",
+   "group": "探偵アトリエ",
+   "groups": [
+    "探偵アトリエ"
+   ]
+  },
+  {
+   "contentId": "da073a9b",
+   "title": "太陽の文豪と星の編集者",
+   "category": "cafe",
+   "venue": "ヴィラージュ伊豆高原",
+   "pref": "静岡県",
+   "start": "2026-03-25",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/da073a9b",
+   "group": "takarush BLACK LABEL",
+   "groups": [
+    "takarush BLACK LABEL"
+   ]
+  },
+  {
+   "contentId": "e62b1ec0",
+   "title": "ナゾアドノハコ",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2026-04-01",
+   "end": null,
+   "permanent": true,
+   "price": 1100,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e62b1ec0",
+   "group": "ナゾトキアドベンチャー",
+   "groups": [
+    "ナゾトキアドベンチャー"
+   ]
+  },
+  {
+   "contentId": "e62b1ec0",
+   "title": "ナゾアドノハコ",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2026-04-01",
+   "end": null,
+   "permanent": true,
+   "price": 1100,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/e62b1ec0",
    "group": "ナゾトキアドベンチャー",
    "groups": [
     "ナゾトキアドベンチャー"
@@ -1817,6 +4471,74 @@
    ]
   },
   {
+   "contentId": "cdfbdf0d",
+   "title": "マジッキュー",
+   "category": "cafe",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2026-05-11",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/cdfbdf0d",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "cdfbdf0d",
+   "title": "マジッキュー",
+   "category": "cafe",
+   "venue": "時解 eScape cafe 道頓堀店",
+   "pref": "大阪府",
+   "start": "2026-05-11",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/cdfbdf0d",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "307d0810",
+   "title": "監獄アルバトロスからの脱出",
+   "category": "hall",
+   "venue": "リアル脱出ゲーム京都店",
+   "pref": "京都府",
+   "start": "2026-05-15",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/307d0810",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "dd4099ad",
+   "title": "事故物件からの脱出 -呪いの301号室-",
+   "category": "room",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2026-05-22",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/dd4099ad",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
    "contentId": "031a7512",
    "title": "コロコロジック",
    "category": "stadium",
@@ -1828,6 +4550,23 @@
    "price": null,
    "playable": true,
    "url": "https://www.nazo.site/content/contents/031a7512",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ]
+  },
+  {
+   "contentId": "0c5b1fb7",
+   "title": "地下アンティークルームからの脱出(あるアンティークルームからの脱出)",
+   "category": "room",
+   "venue": "リアル脱出ゲーム大阪恵美須町店",
+   "pref": "大阪府",
+   "start": "2026-06-05",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/0c5b1fb7",
    "group": "SCRAP",
    "groups": [
     "SCRAP"
@@ -1851,6 +4590,24 @@
    ]
   },
   {
+   "contentId": "fe7d8520",
+   "title": "ヒラメキ&バラ香る憩いに",
+   "category": "cafe",
+   "venue": "螺旋珈琲",
+   "pref": "大阪府",
+   "start": "2026-06-13",
+   "end": null,
+   "permanent": true,
+   "price": 800,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/fe7d8520",
+   "group": "AporiQ",
+   "groups": [
+    "AporiQ",
+    "からのもぬけ"
+   ]
+  },
+  {
    "contentId": "cf645c5a",
    "title": "語りかける古書と呪われた部屋からの脱出",
    "category": "room",
@@ -1866,6 +4623,40 @@
    "groups": [
     "WAKASA & CO.",
     "KAGENAZO"
+   ]
+  },
+  {
+   "contentId": "4e750cfb",
+   "title": "爆弾魔Qからの挑戦状",
+   "category": "cafe",
+   "venue": "はてな珈琲店 梅田店",
+   "pref": "大阪府",
+   "start": "2026-07-01",
+   "end": null,
+   "permanent": true,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/4e750cfb",
+   "group": "探偵アトリエ",
+   "groups": [
+    "探偵アトリエ"
+   ]
+  },
+  {
+   "contentId": "39a1909c",
+   "title": "スパイミッションからの脱出-パンドラの箱と裏切りの銃弾-",
+   "category": "field",
+   "venue": "リアル脱出ゲーム大阪恵美須町店",
+   "pref": "大阪府",
+   "start": "2026-07-09",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/39a1909c",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
    ]
   },
   {
@@ -1920,6 +4711,142 @@
    ]
   },
   {
+   "contentId": "94a0563d",
+   "title": "ふうあんの空の下で",
+   "category": "cafe",
+   "venue": "カフェふうあん",
+   "pref": "大阪府",
+   "start": "2026-08-19",
+   "end": null,
+   "permanent": true,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/94a0563d",
+   "group": "AporiQ",
+   "groups": [
+    "AporiQ"
+   ]
+  },
+  {
+   "contentId": "1e589b31",
+   "title": "はてなだらけの宇宙旅行",
+   "category": "cafe",
+   "venue": "はてな珈琲店 神戸三宮店",
+   "pref": "兵庫県",
+   "start": "2026-09-02",
+   "end": null,
+   "permanent": true,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/1e589b31",
+   "group": "探偵アトリエ",
+   "groups": [
+    "探偵アトリエ"
+   ]
+  },
+  {
+   "contentId": "8963d1e4",
+   "title": "ハテナモンスターと呪われた木箱",
+   "category": "cafe",
+   "venue": "はてな珈琲店 神戸三宮店",
+   "pref": "兵庫県",
+   "start": "2026-09-02",
+   "end": null,
+   "permanent": true,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/8963d1e4",
+   "group": "探偵アトリエ",
+   "groups": [
+    "探偵アトリエ"
+   ]
+  },
+  {
+   "contentId": "ca38a81c",
+   "title": "中学校落第危機からの脱出",
+   "category": "cafe",
+   "venue": "はてな珈琲店 神戸三宮店",
+   "pref": "兵庫県",
+   "start": "2026-09-02",
+   "end": null,
+   "permanent": true,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/ca38a81c",
+   "group": "探偵アトリエ",
+   "groups": [
+    "探偵アトリエ"
+   ]
+  },
+  {
+   "contentId": "a26f5e50",
+   "title": "怪盗ハテナからの挑戦状",
+   "category": "cafe",
+   "venue": "はてな珈琲店 神戸三宮店",
+   "pref": "兵庫県",
+   "start": "2026-09-02",
+   "end": null,
+   "permanent": true,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/a26f5e50",
+   "group": "探偵アトリエ",
+   "groups": [
+    "探偵アトリエ"
+   ]
+  },
+  {
+   "contentId": "db8e448c",
+   "title": "星座がくれたちいさな宝物",
+   "category": "cafe",
+   "venue": "はてな珈琲店 神戸三宮店",
+   "pref": "兵庫県",
+   "start": "2026-09-02",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/db8e448c",
+   "group": "探偵アトリエ",
+   "groups": [
+    "探偵アトリエ"
+   ]
+  },
+  {
+   "contentId": "4e750cfb",
+   "title": "爆弾魔Qからの挑戦状",
+   "category": "cafe",
+   "venue": "はてな珈琲店 神戸三宮店",
+   "pref": "兵庫県",
+   "start": "2026-09-02",
+   "end": null,
+   "permanent": true,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/4e750cfb",
+   "group": "探偵アトリエ",
+   "groups": [
+    "探偵アトリエ"
+   ]
+  },
+  {
+   "contentId": "7a1bfda7",
+   "title": "鏡の国のアリク",
+   "category": "cafe",
+   "venue": "はてな珈琲店 神戸三宮店",
+   "pref": "兵庫県",
+   "start": "2026-09-02",
+   "end": null,
+   "permanent": true,
+   "price": 1500,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/7a1bfda7",
+   "group": "探偵アトリエ",
+   "groups": [
+    "探偵アトリエ"
+   ]
+  },
+  {
    "contentId": "08361d00",
    "title": "からくりの罠潜む忍者屋敷からの脱出",
    "category": "room",
@@ -1950,6 +4877,57 @@
    "url": "https://www.nazo.site/content/contents/828b1d66",
    "group": "",
    "groups": []
+  },
+  {
+   "contentId": "b7a1cab0",
+   "title": "こす箱",
+   "category": "cafe",
+   "venue": "喫茶 まぼろし",
+   "pref": "大阪府",
+   "start": "2026-10-17",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/b7a1cab0",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "eef9382b",
+   "title": "いつもの箱(itsumonohako)",
+   "category": "cafe",
+   "venue": "喫茶 まぼろし",
+   "pref": "大阪府",
+   "start": "2026-10-24",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": true,
+   "url": "https://www.nazo.site/content/contents/eef9382b",
+   "group": "かえりみち工房",
+   "groups": [
+    "かえりみち工房"
+   ]
+  },
+  {
+   "contentId": "7d3909af",
+   "title": "注文の多い喫茶店",
+   "category": "cafe",
+   "venue": "喫茶 まぼろし",
+   "pref": "大阪府",
+   "start": "2026-11-21",
+   "end": null,
+   "permanent": true,
+   "price": 2000,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/7d3909af",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
   }
  ]
 }
