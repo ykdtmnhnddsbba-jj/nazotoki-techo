@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-15T20:32+09:00",
+ "generated_at": "2026-11-16T06:47+09:00",
  "months": [
   "2026-11",
   "2026-12"
@@ -20,7 +20,7 @@
    "end": "2026-11-15",
    "permanent": false,
    "price": null,
-   "playable": true,
+   "playable": false,
    "url": "https://www.nazo.site/content/contents/7903e606",
    "group": "C-lock-row",
    "groups": [
@@ -37,7 +37,7 @@
    "end": "2026-11-15",
    "permanent": false,
    "price": null,
-   "playable": true,
+   "playable": false,
    "url": "https://www.nazo.site/content/contents/192765f7",
    "group": "激富/GEKITONG",
    "groups": [
@@ -54,7 +54,7 @@
    "end": "2026-11-15",
    "permanent": false,
    "price": null,
-   "playable": true,
+   "playable": false,
    "url": "https://www.nazo.site/content/contents/01041038",
    "group": "0001(ゼロイチ)",
    "groups": [
@@ -71,7 +71,7 @@
    "end": "2026-11-15",
    "permanent": false,
    "price": null,
-   "playable": true,
+   "playable": false,
    "url": "https://www.nazo.site/content/contents/392c30f3",
    "group": "C-lock-row",
    "groups": [
@@ -88,7 +88,7 @@
    "end": "2026-11-15",
    "permanent": false,
    "price": null,
-   "playable": true,
+   "playable": false,
    "url": "https://www.nazo.site/content/contents/607ad031",
    "group": "C-lock-row",
    "groups": [
@@ -105,7 +105,7 @@
    "end": "2026-11-15",
    "permanent": false,
    "price": null,
-   "playable": true,
+   "playable": false,
    "url": "https://www.nazo.site/content/contents/249d9f5f",
    "group": "CrazyLemon",
    "groups": [
@@ -122,7 +122,7 @@
    "end": "2026-11-15",
    "permanent": false,
    "price": null,
-   "playable": true,
+   "playable": false,
    "url": "https://www.nazo.site/content/contents/6d16f498",
    "group": "かえりみち工房",
    "groups": [
@@ -139,11 +139,28 @@
    "end": "2026-11-15",
    "permanent": false,
    "price": null,
-   "playable": true,
+   "playable": false,
    "url": "https://www.nazo.site/content/contents/930b1763",
    "group": "CrossXOne",
    "groups": [
     "CrossXOne"
+   ]
+  },
+  {
+   "contentId": "7cfb2d97",
+   "title": "秘密組織入団試験",
+   "category": "field",
+   "venue": "TKP大阪京橋カンファレンスセンター",
+   "pref": "大阪府",
+   "start": "2026-11-22",
+   "end": "2026-11-22",
+   "permanent": false,
+   "price": null,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/7cfb2d97",
+   "group": "0001(ゼロイチ)",
+   "groups": [
+    "0001(ゼロイチ)"
    ]
   },
   {
@@ -986,7 +1003,7 @@
    "end": "2027-07-16",
    "permanent": false,
    "price": null,
-   "playable": false,
+   "playable": true,
    "url": "https://www.nazo.site/content/contents/0f6f10b3",
    "group": "謎組",
    "groups": [
@@ -4924,6 +4941,57 @@
    "price": 2000,
    "playable": false,
    "url": "https://www.nazo.site/content/contents/7d3909af",
+   "group": "時解 eScape cafe",
+   "groups": [
+    "時解 eScape cafe"
+   ]
+  },
+  {
+   "contentId": "4e1d5cb5",
+   "title": "LUMINOUS",
+   "category": "field",
+   "venue": "NANICA-NAGOYA-",
+   "pref": "愛知県",
+   "start": "2026-12-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/4e1d5cb5",
+   "group": "NANICA",
+   "groups": [
+    "NANICA"
+   ]
+  },
+  {
+   "contentId": "4364648d",
+   "title": "MIST",
+   "category": "field",
+   "venue": "NANICA-NAGOYA-",
+   "pref": "愛知県",
+   "start": "2026-12-03",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/4364648d",
+   "group": "NANICA",
+   "groups": [
+    "NANICA"
+   ]
+  },
+  {
+   "contentId": "fef93235",
+   "title": "嵐迫る海賊船からの脱出",
+   "category": "room",
+   "venue": "時解 eScape cafe なんば店",
+   "pref": "大阪府",
+   "start": "2026-12-11",
+   "end": null,
+   "permanent": true,
+   "price": null,
+   "playable": false,
+   "url": "https://www.nazo.site/content/contents/fef93235",
    "group": "時解 eScape cafe",
    "groups": [
     "時解 eScape cafe"
