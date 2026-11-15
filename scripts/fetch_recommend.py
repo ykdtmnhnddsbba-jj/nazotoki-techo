@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""謎ログAPI（非公式・ログイン不要の公開データ）から、愛知・岐阜・三重で
+"""謎ログAPI（非公式・ログイン不要の公開データ）から、東海・近畿（静岡〜和歌山）で
 今月〜来月に開催中/開催予定の公演を集めて recommend.json に書き出す。
 負荷をかけないよう、リクエスト間に間隔をあける。"""
 import json, sys, time, datetime, urllib.request, urllib.parse
 
 API = "https://api.nazo.site/api/v1"
 SITE = "https://www.nazo.site"
-PREFS = {21: "岐阜県", 23: "愛知県", 24: "三重県"}
+# 東海＝静岡・愛知・岐阜・三重／近畿＝滋賀・京都・大阪・兵庫・奈良・和歌山（地域の分け方は手帖側 index.html の REGIONS と合わせる）
+PREFS = {22: "静岡県", 21: "岐阜県", 23: "愛知県", 24: "三重県",
+         25: "滋賀県", 26: "京都府", 27: "大阪府", 28: "兵庫県", 29: "奈良県", 30: "和歌山県"}
 OPEN_END = "9999-12-31"
 GAP = 0.7  # 秒
 
@@ -47,9 +49,9 @@ def main():
         for v in paged("/venues", {"q[prefecture_code_eq]": code}, "venues"):
             venues[v["id"]] = {"name": v["name"], "pref": name, "address": v.get("address")}
     scenes = []
-    for vid in venues:  # 複数ID指定は先頭しか効かないので、会場ごとに問い合わせる
+    for code in PREFS:  # 会場の県コードで公演を絞り込める
         scenes += paged("/content_scenes", {
-            "q[venue_id_eq]": vid,
+            "q[venue_prefecture_code_eq]": code,
             "q[end_date_gteq]": first.isoformat(),
             "q[start_date_lteq]": last.isoformat(),
             "include": json.dumps(["content"]),
@@ -80,7 +82,15 @@ def main():
     # 団体名
     cids = sorted({i["contentId"] for i in items})
     groups = {}
+    try:  # 前回の結果にある団体名は再取得しない（API呼び出しを減らす）
+        for it in json.load(open("recommend.json", encoding="utf-8")).get("items", []):
+            if it.get("groups"):
+                groups[it["contentId"]] = it["groups"]
+    except Exception:
+        pass
     for cid in cids:
+        if cid in groups:
+            continue
         c = get("/contents/" + cid, {})
         c = c.get("content", c)
         groups[cid] = [x["name"] for x in c.get("creators", [])]
