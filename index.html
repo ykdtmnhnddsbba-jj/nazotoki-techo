@@ -96,6 +96,19 @@ a.qb{text-decoration:none;display:inline-block;color:var(--teal)}
 @media(max-width:720px){.brow{grid-template-columns:96px 1fr 96px}}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media(max-width:960px){.two{grid-template-columns:1fr}}
+.kk{max-width:860px}
+.kk-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin:4px 0 12px}
+.kk-top .btn{white-space:nowrap;flex-shrink:0}
+.kk-ttl{font-size:20px;font-weight:800}
+.kk-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:14px}
+.kk-t{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column}
+.kk-t b{font-size:22px;color:var(--accent)}.kk-t span{font-size:12.5px;color:var(--sub)}.kk-t small{font-size:11.5px;color:var(--sub);opacity:.8;margin-top:2px}
+.kk-body{line-height:1.75}
+.kk-body .kk-h{font-size:16px;margin:20px 0 8px;padding:8px 12px;background:var(--panel2);border-left:4px solid var(--accent);border-radius:8px}
+.kk-body ul,.kk-body ol{margin:0 0 6px;padding-left:1.4em}.kk-body li{margin:5px 0}
+.kk-body li b,.kk-body p b{color:var(--accent)}
+.kk-body .kk-q{font-size:12.5px;color:var(--sub);border-left:3px solid var(--line);padding:4px 10px;margin:4px 0 10px}
+.kk-body ol li{font-size:15px}
 .lcard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:8px}
 .lcard .lt{font-size:13px;color:var(--sub)}
 .lcard .lb{white-space:pre-wrap;margin-top:4px}
@@ -244,9 +257,10 @@ const KINDS=[['show','公演'],['tour','周遊'],['buy','購入系']];
 const kindOf=r=>r.format==='周遊型'?'tour':(r.format==='持ち帰り型'||r.format==='Web謎'||r.format==='その他')?'buy':'show';
 const isBuy=r=>kindOf(r)==='buy';
 const buyStage=r=>!isPlan(r)?'done':(r.nazolog_plan_status==='defined'?'owned':'wish');
-function emptyDb(){return{schema_version:1,updated_at:null,records:{}}}
+function emptyDb(){return{schema_version:1,updated_at:null,records:{},notes:{}}}
 let db=Object.assign(emptyDb(),lsGet(LS_DB,{}));
 if(!db.records||typeof db.records!=='object')db.records={};
+if(!db.notes||typeof db.notes!=='object')db.notes={};
 let settings=Object.assign({google_client_id:'',drive_linked:false,nazolog_user_id:'bf53c570',gcal_id:''},lsGet(LS_SET,{}));
 if(!settings.google_client_id)settings.google_client_id=DEFAULT_CLIENT_ID;
 const TAB_KEYS=['plan','buy','reco','done','settings'];
@@ -285,11 +299,14 @@ function mergeDb(a,b){
     const p=x[id],q=y[id];
     out.records[id]=!p?q:!q?p:((p.updated_at||'')>=(q.updated_at||'')?p:q);
   });
+  /* notes（心得などの文章）: キーごとに updated_at が新しい方 */
+  const na=a.notes||{},nb=b.notes||{};
+  new Set([...Object.keys(na),...Object.keys(nb)]).forEach(k=>{const p=na[k],q=nb[k];out.notes[k]=!p?q:!q?p:((p.updated_at||'')>=(q.updated_at||'')?p:q)});
   out.updated_at=nowIso();return out;
 }
 function exportObj(){
-  return{_readme:'謎解き手帖の公演記録 / リアル脱出ゲーム等の参加記録。records[ID]: title=公演名, group=団体, date=YYYY-MM-DD, result=大成功|成功|失敗(脱出結果), score=面白さ1-10(0は未評価), format=形式(ホール型/ルーム型/周遊型/ライブ型など), venue=会場・場所, impression=感想, lesson=教訓(次回に活かすこと), deleted=trueは削除済み。このJSONから成功/失敗の傾向、教訓の共通点、次に参加すべき公演を分析してください。',
-    schema_version:1,updated_at:db.updated_at,records:db.records};
+  return{_readme:'謎解き手帖の公演記録 / リアル脱出ゲーム等の参加記録。records[ID]: title=公演名, group=団体, date=YYYY-MM-DD, result=大成功|成功|失敗(脱出結果), score=面白さ1-10(0は未評価), format=形式(ホール型/ルーム型/周遊型/ライブ型など), venue=会場・場所, impression=感想, lesson=教訓(次回に活かすこと), deleted=trueは削除済み。notes.kokoroe.text=過去の成績・教訓から作った「謎解きの心得」(Markdown風テキスト)。このJSONから成功/失敗の傾向、教訓の共通点、次に参加すべき公演を分析してください。',
+    schema_version:1,updated_at:db.updated_at,records:db.records,notes:db.notes||{}};
 }
 function downloadJson(){
   const blob=new Blob([JSON.stringify(exportObj(),null,2)],{type:'application/json'});
@@ -308,7 +325,7 @@ function importJson(text,overwrite){
     db.updated_at=t;save();
     return live().length-before;
   }
-  db=mergeDb(db,{records:j.records});
+  db=mergeDb(db,{records:j.records,notes:j.notes||{}});
   /* 読み込みでは、既存記録の「空欄」だけをファイル側の値で補完する（入力済みの値は上書きしない）。
      手元で先に編集した記録が新しい扱いになり、会場などの追記が反映されない問題を防ぐ。 */
   const FILL=['group','date','time','format','venue','impression','lesson','status','nazolog_content_id','nazolog_record_id','nazolog_plan_status','price','ticket_url','nazolog_synced_at'];
@@ -440,9 +457,9 @@ async function driveSync(interactive){
       // 読み込めないまま書き込むと既存データを失うので、必ず中断する
       if(!r.ok)throw new Error('Driveの読み込みに失敗 ('+r.status+')。保存は中止しました');
       const remote=await r.json();
-      const sig0=JSON.stringify(db.records);
-      db=mergeDb(db,{records:(remote&&remote.records)||{}});saveLocal();
-      if(JSON.stringify(db.records)!==sig0)changed=true;
+      const sig0=JSON.stringify([db.records,db.notes]);
+      db=mergeDb(db,{records:(remote&&remote.records)||{},notes:(remote&&remote.notes)||{}});saveLocal();
+      if(JSON.stringify([db.records,db.notes])!==sig0)changed=true;
     }
     const body=JSON.stringify(exportObj(),null,1);
     if(id){
@@ -794,12 +811,12 @@ function renderWeek(m){
     const d=e.target.closest('.wkDone');if(d){markDone(d.dataset.id)}};
 }
 
-/* ---- 実績（記録／成績／教訓） ---- */
-const DONE_V=[['rec','記録'],['stats','成績'],['lessons','教訓']];
+/* ---- 実績（記録／成績／教訓／心得） ---- */
+const DONE_V=[['rec','記録'],['stats','成績'],['lessons','教訓'],['kokoroe','心得']];
 function doneTabs(){const n=live().filter(r=>!isPlan(r)),nl=n.filter(r=>r.lesson).length;
   return`<div class="subtabs sm" id="dnV">${DONE_V.map(([k,l])=>`<button type="button" class="${ui.doneView===k?'on':''}" data-v="${k}">${l}${k==='rec'?`<small>${n.length}</small>`:k==='lessons'?`<small>${nl}</small>`:''}</button>`).join('')}</div>`}
 function bindDoneTabs(){const el=$('#dnV');if(el)el.onclick=e=>{const b=e.target.closest('button');if(!b||b.dataset.v===ui.doneView)return;ui.doneView=b.dataset.v;render()}}
-function renderDone(m){if(ui.doneView==='stats')renderStats(m);else if(ui.doneView==='lessons')renderLessons(m);else renderList(m)}
+function renderDone(m){if(ui.doneView==='stats')renderStats(m);else if(ui.doneView==='lessons')renderLessons(m);else if(ui.doneView==='kokoroe')renderKokoroe(m);else renderList(m)}
 function markDone(id){const r=db.records[id];if(!r)return;upsert(id,{status:''});render();toast(isBuy(r)?'プレイ済みにしました（実績に移動）':'参加済みにしました。実績で結果を入れてください',3500)}
 
 /* ---- 買い物（購入系の予定）：買う予定 → 手元にある（未プレイ） → 遊んだら実績へ ---- */
@@ -1062,6 +1079,51 @@ function drawLessons(){
   const rs=live().filter(r=>r.lesson&&(!ui.lres||r.result===ui.lres)&&(!q||(r.lesson+'\n'+r.title).toLowerCase().includes(q))).sort((a,b)=>byDate(b,a));
   $('#lsum').textContent=`${rs.length}件の教訓`;
   $('#llist').innerHTML=rs.length?rs.map(r=>`<div class="lcard"><div class="lt">${r.result?`<span class="tag ${RES_CLS[r.result]}">${esc(r.result)}</span>`:''}${esc(r.title)} ・ ${esc(r.group)} ・ ${fmtDate(r.date)}</div><div class="lb">${esc(r.lesson)}</div></div>`).join(''):'<div class="empty">教訓はまだありません。</div>';
+}
+
+/* ---- 心得（過去の成績・教訓から作った「次に気をつけること」。本文は db.notes.kokoroe に保存＝Drive同期。公開リポジトリには入れない） ---- */
+function kokoroeHtml(t){
+  const inl=x=>esc(x).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+  let h='',list='';const flush=()=>{if(list){h+=`</${list}>`;list=''}};
+  String(t||'').split('\n').forEach(ln=>{
+    let m;
+    if(m=ln.match(/^##\s+(.*)/)){flush();h+=`<h3 class="kk-h">${inl(m[1])}</h3>`}
+    else if(m=ln.match(/^###\s+(.*)/)){flush();h+=`<h4>${inl(m[1])}</h4>`}
+    else if(m=ln.match(/^>\s?(.*)/)){flush();h+=`<div class="kk-q">${inl(m[1])}</div>`}
+    else if(m=ln.match(/^\s*[-・]\s+(.*)/)){if(list!=='ul'){flush();h+='<ul>';list='ul'}h+=`<li>${inl(m[1])}</li>`}
+    else if(m=ln.match(/^\s*\d+[.)]\s+(.*)/)){if(list!=='ol'){flush();h+='<ol>';list='ol'}h+=`<li>${inl(m[1])}</li>`}
+    else if(ln.trim()){flush();h+=`<p>${inl(ln)}</p>`}
+    else flush();
+  });
+  flush();return h;
+}
+function kokoroeStats(){
+  const rs=live().filter(r=>!isPlan(r)&&r.result).sort(byDate);
+  if(!rs.length)return'';
+  const rate=a=>a.length?Math.round(a.filter(isWin).length/a.length*100):0;
+  const wl=a=>`${a.filter(isWin).length}勝${a.length-a.filter(isWin).length}敗`;
+  const sc=rs.filter(r=>r.group==='SCRAP'),ot=rs.filter(r=>r.group!=='SCRAP'),rc=rs.slice(-10);
+  let st=0;for(let i=rs.length-1;i>=0&&isWin(rs[i]);i--)st++;
+  const lastL=[...rs].reverse().find(r=>!isWin(r));
+  const tile=(n,l,s)=>`<div class="kk-t"><b>${n}</b><span>${l}</span>${s?`<small>${s}</small>`:''}</div>`;
+  return`<div class="kk-tiles">${tile(rate(rs)+'%','通算成功率',wl(rs))}${tile(rate(rc)+'%','直近10公演',wl(rc))}${tile(rate(sc)+'%','SCRAP',wl(sc))}${tile(rate(ot)+'%','SCRAP以外',wl(ot))}${tile(st+'連勝','現在の連勝',lastL?'最後の失敗: '+esc(lastL.title):'')}</div>`;
+}
+function renderKokoroe(m){
+  const n=(db.notes||{}).kokoroe||{},t=n.text||'';
+  m.innerHTML=`<div class="stick">${doneTabs()}</div>
+  <div class="kk">
+    <div class="kk-top"><div><div class="kk-ttl">謎解きの心得</div><div class="hint">過去の成績・感想・教訓から作った、次の謎解きで気をつけること${n.updated_at?' ・ 更新 '+fmtDate(n.updated_at.slice(0,10)):''}</div></div>
+      <button type="button" class="btn" id="kkEdit">✎ 編集</button></div>
+    ${kokoroeStats()}
+    <div id="kkBody" class="kk-body">${t?kokoroeHtml(t):'<div class="empty">まだ心得がありません。「✎ 編集」で書くか、⚙設定の「AI用プロンプト」でAIにまとめてもらってください。</div>'}</div>
+  </div>`;
+  bindDoneTabs();
+  $('#kkEdit').onclick=()=>{
+    $('#kkBody').innerHTML=`<p class="hint">「## 見出し」「- 箇条書き」「1. 番号」「> 引用」「**太字**」が使えます。</p><textarea id="kkTa" style="width:100%;min-height:60vh;font-size:14px">${esc(t)}</textarea><div style="display:flex;gap:8px;margin-top:8px"><button type="button" class="btn pri" id="kkSave">保存</button><button type="button" class="btn" id="kkCancel">キャンセル</button></div>`;
+    $('#kkEdit').style.display='none';
+    $('#kkCancel').onclick=()=>renderKokoroe(m);
+    $('#kkSave').onclick=()=>{db.notes=db.notes||{};db.notes.kokoroe={text:$('#kkTa').value,updated_at:nowIso()};save();toast('心得を保存しました');renderKokoroe(m)};
+  };
 }
 
 /* ---- settings ---- */
