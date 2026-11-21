@@ -68,3 +68,10 @@
 - `score` は面白さ（1〜10、0は未評価）。
 - 削除した記録は `deleted: true` が付き、同期で別端末にも反映されます。
 - 競合は `updated_at` が新しい方を採用して自動統合します。
+
+
+## 共通Googleログイン（2026-11）
+- Googleログインと Drive 同期の処理は `../portal/lib/techo-google.js`（portalリポジトリ）に1本化した。各手帖は `TechoGoogle.create({site,...})` を呼ぶだけ。
+- トークンは同じオリジン（ykdtmnhnddsbba-jj.github.io）の localStorage `techo_gauth_tok` に共有で保存。どれか1つの手帖でログインすれば、他の手帖も認証画面なしで同期できる。
+- 同期は `GA.syncFile(ファイル名, id, マージ関数, 本文関数)`。Drive の読み込みに失敗したら上書きせずに中止する（データ消失防止）。ファイルが404なら id を忘れて次回検索し直す。
+- portal の lib が読めない時もページ自体は表示される（同期だけ無効）。
