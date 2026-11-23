@@ -329,7 +329,7 @@ function importJson(text,overwrite){
   db=mergeDb(db,{records:j.records,notes:j.notes||{}});
   /* 読み込みでは、既存記録の「空欄」だけをファイル側の値で補完する（入力済みの値は上書きしない）。
      手元で先に編集した記録が新しい扱いになり、会場などの追記が反映されない問題を防ぐ。 */
-  const FILL=['group','date','time','format','venue','impression','lesson','status','nazolog_content_id','nazolog_record_id','nazolog_plan_status','price','ticket_url','nazolog_synced_at'];
+  const FILL=['group','date','time','format','venue','impression','lesson','status','nazolog_content_id','nazolog_record_id','nazolog_plan_status','price','ticket_url','buy_note','nazolog_synced_at'];
   Object.keys(j.records).forEach(id=>{
     const q=j.records[id],r=db.records[id];
     if(!q||q.deleted||!r||r.deleted||!local[id])return;
@@ -781,6 +781,8 @@ function markDone(id){const r=db.records[id];if(!r)return;upsert(id,{status:''})
 /* ---- 買い物（購入系の予定）：買う予定 → 手元にある（未プレイ） → 遊んだら実績へ ---- */
 const buyItems=st=>live().filter(r=>isBuy(r)&&isPlan(r)&&buyStage(r)===st);
 const yen=n=>'¥'+Number(n||0).toLocaleString();
+/* メルカリで安い順に探すリンク（タイトルの記号を外して団体名を足す） */
+const mercariUrl=r=>'https://jp.mercari.com/search?status=on_sale&sort=price&order=asc&keyword='+encodeURIComponent([String(r.title||'').replace(/[『』「」（）()【】]/g,' '),r.group||''].join(' ').replace(/\s+/g,' ').trim());
 function renderBuy(m){
   const wish=buyItems('wish'),own=buyItems('owned'),v=ui.buyView==='owned'?'owned':'wish';
   const sum=a=>a.reduce((t,r)=>t+(+r.price||0),0);
@@ -792,8 +794,8 @@ function renderBuy(m){
     const nz=r.nazolog_content_id?`<a class="btn" href="https://www.nazo.site/content/contents/${esc(r.nazolog_content_id)}" target="_blank" rel="noopener">謎ログ ↗</a>`:'';
     const act=v==='wish'?`<button type="button" class="btn pri byGot" data-id="${esc(r.id)}">✔ 買った</button>`:`<button type="button" class="btn pri byDone" data-id="${esc(r.id)}">✔ 遊んだ（実績へ）</button>`;
     return`<div class="bycard"><div class="pr">${+r.price?yen(r.price):'<span class="hint">価格未登録</span>'}<small>${r.date?esc(fmtDate(r.date)):'日付なし'}</small></div><div><div class="ttl">${esc(r.title)}${nzPending(r)?' <span class="un" title="謎ログに未反映">未反映</span>':''}</div>
-      <div class="meta">${esc([r.group,r.format].filter(Boolean).join(' ／ '))}</div>
-      <div class="row" style="margin-top:8px">${act}${tu?`<a class="btn" href="${esc(tu)}" target="_blank" rel="noopener">🛒 購入ページ</a>`:''}${nz}${gcEligible(r)?gcBtn(r,'btn'):''}<button type="button" class="btn byEdit" data-id="${esc(r.id)}">編集</button></div></div></div>`;
+      <div class="meta">${esc([r.group,r.format].filter(Boolean).join(' ／ '))}</div>${r.buy_note?`<div class="meta">💡 ${esc(r.buy_note)}</div>`:''}
+      <div class="row" style="margin-top:8px">${act}${tu?`<a class="btn" href="${esc(tu)}" target="_blank" rel="noopener">🛒 購入ページ</a>`:''}${v==='wish'?`<a class="btn" href="${esc(mercariUrl(r))}" target="_blank" rel="noopener">メルカリ ↗</a>`:''}${nz}${gcEligible(r)?gcBtn(r,'btn'):''}<button type="button" class="btn byEdit" data-id="${esc(r.id)}">編集</button></div></div></div>`;
   };
   let h=`<div class="totbar"><span>${v==='wish'?'買う予定':'手元にある'}<b>${rs.length}</b>件</span><span>合計<b>${yen(tot)}</b>${noPr?`（価格未登録 ${noPr}件）`:''}</span></div>`;
   h+=rs.length?rs.map(card).join(''):`<div class="empty">${v==='wish'?'買う予定のものはありません。<br>「オススメ」の購入系から「予定に入れる」か、＋追加で入れられます。':'手元にある未プレイのものはありません。'}</div>`;
@@ -926,6 +928,7 @@ function openEdit(id,preset){
       <div class="field"><label>会場・場所</label><input type="text" id="m_venue" list="dl_venue" value="${esc(d.venue)}"></div>
       <div class="field"><label>チケット／購入ページのURL</label><input type="url" id="m_tk" placeholder="https://" value="${esc(d.ticket_url||'')}"></div>
       <div class="field"><label>価格（円・任意）</label><input type="number" id="m_price" min="0" step="1" inputmode="numeric" value="${+d.price?esc(d.price):''}"></div>
+      <div class="field"><label>買い方メモ（任意・安く買うコツなど）</label><input type="text" id="m_bnote" value="${esc(d.buy_note||'')}"></div>
     </div>
     ${dl('dl_group',countBy(all,x=>x.group).map(x=>x[0]))}${dl('dl_venue',countBy(all,x=>x.venue).map(x=>x[0]))}
     <div id="m_done" style="${stt==='plan'?'display:none':''}">
@@ -972,7 +975,7 @@ function openEdit(id,preset){
     const title=$('#m_title').value.trim();
     if(!title){toast('公演名を入力してください');return}
     upsert(id||newId(),{title,group:comboVal('m_group'),date:$('#m_date').value,time:getTime(),status:stt,nazolog_plan_status:stt?pst:(d.nazolog_plan_status||''),result:res,score:sc,
-      format:comboVal('m_format'),venue:$('#m_venue').value.trim(),ticket_url:$('#m_tk').value.trim(),price:(+$('#m_price').value>0?Math.round(+$('#m_price').value):''),impression:$('#m_imp').value.trim(),lesson:$('#m_les').value.trim()});
+      format:comboVal('m_format'),venue:$('#m_venue').value.trim(),ticket_url:$('#m_tk').value.trim(),price:(+$('#m_price').value>0?Math.round(+$('#m_price').value):''),buy_note:$('#m_bnote').value.trim(),impression:$('#m_imp').value.trim(),lesson:$('#m_les').value.trim()});
     closeModal();render();toast('保存しました');
   };
   const del=$('#mDel');
