@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-28T10:59+09:00",
+ "generated_at": "2026-11-28T11:01+09:00",
  "months": [
   "2026-11",
   "2026-12",
@@ -195,6 +195,24 @@
    "groups": [
     "時解 eScape cafe"
    ]
+  },
+  {
+   "contentId": "shop-疾風の追走からの脱出",
+   "title": "疾風の追走からの脱出",
+   "category": "hall",
+   "venue": "リアル脱出ゲーム名古屋店",
+   "pref": "愛知県",
+   "start": "2026-07-09",
+   "end": "2026-12-06",
+   "permanent": false,
+   "price": null,
+   "playable": true,
+   "url": "https://realdgame.jp/s/conan2026/",
+   "group": "SCRAP",
+   "groups": [
+    "SCRAP"
+   ],
+   "shop": true
   },
   {
    "contentId": "bda80605",
@@ -1233,24 +1251,6 @@
    "groups": [
     "SCRAP"
    ]
-  },
-  {
-   "contentId": "shop-【名古屋店】mysterymailboxmysterymanからの招待状",
-   "title": "【名古屋店】Mystery Mail Box『Mystery Manからの招待状』",
-   "category": "field",
-   "venue": "リアル脱出ゲーム名古屋店",
-   "pref": "愛知県",
-   "start": "2018-06-21",
-   "end": null,
-   "permanent": true,
-   "price": null,
-   "playable": true,
-   "url": "https://realdgame.jp/shop/nagoya/events/mysteryman/",
-   "group": "SCRAP",
-   "groups": [
-    "SCRAP"
-   ],
-   "shop": true
   },
   {
    "contentId": "73c29ad1",
@@ -3596,24 +3596,6 @@
    ]
   },
   {
-   "contentId": "shop-【名古屋店】リアル脱出ゲームマグノリア銀行からの脱出",
-   "title": "【名古屋店】リアル脱出ゲーム『マグノリア銀行からの脱出』（リバイバル）",
-   "category": "room",
-   "venue": "リアル脱出ゲーム名古屋店",
-   "pref": "愛知県",
-   "start": "2025-05-23",
-   "end": null,
-   "permanent": true,
-   "price": null,
-   "playable": true,
-   "url": "https://realdgame.jp/shop/nagoya/events/magnolia2025/",
-   "group": "SCRAP",
-   "groups": [
-    "SCRAP"
-   ],
-   "shop": true
-  },
-  {
    "contentId": "2e4a21d4",
    "title": "マグノリア銀行からの脱出 (ルーム型)",
    "category": "room",
@@ -3965,8 +3947,8 @@
    ]
   },
   {
-   "contentId": "shop-【名古屋店】リアル脱出ゲームナゾだらけの部屋からの脱出",
-   "title": "【名古屋店】リアル脱出ゲーム『ナゾだらけの部屋からの脱出』（リバイバル）",
+   "contentId": "894e23ce",
+   "title": "ナゾだらけの部屋からの脱出（リバイバル）",
    "category": "other",
    "venue": "リアル脱出ゲーム名古屋店",
    "pref": "愛知県",
@@ -4613,24 +4595,6 @@
    ]
   },
   {
-   "contentId": "shop-【名古屋店】リアル脱出ゲームある実験室からの脱出",
-   "title": "【名古屋店】リアル脱出ゲーム『ある実験室からの脱出』（リバイバル）",
-   "category": "hall",
-   "venue": "リアル脱出ゲーム名古屋店",
-   "pref": "愛知県",
-   "start": "2026-06-11",
-   "end": null,
-   "permanent": true,
-   "price": null,
-   "playable": true,
-   "url": "https://realdgame.jp/shop/nagoya/events/jikken26/",
-   "group": "SCRAP",
-   "groups": [
-    "SCRAP"
-   ],
-   "shop": true
-  },
-  {
    "contentId": "27878986",
    "title": "ある実験室からの脱出(ルーム型)",
    "category": "room",
@@ -4699,24 +4663,6 @@
    "groups": [
     "探偵アトリエ"
    ]
-  },
-  {
-   "contentId": "shop-【名古屋店】リアル脱出ゲーム名探偵コナン疾風の追走からの脱出",
-   "title": "【名古屋店】リアル脱出ゲーム×名探偵コナン『疾風の追走からの脱出』",
-   "category": "hall",
-   "venue": "リアル脱出ゲーム名古屋店",
-   "pref": "愛知県",
-   "start": "2026-07-09",
-   "end": null,
-   "permanent": true,
-   "price": null,
-   "playable": true,
-   "url": "https://realdgame.jp/s/conan2026/",
-   "group": "SCRAP",
-   "groups": [
-    "SCRAP"
-   ],
-   "shop": true
   },
   {
    "contentId": "39a1909c",
