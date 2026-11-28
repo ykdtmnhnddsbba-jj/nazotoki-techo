@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """謎ログAPI（非公式・ログイン不要の公開データ）から、東海・近畿（静岡〜和歌山）で
-今月〜来月に開催中/開催予定の公演を集めて recommend.json に書き出す。
+今月〜再来月（3か月）に開催中/開催予定の公演を集めて recommend.json に書き出す。
 負荷をかけないよう、リクエスト間に間隔をあける。"""
 import json, sys, time, datetime, urllib.request, urllib.parse
 
@@ -35,15 +35,19 @@ def paged(path, params, key):
             return out
         page += 1
 
+N_MONTHS = 3  # 今月・来月・再来月
+
 def month_range(today):
-    first = today.replace(day=1)
-    nxt = (first + datetime.timedelta(days=32)).replace(day=1)
-    after = (nxt + datetime.timedelta(days=32)).replace(day=1)
-    return first, nxt, after - datetime.timedelta(days=1)
+    """今月から N_MONTHS か月分の各月1日と、期間の最終日を返す"""
+    firsts = [today.replace(day=1)]
+    for _ in range(N_MONTHS):
+        firsts.append((firsts[-1] + datetime.timedelta(days=32)).replace(day=1))
+    return firsts[:-1], firsts[-1] - datetime.timedelta(days=1)
 
 def main():
     today = datetime.date.today()
-    first, nxt, last = month_range(today)
+    months, last = month_range(today)
+    first = months[0]
     venues = {}
     for code, name in PREFS.items():
         for v in paged("/venues", {"q[prefecture_code_eq]": code}, "venues"):
@@ -119,7 +123,7 @@ def main():
     items.sort(key=lambda x: (x["permanent"], x["end"] or "", x["start"], x["title"]))
     out = {
         "generated_at": datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).isoformat(timespec="minutes"),
-        "months": [first.strftime("%Y-%m"), nxt.strftime("%Y-%m")],
+        "months": [m.strftime("%Y-%m") for m in months],
         "window": [first.isoformat(), last.isoformat()],
         "source": "nazo.site",
         "items": items,

@@ -656,7 +656,7 @@ function recoWhy(it,all){
 }
 function recoView(){
   const d=recoData,st=ui.reco,all=live();
-  /* st.m=-1 は「今月＋来月」（全期間のあいだに重なる公演を1回ずつ） */
+  /* st.m=-1 は「まとめて」（全期間のあいだに重なる公演を1回ずつ） */
   const ms=st.m<0?d.months:[d.months[st.m]],mk=ms[0],[y,mo]=ms[ms.length-1].split('-').map(Number);
   const first=mk+'-01',last=ms[ms.length-1]+'-'+String(new Date(y,mo,0).getDate()).padStart(2,'0');
   const today=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);
@@ -684,7 +684,7 @@ function renderReco(m){
   const regBtns=[...REGIONS.map(([r])=>b(st.region===r,`data-g="${r}"`,r)),b(st.region==='all','data-g="all"','すべて')].join('');
   const pc=Object.fromEntries(v.prefCnt),prefList=v.regPrefs||REGIONS.flatMap(r=>r[1]);
   const prefBtns=b(!st.prefs.length,'data-p=""','すべて')+prefList.filter(x=>pc[x]||st.prefs.includes(x)).map(x=>b(st.prefs.includes(x),`data-p="${esc(x)}"`,esc(x.replace(/[県府]$/,'')),pc[x]||0)).join('');
-  const head=`<div class="stick"><div class="fbtns" id="rcG"><span class="lb2">地域</span>${regBtns}</div><div class="fbtns" id="rcP"><span class="lb2">県（複数選べます）</span>${prefBtns}</div>${kt}<div class="fbtns" id="rcM"><span class="lb2">期間</span>${d.months.map((x,i)=>b(st.m===i,`data-m="${i}"`,(i?'来月':'今月')+'（'+x.replace('-','年')+'月）')).join('')}${d.months.length>1?b(st.m===-1,'data-m="-1"','今月＋来月'):''}</div>
+  const head=`<div class="stick"><div class="fbtns" id="rcG"><span class="lb2">地域</span>${regBtns}</div><div class="fbtns" id="rcP"><span class="lb2">県（複数選べます）</span>${prefBtns}</div>${kt}<div class="fbtns" id="rcM"><span class="lb2">期間</span>${d.months.map((x,i)=>b(st.m===i,`data-m="${i}"`,(['今月','来月','再来月'][i]||(i+'か月後'))+'（'+x.replace('-','年').replace(/年0?/,'年')+'月）')).join('')}${d.months.length>1?b(st.m===-1,'data-m="-1"',d.months.length>2?'3か月まとめて':'今月＋来月'):''}</div>
     <div class="fbtns" id="rcC"><span class="lb2">形式（複数選べます）</span>${b(!st.cat.length,'data-c=""','すべて')}${v.cats.map(([c,n])=>b(st.cat.includes(c),`data-c="${esc(c)}"`,esc(c),n)).join('')}</div>
     <div class="fbtns" id="rcO"><span class="lb2">表示</span>${b(st.perm,'data-o="perm"','常設も表示',v.nPerm)}${b(st.hideDone,'data-o="done"','参加済みを隠す')}<span class="rcColBtn">${b(st.cols===2,'data-o="cols"','2列で表示')}</span></div>
     <div class="hint" style="margin-bottom:8px">${esc(st.prefs.length?st.prefs.map(x=>x.replace(/[県府]$/,'')).join('・'):(v.regPrefs?v.regPrefs.map(x=>x.replace(/[県府]$/,'')).join('・'):'東海・近畿'))}／出典：謎ログ／更新：${esc((d.generated_at||'').replace('T',' ').slice(0,16))}（週1で自動更新）／${v.rows.length}件</div></div>`;
