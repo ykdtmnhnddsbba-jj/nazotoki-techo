@@ -76,7 +76,14 @@ class _Links(HTMLParser):
         if self.cur is not None and d.strip():
             self.cur["text"].append(d.strip())
 
-DATE_RE = re.compile(r"開催[：:]?\s*(\d{4})\.(\d{1,2})\.(\d{1,2})[^〜~～]*[〜~～]\s*(?:(\d{4})\.(\d{1,2})\.(\d{1,2}))?")
+DATE_RE = re.compile(r"開催[：:]?\s*(\d{4})\.(\d{1,2})\.(\d{1,2})[^〜~～]*[〜~～]\s*(?:(?:(\d{4})\.)?(\d{1,2})\.(\d{1,2}))?")
+
+def clean_title(t):
+    """「【名古屋店】リアル脱出ゲーム×『逃げ上手の若君』『鬼々迫る戦場からの脱出』」→「鬼々迫る戦場からの脱出」"""
+    t = re.sub(r"^【[^】]*】", "", t).strip()
+    q = re.findall(r"『([^』]+)』", t)
+    rev = "（リバイバル）" if re.search(r"[（(]リバイバル[)）]", t) else ""
+    return (q[-1] + rev) if q else t
 
 def shop_events(url):
     req = urllib.request.Request(url, headers={"User-Agent": "nazotoki-techo-recommend/1.0"})
@@ -96,11 +103,17 @@ def shop_events(url):
             h = len(ws) // 2
             title = " ".join(ws[:h]) if len(ws) % 2 == 0 and h and ws[:h] == ws[h:] else head
         start = "%s-%02d-%02d" % (m.group(1), int(m.group(2)), int(m.group(3)))
-        end = "%s-%02d-%02d" % (m.group(4), int(m.group(5)), int(m.group(6))) if m.group(4) else None
+        end = None
+        if m.group(5):  # 終了日の年が省略されていたら開始年（開始より前なら翌年）
+            y = int(m.group(4) or m.group(1))
+            end = "%d-%02d-%02d" % (y, int(m.group(5)), int(m.group(6)))
+            if not m.group(4) and end < start:
+                end = "%d-%02d-%02d" % (y + 1, int(m.group(5)), int(m.group(6)))
         cat = "other"
         for k, v in SHOP_FMT:
             if k in body:
                 cat = v; break
+        title = clean_title(title)
         href = urllib.parse.urljoin(url, a["href"])
         if (title, start) in seen:
             continue
@@ -111,7 +124,7 @@ def shop_events(url):
 def find_content_id(title):
     """謎ログの作品検索で作品IDを探す（予定・参加済みの判定に使う）。見つからなければ None"""
     try:
-        d = get("/contents", {"q[keyword]": re.sub(r"[（(]リバイバル[)）]", "", title).split("×")[-1].strip(), "per": 10})
+        d = get("/contents", {"q[keyword]": re.sub(r"[（(]リバイバル[)）]", "", title).strip(), "per": 10})
     except Exception:
         return None
     n = norm(title)
@@ -132,6 +145,8 @@ def add_shop_items(items, first, last, today):
             print(f"shop page skipped ({url}): {e}")
             continue
         print(f"shop page {url}: {len(evs)} events")
+        for e in evs:
+            print(f"    · {e['title']} {e['start']}〜{e['end'] or ''} {e['category']}")
         for e in evs:
             if e["start"] > last or (e["end"] and e["end"] < max(first, today)):
                 continue
