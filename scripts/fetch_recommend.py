@@ -2,7 +2,8 @@
 """謎ログAPI（非公式・ログイン不要の公開データ）から、東海・近畿（静岡〜和歌山）で
 今月〜再来月（3か月）に開催中/開催予定の公演を集めて recommend.json に書き出す。
 負荷をかけないよう、リクエスト間に間隔をあける。"""
-import json, sys, time, datetime, urllib.request, urllib.parse
+import json, sys, time, datetime, re, urllib.request, urllib.parse
+from html.parser import HTMLParser
 
 API = "https://api.nazo.site/api/v1"
 SITE = "https://www.nazo.site"
@@ -43,6 +44,109 @@ def month_range(today):
     for _ in range(N_MONTHS):
         firsts.append((firsts[-1] + datetime.timedelta(days=32)).replace(day=1))
     return firsts[:-1], firsts[-1] - datetime.timedelta(days=1)
+
+# ---- 店舗HP（謎ログに会場が未登録の公演を拾う）----
+# SCRAP の店舗ページのイベント一覧。週1回、1ページだけ読む。
+SHOP_PAGES = [("https://realdgame.jp/shop/nagoya/events/", "リアル脱出ゲーム名古屋店", "愛知県")]
+SHOP_FMT = [("館内周遊型", "field"), ("街歩き型", "field"), ("周遊型", "field"), ("ホール型", "hall"),
+            ("ルーム型", "room"), ("スタジアム型", "stadium"), ("キューブ型", "cube"), ("持ち帰り型", "kit")]
+
+def norm(t):
+    t = re.sub(r"[（(]リバイバル[)）]", "", t or "")
+    return re.sub(r"[\s　~〜～\-－・:：!！?？()（）「」『』×✕]", "", t).lower()
+
+class _Links(HTMLParser):
+    """<a> ごとに href・画像の alt・中の文字を集める"""
+    def __init__(self):
+        super().__init__(); self.out = []; self.cur = None; self.depth = 0
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if tag == "a":
+            if self.cur is None:
+                self.cur = {"href": a.get("href", ""), "alt": "", "text": []}; self.depth = 0
+            self.depth += 1
+        elif tag == "img" and self.cur is not None and not self.cur["alt"]:
+            self.cur["alt"] = (a.get("alt") or "").strip()
+    def handle_endtag(self, tag):
+        if tag == "a" and self.cur is not None:
+            self.depth -= 1
+            if self.depth <= 0:
+                self.out.append(self.cur); self.cur = None
+    def handle_data(self, d):
+        if self.cur is not None and d.strip():
+            self.cur["text"].append(d.strip())
+
+DATE_RE = re.compile(r"開催[：:]?\s*(\d{4})\.(\d{1,2})\.(\d{1,2})[^〜~～]*[〜~～]\s*(?:(\d{4})\.(\d{1,2})\.(\d{1,2}))?")
+
+def shop_events(url):
+    req = urllib.request.Request(url, headers={"User-Agent": "nazotoki-techo-recommend/1.0"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        html = r.read().decode("utf-8", "replace")
+    p = _Links(); p.feed(html)
+    evs, seen = [], set()
+    for a in p.out:
+        body = " ".join(a["text"])
+        m = DATE_RE.search(body)
+        if not m:
+            continue
+        title = a["alt"]
+        if not title:  # alt がなければ、仕様（「60分」など）より前の文字。名前が2回続くときは半分にする
+            head = re.split(r"\s\d+分|\s開催|\s（前売）|\s\d+人", " " + body, 1)[0].strip()
+            ws = head.split(" ")
+            h = len(ws) // 2
+            title = " ".join(ws[:h]) if len(ws) % 2 == 0 and h and ws[:h] == ws[h:] else head
+        start = "%s-%02d-%02d" % (m.group(1), int(m.group(2)), int(m.group(3)))
+        end = "%s-%02d-%02d" % (m.group(4), int(m.group(5)), int(m.group(6))) if m.group(4) else None
+        cat = "other"
+        for k, v in SHOP_FMT:
+            if k in body:
+                cat = v; break
+        href = urllib.parse.urljoin(url, a["href"])
+        if (title, start) in seen:
+            continue
+        seen.add((title, start))
+        evs.append({"title": title, "start": start, "end": end, "category": cat, "url": href})
+    return evs
+
+def find_content_id(title):
+    """謎ログの作品検索で作品IDを探す（予定・参加済みの判定に使う）。見つからなければ None"""
+    try:
+        d = get("/contents", {"q[keyword]": re.sub(r"[（(]リバイバル[)）]", "", title).split("×")[-1].strip(), "per": 10})
+    except Exception:
+        return None
+    n = norm(title)
+    best = None
+    for c in d.get("contents", []):
+        t = norm(c.get("title"))
+        if len(t) >= 4 and (t in n or n in t) and (best is None or len(t) > len(norm(best["title"]))):
+            best = c
+    return best["id"] if best else None
+
+def add_shop_items(items, first, last, today):
+    known = [norm(i["title"]) for i in items]
+    added = 0
+    for url, venue, pref in SHOP_PAGES:
+        try:
+            evs = shop_events(url)
+        except Exception as e:
+            print(f"shop page skipped ({url}): {e}")
+            continue
+        print(f"shop page {url}: {len(evs)} events")
+        for e in evs:
+            if e["start"] > last or (e["end"] and e["end"] < max(first, today)):
+                continue
+            n = norm(e["title"])
+            if any(len(k) >= 4 and (k in n or n in k) for k in known):
+                continue  # 謎ログにある
+            cid = find_content_id(e["title"])
+            items.append({
+                "contentId": cid or "shop-" + n[:40], "title": e["title"], "category": e["category"],
+                "venue": venue, "pref": pref, "start": e["start"], "end": e["end"], "permanent": not e["end"],
+                "price": None, "playable": True, "url": e["url"], "group": "SCRAP", "groups": ["SCRAP"], "shop": True,
+            })
+            known.append(n); added += 1
+            print(f"  + {e['title']} {e['start']}〜{e['end'] or ''} ({cid})")
+    return added
 
 def main():
     today = datetime.date.today()
@@ -102,6 +206,8 @@ def main():
         g = groups.get(it["contentId"], [])
         it["group"] = "SCRAP" if "SCRAP" in g else (g[0] if g else "")
         it["groups"] = g
+    # 店舗HPにしかない公演（謎ログに会場が未登録）
+    add_shop_items(items, first.isoformat(), last.isoformat(), today.isoformat())
     # 手動で足す・上書きする公演（謎ログの期間が古い／載っていないもの）
     try:
         manual = json.load(open("manual-recommend.json", encoding="utf-8")).get("items", [])
@@ -125,7 +231,7 @@ def main():
         "generated_at": datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).isoformat(timespec="minutes"),
         "months": [m.strftime("%Y-%m") for m in months],
         "window": [first.isoformat(), last.isoformat()],
-        "source": "nazo.site",
+        "source": "nazo.site+realdgame.jp",
         "items": items,
     }
     json.dump(out, open(sys.argv[1] if len(sys.argv) > 1 else "recommend.json", "w", encoding="utf-8"),
